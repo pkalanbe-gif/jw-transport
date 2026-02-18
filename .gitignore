@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# JW Transport specific
+database.db
+database.db-shm
+database.db-wal
+/factures/*.pdf
+vercel.log
+.vercel
+.env

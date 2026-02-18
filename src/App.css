@@ -22,6 +22,31 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Responsive pou mobil */
+@media (max-width: 768px) {
+  .App-header {
+    padding: 15px;
+    font-size: calc(8px + 2vmin);
+  }
+  
+  .App-logo {
+    height: 30vmin;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    padding: 10px;
+    font-size: calc(6px + 2vmin);
+  }
+  
+  .App-logo {
+    height: 25vmin;
+  }
 }
 
 .App-link {
