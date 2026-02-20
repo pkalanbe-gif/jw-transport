@@ -26,7 +26,7 @@ const DEFAULT_DATA = {
 // Seed data for admin
 let SEED_DATA = null;
 try {
-  SEED_DATA = require('../../seed-admin-data.json');
+  SEED_DATA = require('./seed-admin-data.json');
   if (SEED_DATA && SEED_DATA.settings && !SEED_DATA.settings.payrollSchedule) {
     SEED_DATA.settings.payrollSchedule = { frequency: "weekly", payDelay: 2, payDay: 5 };
   }
@@ -61,12 +61,12 @@ function verifyAuth(event) {
   }
 }
 
-// Helper: get Blobs stores
+// Helper: get Blobs stores (no consistency option — not available on free plan)
 function usersStore() {
-  return getStore({ name: 'users', consistency: 'strong' });
+  return getStore('users');
 }
 function dataStore() {
-  return getStore({ name: 'user_data', consistency: 'strong' });
+  return getStore('user_data');
 }
 
 // ==================== ROUTE HANDLERS ====================
@@ -136,8 +136,8 @@ async function handleLogin(body) {
     const token = jwt.sign({ userId: uKey, username: uKey }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     return res(200, { token, user: { username: user.username, displayName: user.displayName } });
   } catch (error) {
-    console.error('Login error:', error);
-    return res(500, { error: 'Erreur serveur' });
+    console.error('Login error:', error.message, error.stack);
+    return res(500, { error: 'Erreur serveur', debug: error.message });
   }
 }
 

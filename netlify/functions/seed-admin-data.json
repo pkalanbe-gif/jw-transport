@@ -1,0 +1,1219 @@
+{
+  "chauffeurs": [
+    {
+      "id": "c1",
+      "nom": "Brain Jean Ginior",
+      "role": "Chauffeur",
+      "aktif": true,
+      "courriel": "bainjunior2020@gmail.com"
+    },
+    {
+      "id": "c2",
+      "nom": "Djeph Alexandre",
+      "role": "Helper",
+      "aktif": true,
+      "courriel": "djephalexandre697@gmail.com"
+    }
+  ],
+  "voyages": [
+    {
+      "id": "e6ax27dqb",
+      "date": "2026-01-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "48azewten",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8820,
+          "dt": "80081991"
+        },
+        {
+          "id": "fkgveot0a",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9630,
+          "dt": "80082006"
+        },
+        {
+          "id": "6v047lbsr",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8890,
+          "dt": "80082014"
+        },
+        {
+          "id": "6cmhk1pjl",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9640,
+          "dt": "80082026"
+        }
+      ]
+    },
+    {
+      "id": "j6aq7pvqk",
+      "date": "2026-01-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "v2clkt6sd",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9660,
+          "dt": "80082057"
+        },
+        {
+          "id": "3eizy45fm",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9400,
+          "dt": "80082065"
+        },
+        {
+          "id": "lutlwglcu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9090,
+          "dt": "80082091"
+        }
+      ]
+    },
+    {
+      "id": "31kwyzdsn",
+      "date": "2026-01-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "3bfyftwt0",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9010,
+          "dt": "80082162"
+        },
+        {
+          "id": "pd347ofos",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9320,
+          "dt": "80082111"
+        },
+        {
+          "id": "mvhckk16c",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": "80082128"
+        }
+      ]
+    },
+    {
+      "id": "fqe3xs2r7",
+      "date": "2026-01-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "bhcovuifh",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9950,
+          "dt": "80082166"
+        },
+        {
+          "id": "a6fbg1yez",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9490,
+          "dt": "80082171"
+        },
+        {
+          "id": "d7azls8kt",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9740,
+          "dt": "80082159"
+        },
+        {
+          "id": "ay93r96f2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9350,
+          "dt": "80082154"
+        }
+      ]
+    },
+    {
+      "id": "2grd5mlgh",
+      "date": "2026-02-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "0smpl48de",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9580,
+          "dt": "80083154"
+        },
+        {
+          "id": "0z96khprn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9590,
+          "dt": "80083161"
+        }
+      ]
+    },
+    {
+      "id": "nc78r3k2h",
+      "date": "2026-02-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "ynzde93gx",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8610,
+          "dt": "80083211"
+        },
+        {
+          "id": "nncuxyz5n",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9240,
+          "dt": "80083221"
+        }
+      ]
+    },
+    {
+      "id": "ky8w36qbn",
+      "date": "2026-02-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "s19lb1bc4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9400,
+          "dt": "80083254"
+        },
+        {
+          "id": "g05k7v0xz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9110,
+          "dt": "80083260"
+        }
+      ]
+    },
+    {
+      "id": "5zv224wvo",
+      "date": "2026-01-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "jxeadfp0r",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 10660,
+          "dt": "80082208"
+        },
+        {
+          "id": "y2jqwidh3",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": "80082996"
+        }
+      ]
+    },
+    {
+      "id": "0xn57vlt9",
+      "date": "2026-01-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "alc6036bp",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8930,
+          "dt": "80082245"
+        },
+        {
+          "id": "jt0e6r5v8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8750,
+          "dt": "80082259"
+        },
+        {
+          "id": "0k0iqhk43",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8640,
+          "dt": "80082268"
+        },
+        {
+          "id": "xuzor6rw6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8670,
+          "dt": "80082280"
+        },
+        {
+          "id": "76m2x6h8h",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": "80082301"
+        }
+      ]
+    },
+    {
+      "id": "kb2iadjwt",
+      "date": "2026-01-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "q8wkfa7jz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8790,
+          "dt": "80062315"
+        },
+        {
+          "id": "4tjvg802n",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8770,
+          "dt": "80082322"
+        },
+        {
+          "id": "pl7hm7cya",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9070,
+          "dt": "80082334"
+        },
+        {
+          "id": "x4rsrmuw8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9300,
+          "dt": "80082345"
+        }
+      ]
+    },
+    {
+      "id": "n6umuepb9",
+      "date": "2026-01-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "vhm1zinw7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9360,
+          "dt": "80082369"
+        },
+        {
+          "id": "yzph4o7ea",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9010,
+          "dt": "80082387"
+        },
+        {
+          "id": "xwrkty7j9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8660,
+          "dt": "80082395"
+        }
+      ]
+    },
+    {
+      "id": "1v5y77icz",
+      "date": "2026-01-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "nyuvxi73x",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9320,
+          "dt": "80082468"
+        },
+        {
+          "id": "g2lqhq615",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9230,
+          "dt": "80082482"
+        },
+        {
+          "id": "81hj9s1zl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9780,
+          "dt": "80082461"
+        }
+      ]
+    },
+    {
+      "id": "yz0r60sfq",
+      "date": "2026-01-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "b7hgtoyfe",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9500,
+          "dt": "80082501"
+        },
+        {
+          "id": "kabomeh29",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9110,
+          "dt": "80082510"
+        },
+        {
+          "id": "8sei2kjgh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9510,
+          "dt": "80082521"
+        }
+      ]
+    },
+    {
+      "id": "0l6bu7a9y",
+      "date": "2026-01-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "rqyo7tg2w",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9660,
+          "dt": "80082547"
+        },
+        {
+          "id": "9wc95hqk9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9300,
+          "dt": "80082557"
+        },
+        {
+          "id": "q51fd029k",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9270,
+          "dt": "80082565"
+        },
+        {
+          "id": "uj2tv7ydd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8860,
+          "dt": "80082591"
+        }
+      ]
+    },
+    {
+      "id": "20947r23w",
+      "date": "2026-01-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "vny9uga7m",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9330,
+          "dt": "80082604"
+        },
+        {
+          "id": "odh17nv7p",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": "80082615"
+        },
+        {
+          "id": "yaxm07ew8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8620,
+          "dt": "80082634"
+        },
+        {
+          "id": "hfrrex50t",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9450,
+          "dt": "80082638"
+        }
+      ]
+    },
+    {
+      "id": "kcvwaej8n",
+      "date": "2026-01-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "umi0wukhb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9480,
+          "dt": "80082668"
+        },
+        {
+          "id": "m80c878rb",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9710,
+          "dt": "80082678"
+        },
+        {
+          "id": "r1k14dr21",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9230,
+          "dt": "80082685"
+        }
+      ]
+    },
+    {
+      "id": "jmupwgxvw",
+      "date": "2026-01-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "a8lhzeem6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9370,
+          "dt": "80082706"
+        },
+        {
+          "id": "mydlmxe2i",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9490,
+          "dt": "80082712"
+        }
+      ]
+    },
+    {
+      "id": "ri3serni0",
+      "date": "2026-01-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "0rs6fjwz4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9470,
+          "dt": "80082751"
+        },
+        {
+          "id": "s7sn3um7q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8860,
+          "dt": "80082767"
+        }
+      ]
+    },
+    {
+      "id": "c1ldyqgj8",
+      "date": "2026-01-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "ps1n3i701",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9260,
+          "dt": "80082796"
+        },
+        {
+          "id": "garz8tzsk",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9210,
+          "dt": "80082811"
+        },
+        {
+          "id": "z7qvgs6g7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9180,
+          "dt": "80082831"
+        }
+      ]
+    },
+    {
+      "id": "s5jadpp51",
+      "date": "2026-01-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "65onpfsh9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9120,
+          "dt": "80082847"
+        },
+        {
+          "id": "6pxip2by2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9300,
+          "dt": "80082862"
+        },
+        {
+          "id": "uvasz9crv",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9380,
+          "dt": "80082878"
+        }
+      ]
+    },
+    {
+      "id": "9kuf4c38b",
+      "date": "2026-01-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "yv3z7zhc9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9300,
+          "dt": "80082892"
+        },
+        {
+          "id": "6jb29vfev",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9600,
+          "dt": "80082894"
+        },
+        {
+          "id": "euzqw0siw",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9490,
+          "dt": "80082905"
+        },
+        {
+          "id": "6se8ry425",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9330,
+          "dt": "80082909"
+        }
+      ]
+    },
+    {
+      "id": "tzw0vkpa9",
+      "date": "2026-02-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "v8dlg5xdr",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9200,
+          "dt": "80082929"
+        },
+        {
+          "id": "r1irm9igd",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9470,
+          "dt": "80082933"
+        },
+        {
+          "id": "1mhd15yjo",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9450,
+          "dt": "80082937"
+        },
+        {
+          "id": "g2to0wd4n",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9030,
+          "dt": "80082949"
+        }
+      ]
+    },
+    {
+      "id": "ogih8nmid",
+      "date": "2026-02-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "4zzpy6g69",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9150,
+          "dt": "80082972"
+        },
+        {
+          "id": "alsit5aza",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9150,
+          "dt": "80082980"
+        },
+        {
+          "id": "tpoip4qmj",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9350,
+          "dt": "80082966"
+        }
+      ]
+    },
+    {
+      "id": "qf0rlcg62",
+      "date": "2026-02-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "hvjk7gjl7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9360,
+          "dt": "80083024"
+        },
+        {
+          "id": "wq41sd7tg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9510,
+          "dt": "80083042"
+        }
+      ]
+    },
+    {
+      "id": "vbzmmjmcl",
+      "date": "2026-02-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "lzb6iuwqt",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9200,
+          "dt": "80083076"
+        },
+        {
+          "id": "dp2rd849p",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8920,
+          "dt": "80083084"
+        },
+        {
+          "id": "53otd2nmi",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": "80083092"
+        }
+      ]
+    },
+    {
+      "id": "chp6jhbq4",
+      "date": "2026-02-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "nogv3x2if",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9370,
+          "dt": "80083124"
+        },
+        {
+          "id": "uh444dt80",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9510,
+          "dt": "80083135"
+        },
+        {
+          "id": "0amzvypmk",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9750,
+          "dt": "80083142"
+        }
+      ]
+    },
+    {
+      "id": "pn0s92c8o",
+      "date": "2026-02-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "pob90gd31",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9160,
+          "dt": "80083300"
+        },
+        {
+          "id": "1z0sz4zgl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9440,
+          "dt": "80083291"
+        }
+      ]
+    },
+    {
+      "id": "vibc49g36",
+      "date": "2026-02-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "4uauylgde",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9340,
+          "dt": "80083359"
+        },
+        {
+          "id": "ltqzp7b33",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9740,
+          "dt": "80083367"
+        }
+      ]
+    }
+  ],
+  "depenses": [
+    {
+      "id": "k03y0dcxc",
+      "date": "2026-02-24",
+      "categorie": "Assurance",
+      "description": "Auto",
+      "montant": 189
+    },
+    {
+      "id": "gvpq9s5s0",
+      "date": "2026-02-12",
+      "categorie": "Assurance",
+      "description": "Camion",
+      "montant": 671
+    },
+    {
+      "id": "lezu8n584",
+      "date": "2026-02-12",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 41.45
+    },
+    {
+      "id": "h9yqtmwy1",
+      "date": "2026-02-12",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 16.54
+    },
+    {
+      "id": "5nmmu963s",
+      "date": "2026-02-11",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 608
+    },
+    {
+      "id": "djfr7ftm2",
+      "date": "2026-02-10",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 15.78
+    },
+    {
+      "id": "dtlpv3f97",
+      "date": "2026-02-10",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 40.33
+    },
+    {
+      "id": "hvqd26y7x",
+      "date": "2026-02-09",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 50
+    },
+    {
+      "id": "tgijw2slm",
+      "date": "2026-02-06",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 28.75
+    },
+    {
+      "id": "hhhni6sts",
+      "date": "2026-02-04",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 453
+    },
+    {
+      "id": "b476bkrne",
+      "date": "2026-02-03",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 50
+    },
+    {
+      "id": "huolgz1qs",
+      "date": "2026-02-03",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 12.57
+    },
+    {
+      "id": "m3vd5rrp4",
+      "date": "2026-02-03",
+      "categorie": "Autre",
+      "description": "Nourriture",
+      "montant": 12.75
+    },
+    {
+      "id": "77qe32cdt",
+      "date": "2026-01-29",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 70
+    },
+    {
+      "id": "2r9gh2cof",
+      "date": "2026-01-29",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 54.09
+    },
+    {
+      "id": "emavd14nn",
+      "date": "2026-01-28",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 403
+    },
+    {
+      "id": "ou2zd2lbp",
+      "date": "2026-01-26",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 50
+    },
+    {
+      "id": "0nthh7x1f",
+      "date": "2026-01-24",
+      "categorie": "Essence",
+      "description": "Ordinaire",
+      "montant": 50
+    },
+    {
+      "id": "y3zqoqnmd",
+      "date": "2026-01-23",
+      "categorie": "Assurance",
+      "description": "Auto",
+      "montant": 189
+    },
+    {
+      "id": "1wuvaqzlb",
+      "date": "2026-01-21",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 700
+    },
+    {
+      "id": "vx4189ok0",
+      "date": "2026-01-14",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 205
+    },
+    {
+      "id": "pe9p0ook1",
+      "date": "2026-01-12",
+      "categorie": "Assurance",
+      "description": "Camion",
+      "montant": 671
+    },
+    {
+      "id": "kl73u3dnt",
+      "date": "2026-01-07",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 227
+    },
+    {
+      "id": "1ck4nzn1k",
+      "date": "2026-01-06",
+      "categorie": "Autre",
+      "description": "Nourriture Dominos Pizza",
+      "montant": 45.37
+    }
+  ],
+  "factures": [
+    {
+      "id": "boipjj630",
+      "clientId": "2fmamuwhq",
+      "date": "2026-02-02",
+      "dateLimite": "2026-02-13",
+      "periode": "02-02-2026 au 06-02-2026",
+      "details": [
+        {
+          "id": "fnc661uad",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "28830",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80082949\nMardi : 80082966\nMercredi : 80083042\nJeudi : 80083092\nVendredi : 80083135 ; 80083142"
+        },
+        {
+          "id": "pzwsds13w",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 9",
+          "quantite": "42230",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80082929 ; 80082933 ; 80082937\nMardi : 80082972 ; 80082980\nMercredi : 80083024\nJeudi : 80083076 ; 80083084\nVendredi : 80083124"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Envoyée",
+      "numero": "FAC-001",
+      "sousTotal": 5550.8,
+      "tps": 277.54,
+      "tvq": 553.69,
+      "total": 6382.03
+    },
+    {
+      "id": "acmmq6ynh",
+      "clientId": "2fmamuwhq",
+      "date": "2026-02-13",
+      "dateLimite": "",
+      "periode": "9 févr. 2026 au 13 févr. 2026",
+      "details": [
+        {
+          "id": "trmo0q6ru",
+          "zone": "06",
+          "description": "Nbre fiches Montréal: 3",
+          "quantite": "14980",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "80083154\n80083359\n80083367"
+        },
+        {
+          "id": "kuqg5kwbh",
+          "zone": "13",
+          "description": "Nbre fiches Laval: 7",
+          "quantite": "32630",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "80083161\n80083211\n80083221\n80083254\n80083260\n80083300\n80083291"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Envoyée",
+      "numero": "FAC-002",
+      "sousTotal": 3632.3,
+      "tps": 181.62,
+      "tvq": 362.32,
+      "total": 4176.24
+    }
+  ],
+  "clients": [
+    {
+      "id": "2fmamuwhq",
+      "nom": "TRANSPORT PRIOLEX INC.",
+      "adresse": "8631 Rue Basswood #3",
+      "ville": "Montréal, QC, H8Y 1S7",
+      "telephone": "(438) 227-9752",
+      "courriel": "salespriolex@gmail.com"
+    }
+  ],
+  "vehicules": [
+    {
+      "id": "e0jmtma1p",
+      "nom": "HINO 195_2018",
+      "plaque": "L860450",
+      "annee": "2018",
+      "km": "269315",
+      "statut": "Actif"
+    },
+    {
+      "id": "c9789kzkw",
+      "nom": "HINO 195_2013",
+      "plaque": "L998841",
+      "annee": "2013",
+      "km": "",
+      "statut": "Actif"
+    },
+    {
+      "id": "zkf6xh3kt",
+      "nom": "Toyota Matrix _2009",
+      "plaque": "ARD 30N",
+      "annee": "2009",
+      "km": "174000",
+      "statut": "Actif"
+    }
+  ],
+  "entretiens": [
+    {
+      "id": "e2koveyyf",
+      "vehiculeId": "e0jmtma1p",
+      "date": "2026-01-31",
+      "type": "Huile",
+      "description": "Pan a huile - Gasket pan a huile - Filtre a huile - Litres huile a moteur - Main d'œuvre - Changement de courroie alternateur.",
+      "cout": 1676.71,
+      "km": "750000"
+    },
+    {
+      "id": "j16f1efi9",
+      "vehiculeId": "e0jmtma1p",
+      "date": "2026-01-23",
+      "type": "Filtre",
+      "description": "x2 Filtre a fuel - filtre a air - injecteur cleaner",
+      "cout": 530.08,
+      "km": ""
+    },
+    {
+      "id": "20eslpr8v",
+      "vehiculeId": "e0jmtma1p",
+      "date": "2026-01-19",
+      "type": "Réparation",
+      "description": "Mirroir cote gauche",
+      "cout": 294.32,
+      "km": ""
+    },
+    {
+      "id": "2ahtn3yuj",
+      "vehiculeId": "e0jmtma1p",
+      "date": "2026-01-15",
+      "type": "Autre",
+      "description": "Terminal Cable de Batterie - Main d'œuvre - Suspension a Air ne fonctionne pas Réparer filage corroder",
+      "cout": 174.08,
+      "km": ""
+    }
+  ],
+  "settings": {
+    "tauxChauffeur": 80,
+    "tauxHelper": 65,
+    "tare": 4560,
+    "tpsNum": "745940213 RT0001",
+    "tvqNum": "4028093794 TQ0001",
+    "entreprise": {
+      "nom": "Jean Junior claudy Desroches (2278727070)",
+      "adresse": "11528 Ovide-Clermont",
+      "ville": "Montréal, QC, H1G 3Y8",
+      "telephone": "+1 (514) 706-1362",
+      "courriel": "jwtransportmtl@gmail.com",
+      "neq": "2278727070"
+    }
+  }
+}
