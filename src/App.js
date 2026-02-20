@@ -13,11 +13,14 @@ const DCATS=["Essence","Diesel","Entretien","Assurance","Péage","Réparation","
 const DCOLORS={"Essence":"#f59e0b","Diesel":"#f97316","Entretien":"#3b82f6","Assurance":"#8b5cf6","Péage":"#06b6d4","Réparation":"#ef4444","Fournitures":"#22c55e","Immatriculation":"#a855f7","Permis/SAAQ":"#7c3aed","Stationnement":"#64748b","Lavage camion":"#0ea5e9","Téléphone":"#14b8a6","Internet":"#0d9488","Loyer/Bureau":"#6366f1","Comptabilité":"#8b5cf6","Frais bancaire":"#9ca3af","Intérêts emprunt":"#ef4444","Amortissement":"#64748b","Publicité":"#ec4899","Nourriture/Repas":"#f43f5e","Formation":"#10b981","Équipement":"#3b82f6","Location équip.":"#0284c7","Sous-traitance":"#f59e0b","Salaires":"#22c55e","CNESST":"#a855f7","Déneigement":"#7dd3fc","Uniforme/Vêtement":"#d946ef","Outil":"#78716c","Logiciel/App":"#6366f1","Autre":"#ec4899"};
 const TAX_INFO={"Essence":"✅ 100% déductible","Diesel":"✅ 100% déductible","Entretien":"✅ 100% déductible","Assurance":"✅ 100% déductible (véhicule commercial)","Péage":"✅ 100% déductible","Réparation":"✅ 100% déductible","Fournitures":"✅ 100% déductible","Immatriculation":"✅ 100% déductible","Permis/SAAQ":"✅ 100% déductible","Stationnement":"✅ 100% déductible (travail)","Lavage camion":"✅ 100% déductible","Téléphone":"✅ % usage commercial","Internet":"✅ % usage commercial","Loyer/Bureau":"✅ % usage commercial","Comptabilité":"✅ 100% déductible","Frais bancaire":"✅ 100% déductible","Intérêts emprunt":"✅ 100% déductible (véhicule commercial)","Amortissement":"✅ DPA selon catégorie","Publicité":"✅ 100% déductible","Nourriture/Repas":"⚠️ 50% déductible (longue distance)","Formation":"✅ 100% déductible","Équipement":"✅ DPA ou 100% si <1500$","Location équip.":"✅ 100% déductible","Sous-traitance":"✅ 100% déductible","Salaires":"✅ 100% déductible","CNESST":"✅ 100% déductible","Déneigement":"✅ 100% déductible","Uniforme/Vêtement":"✅ 100% déductible (logo/sécurité)","Outil":"✅ 100% déductible","Logiciel/App":"✅ 100% déductible","Autre":"⚠️ Selon nature"};
 const C={bg:"#0a0e1a",card:"#111827",card2:"#1a2236",border:"#1e293b",accent:"#6366f1",accentL:"#818cf8",green:"#22c55e",red:"#ef4444",orange:"#f59e0b",purple:"#a855f7",cyan:"#06b6d4",text:"#f1f5f9",muted:"#94a3b8",dim:"#475569",g1:"linear-gradient(135deg,#6366f1,#8b5cf6)",g2:"linear-gradient(135deg,#22c55e,#06b6d4)",g3:"linear-gradient(135deg,#f59e0b,#ef4444)",g4:"linear-gradient(135deg,#3b82f6,#6366f1)"};
-const def={chauffeurs:[],voyages:[],depenses:[],factures:[],clients:[],vehicules:[],entretiens:[],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,tpsNum:"",tvqNum:"",entreprise:{nom:"J&W Transport",adresse:"",ville:"",telephone:"",courriel:"",neq:""}}};
+const def={chauffeurs:[],voyages:[],depenses:[],factures:[],clients:[],vehicules:[],entretiens:[],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,tpsNum:"",tvqNum:"",entreprise:{nom:"J&W Transport",adresse:"",ville:"",telephone:"",courriel:"",neq:""},payrollSchedule:{frequency:"weekly",payDelay:2,payDay:5}}};
 const ADMIN_DATA={chauffeurs:[{id:"c1",nom:"Brain Jean Ginior",role:"Chauffeur",aktif:true,courriel:"bainjunior2020@gmail.com"},{id:"c2",nom:"Djeph Alexandre",role:"Helper",aktif:true,courriel:"djephalexandre697@gmail.com"}],voyages:[{"id":"e6ax27dqb","date":"2026-01-06","chofè":"c1","helpers":["c2"],"trips":[{"id":"48azewten","zone":"13","nbVoyages":1,"poidsChaj":8820,"dt":"80081991"},{"id":"fkgveot0a","zone":"06","nbVoyages":1,"poidsChaj":9630,"dt":"80082006"},{"id":"6v047lbsr","zone":"06","nbVoyages":1,"poidsChaj":8890,"dt":"80082014"},{"id":"6cmhk1pjl","zone":"06","nbVoyages":1,"poidsChaj":9640,"dt":"80082026"}]},{"id":"j6aq7pvqk","date":"2026-01-07","chofè":"c1","helpers":["c2"],"trips":[{"id":"v2clkt6sd","zone":"13","nbVoyages":1,"poidsChaj":9660,"dt":"80082057"},{"id":"3eizy45fm","zone":"13","nbVoyages":1,"poidsChaj":9400,"dt":"80082065"},{"id":"lutlwglcu","zone":"06","nbVoyages":1,"poidsChaj":9090,"dt":"80082091"}]},{"id":"31kwyzdsn","date":"2026-01-08","chofè":"c1","helpers":["c2"],"trips":[{"id":"3bfyftwt0","zone":"13","nbVoyages":1,"poidsChaj":9010,"dt":"80082162"},{"id":"pd347ofos","zone":"06","nbVoyages":1,"poidsChaj":9320,"dt":"80082111"},{"id":"mvhckk16c","zone":"06","nbVoyages":1,"poidsChaj":9040,"dt":"80082128"}]},{"id":"fqe3xs2r7","date":"2026-01-09","chofè":"c1","helpers":["c2"],"trips":[{"id":"bhcovuifh","zone":"13","nbVoyages":1,"poidsChaj":9950,"dt":"80082166"},{"id":"a6fbg1yez","zone":"13","nbVoyages":1,"poidsChaj":9490,"dt":"80082171"},{"id":"d7azls8kt","zone":"13","nbVoyages":1,"poidsChaj":9740,"dt":"80082159"},{"id":"ay93r96f2","zone":"13","nbVoyages":1,"poidsChaj":9350,"dt":"80082154"}]},{"id":"2grd5mlgh","date":"2026-02-09","chofè":"c1","helpers":["c2"],"trips":[{"id":"0smpl48de","zone":"06","nbVoyages":1,"poidsChaj":9580,"dt":"80083154"},{"id":"0z96khprn","zone":"13","nbVoyages":1,"poidsChaj":9590,"dt":"80083161"}]},{"id":"nc78r3k2h","date":"2026-02-10","chofè":"c1","helpers":["c2"],"trips":[{"id":"ynzde93gx","zone":"13","nbVoyages":1,"poidsChaj":8610,"dt":"80083211"},{"id":"nncuxyz5n","zone":"13","nbVoyages":1,"poidsChaj":9240,"dt":"80083221"}]},{"id":"ky8w36qbn","date":"2026-02-11","chofè":"c1","helpers":["c2"],"trips":[{"id":"s19lb1bc4","zone":"13","nbVoyages":1,"poidsChaj":9400,"dt":"80083254"},{"id":"g05k7v0xz","zone":"13","nbVoyages":1,"poidsChaj":9110,"dt":"80083260"}]},{"id":"5zv224wvo","date":"2026-01-12","chofè":"c1","helpers":["c2"],"trips":[{"id":"jxeadfp0r","zone":"13","nbVoyages":1,"poidsChaj":10660,"dt":"80082208"},{"id":"y2jqwidh3","zone":"06","nbVoyages":1,"poidsChaj":8990,"dt":"80082996"}]},{"id":"0xn57vlt9","date":"2026-01-13","chofè":"c1","helpers":["c2"],"trips":[{"id":"alc6036bp","zone":"13","nbVoyages":1,"poidsChaj":8930,"dt":"80082245"},{"id":"jt0e6r5v8","zone":"13","nbVoyages":1,"poidsChaj":8750,"dt":"80082259"},{"id":"0k0iqhk43","zone":"06","nbVoyages":1,"poidsChaj":8640,"dt":"80082268"},{"id":"xuzor6rw6","zone":"13","nbVoyages":1,"poidsChaj":8670,"dt":"80082280"},{"id":"76m2x6h8h","zone":"13","nbVoyages":1,"poidsChaj":9040,"dt":"80082301"}]},{"id":"kb2iadjwt","date":"2026-01-14","chofè":"c1","helpers":["c2"],"trips":[{"id":"q8wkfa7jz","zone":"13","nbVoyages":1,"poidsChaj":8790,"dt":"80062315"},{"id":"4tjvg802n","zone":"13","nbVoyages":1,"poidsChaj":8770,"dt":"80082322"},{"id":"pl7hm7cya","zone":"06","nbVoyages":1,"poidsChaj":9070,"dt":"80082334"},{"id":"x4rsrmuw8","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082345"}]},{"id":"n6umuepb9","date":"2026-01-15","chofè":"c1","helpers":["c2"],"trips":[{"id":"vhm1zinw7","zone":"13","nbVoyages":1,"poidsChaj":9360,"dt":"80082369"},{"id":"yzph4o7ea","zone":"06","nbVoyages":1,"poidsChaj":9010,"dt":"80082387"},{"id":"xwrkty7j9","zone":"13","nbVoyages":1,"poidsChaj":8660,"dt":"80082395"}]},{"id":"1v5y77icz","date":"2026-01-19","chofè":"c1","helpers":["c2"],"trips":[{"id":"nyuvxi73x","zone":"13","nbVoyages":1,"poidsChaj":9320,"dt":"80082468"},{"id":"g2lqhq615","zone":"13","nbVoyages":1,"poidsChaj":9230,"dt":"80082482"},{"id":"81hj9s1zl","zone":"13","nbVoyages":1,"poidsChaj":9780,"dt":"80082461"}]},{"id":"yz0r60sfq","date":"2026-01-20","chofè":"c1","helpers":["c2"],"trips":[{"id":"b7hgtoyfe","zone":"13","nbVoyages":1,"poidsChaj":9500,"dt":"80082501"},{"id":"kabomeh29","zone":"13","nbVoyages":1,"poidsChaj":9110,"dt":"80082510"},{"id":"8sei2kjgh","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80082521"}]},{"id":"0l6bu7a9y","date":"2026-01-21","chofè":"c1","helpers":["c2"],"trips":[{"id":"rqyo7tg2w","zone":"13","nbVoyages":1,"poidsChaj":9660,"dt":"80082547"},{"id":"9wc95hqk9","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082557"},{"id":"q51fd029k","zone":"06","nbVoyages":1,"poidsChaj":9270,"dt":"80082565"},{"id":"uj2tv7ydd","zone":"06","nbVoyages":1,"poidsChaj":8860,"dt":"80082591"}]},{"id":"20947r23w","date":"2026-01-22","chofè":"c1","helpers":["c2"],"trips":[{"id":"vny9uga7m","zone":"13","nbVoyages":1,"poidsChaj":9330,"dt":"80082604"},{"id":"odh17nv7p","zone":"13","nbVoyages":1,"poidsChaj":8990,"dt":"80082615"},{"id":"yaxm07ew8","zone":"13","nbVoyages":1,"poidsChaj":8620,"dt":"80082634"},{"id":"hfrrex50t","zone":"13","nbVoyages":1,"poidsChaj":9450,"dt":"80082638"}]},{"id":"kcvwaej8n","date":"2026-01-23","chofè":"c1","helpers":["c2"],"trips":[{"id":"umi0wukhb","zone":"13","nbVoyages":1,"poidsChaj":9480,"dt":"80082668"},{"id":"m80c878rb","zone":"06","nbVoyages":1,"poidsChaj":9710,"dt":"80082678"},{"id":"r1k14dr21","zone":"13","nbVoyages":1,"poidsChaj":9230,"dt":"80082685"}]},{"id":"jmupwgxvw","date":"2026-01-26","chofè":"c1","helpers":["c2"],"trips":[{"id":"a8lhzeem6","zone":"13","nbVoyages":1,"poidsChaj":9370,"dt":"80082706"},{"id":"mydlmxe2i","zone":"13","nbVoyages":1,"poidsChaj":9490,"dt":"80082712"}]},{"id":"ri3serni0","date":"2026-01-27","chofè":"c1","helpers":["c2"],"trips":[{"id":"0rs6fjwz4","zone":"13","nbVoyages":1,"poidsChaj":9470,"dt":"80082751"},{"id":"s7sn3um7q","zone":"13","nbVoyages":1,"poidsChaj":8860,"dt":"80082767"}]},{"id":"c1ldyqgj8","date":"2026-01-28","chofè":"c1","helpers":["c2"],"trips":[{"id":"ps1n3i701","zone":"13","nbVoyages":1,"poidsChaj":9260,"dt":"80082796"},{"id":"garz8tzsk","zone":"06","nbVoyages":1,"poidsChaj":9210,"dt":"80082811"},{"id":"z7qvgs6g7","zone":"13","nbVoyages":1,"poidsChaj":9180,"dt":"80082831"}]},{"id":"s5jadpp51","date":"2026-01-29","chofè":"c1","helpers":["c2"],"trips":[{"id":"65onpfsh9","zone":"13","nbVoyages":1,"poidsChaj":9120,"dt":"80082847"},{"id":"6pxip2by2","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082862"},{"id":"uvasz9crv","zone":"13","nbVoyages":1,"poidsChaj":9380,"dt":"80082878"}]},{"id":"9kuf4c38b","date":"2026-01-30","chofè":"c1","helpers":["c2"],"trips":[{"id":"yv3z7zhc9","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082892"},{"id":"6jb29vfev","zone":"06","nbVoyages":1,"poidsChaj":9600,"dt":"80082894"},{"id":"euzqw0siw","zone":"06","nbVoyages":1,"poidsChaj":9490,"dt":"80082905"},{"id":"6se8ry425","zone":"06","nbVoyages":1,"poidsChaj":9330,"dt":"80082909"}]},{"id":"tzw0vkpa9","date":"2026-02-02","chofè":"c1","helpers":["c2"],"trips":[{"id":"v8dlg5xdr","zone":"13","nbVoyages":1,"poidsChaj":9200,"dt":"80082929"},{"id":"r1irm9igd","zone":"13","nbVoyages":1,"poidsChaj":9470,"dt":"80082933"},{"id":"1mhd15yjo","zone":"13","nbVoyages":1,"poidsChaj":9450,"dt":"80082937"},{"id":"g2to0wd4n","zone":"06","nbVoyages":1,"poidsChaj":9030,"dt":"80082949"}]},{"id":"ogih8nmid","date":"2026-02-03","chofè":"c1","helpers":["c2"],"trips":[{"id":"4zzpy6g69","zone":"13","nbVoyages":1,"poidsChaj":9150,"dt":"80082972"},{"id":"alsit5aza","zone":"13","nbVoyages":1,"poidsChaj":9150,"dt":"80082980"},{"id":"tpoip4qmj","zone":"06","nbVoyages":1,"poidsChaj":9350,"dt":"80082966"}]},{"id":"qf0rlcg62","date":"2026-02-04","chofè":"c1","helpers":["c2"],"trips":[{"id":"hvjk7gjl7","zone":"13","nbVoyages":1,"poidsChaj":9360,"dt":"80083024"},{"id":"wq41sd7tg","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80083042"}]},{"id":"vbzmmjmcl","date":"2026-02-05","chofè":"c1","helpers":["c2"],"trips":[{"id":"lzb6iuwqt","zone":"13","nbVoyages":1,"poidsChaj":9200,"dt":"80083076"},{"id":"dp2rd849p","zone":"13","nbVoyages":1,"poidsChaj":8920,"dt":"80083084"},{"id":"53otd2nmi","zone":"06","nbVoyages":1,"poidsChaj":9040,"dt":"80083092"}]},{"id":"chp6jhbq4","date":"2026-02-06","chofè":"c1","helpers":["c2"],"trips":[{"id":"nogv3x2if","zone":"13","nbVoyages":1,"poidsChaj":9370,"dt":"80083124"},{"id":"uh444dt80","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80083135"},{"id":"0amzvypmk","zone":"06","nbVoyages":1,"poidsChaj":9750,"dt":"80083142"}]},{"id":"pn0s92c8o","date":"2026-02-12","chofè":"c1","helpers":["c2"],"trips":[{"id":"pob90gd31","zone":"13","nbVoyages":1,"poidsChaj":9160,"dt":"80083300"},{"id":"1z0sz4zgl","zone":"13","nbVoyages":1,"poidsChaj":9440,"dt":"80083291"}]},{"id":"vibc49g36","date":"2026-02-13","chofè":"c1","helpers":["c2"],"trips":[{"id":"4uauylgde","zone":"06","nbVoyages":1,"poidsChaj":9340,"dt":"80083359"},{"id":"ltqzp7b33","zone":"06","nbVoyages":1,"poidsChaj":9740,"dt":"80083367"}]}],depenses:[{"id":"k03y0dcxc","date":"2026-02-24","categorie":"Assurance","description":"Auto","montant":189},{"id":"gvpq9s5s0","date":"2026-02-12","categorie":"Assurance","description":"Camion","montant":671},{"id":"lezu8n584","date":"2026-02-12","categorie":"Autre","description":"Nourriture","montant":41.45},{"id":"h9yqtmwy1","date":"2026-02-12","categorie":"Autre","description":"Nourriture","montant":16.54},{"id":"5nmmu963s","date":"2026-02-11","categorie":"Essence","description":"Diesel","montant":608},{"id":"djfr7ftm2","date":"2026-02-10","categorie":"Autre","description":"Nourriture","montant":15.78},{"id":"dtlpv3f97","date":"2026-02-10","categorie":"Autre","description":"Nourriture","montant":40.33},{"id":"hvqd26y7x","date":"2026-02-09","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"tgijw2slm","date":"2026-02-06","categorie":"Autre","description":"Nourriture","montant":28.75},{"id":"hhhni6sts","date":"2026-02-04","categorie":"Essence","description":"Diesel","montant":453},{"id":"b476bkrne","date":"2026-02-03","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"huolgz1qs","date":"2026-02-03","categorie":"Autre","description":"Nourriture","montant":12.57},{"id":"m3vd5rrp4","date":"2026-02-03","categorie":"Autre","description":"Nourriture","montant":12.75},{"id":"77qe32cdt","date":"2026-01-29","categorie":"Essence","description":"Ordinaire","montant":70},{"id":"2r9gh2cof","date":"2026-01-29","categorie":"Essence","description":"Ordinaire","montant":54.09},{"id":"emavd14nn","date":"2026-01-28","categorie":"Essence","description":"Diesel","montant":403},{"id":"ou2zd2lbp","date":"2026-01-26","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"0nthh7x1f","date":"2026-01-24","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"y3zqoqnmd","date":"2026-01-23","categorie":"Assurance","description":"Auto","montant":189},{"id":"1wuvaqzlb","date":"2026-01-21","categorie":"Essence","description":"Diesel","montant":700},{"id":"vx4189ok0","date":"2026-01-14","categorie":"Essence","description":"Diesel","montant":205},{"id":"pe9p0ook1","date":"2026-01-12","categorie":"Assurance","description":"Camion","montant":671},{"id":"kl73u3dnt","date":"2026-01-07","categorie":"Essence","description":"Diesel","montant":227},{"id":"1ck4nzn1k","date":"2026-01-06","categorie":"Autre","description":"Nourriture Dominos Pizza","montant":45.37}],factures:[{"id":"boipjj630","clientId":"2fmamuwhq","date":"2026-02-02","dateLimite":"2026-02-13","periode":"02-02-2026 au 06-02-2026","details":[{"id":"fnc661uad","zone":"06","description":"Nbre de fiches livrés a Montréal : 6","quantite":"28830","unite":"kg","prixUnitaire":"0.09","dt":"\nLundi : 80082949\nMardi : 80082966\nMercredi : 80083042\nJeudi : 80083092\nVendredi : 80083135 ; 80083142"},{"id":"pzwsds13w","zone":"13","description":"Nbre de fiches livrés a Laval : 9","quantite":"42230","unite":"kg","prixUnitaire":"0.07","dt":"\nLundi : 80082929 ; 80082933 ; 80082937\nMardi : 80082972 ; 80082980\nMercredi : 80083024\nJeudi : 80083076 ; 80083084\nVendredi : 80083124"}],"avecTPS":true,"avecTVQ":true,"statut":"Envoyée","numero":"FAC-001","sousTotal":5550.8,"tps":277.54,"tvq":553.69,"total":6382.03},{"id":"acmmq6ynh","clientId":"2fmamuwhq","date":"2026-02-13","dateLimite":"","periode":"9 févr. 2026 au 13 févr. 2026","details":[{"id":"trmo0q6ru","zone":"06","description":"Nbre fiches Montréal: 3","quantite":"14980","unite":"kg","prixUnitaire":"0.09","dt":"80083154\n80083359\n80083367"},{"id":"kuqg5kwbh","zone":"13","description":"Nbre fiches Laval: 7","quantite":"32630","unite":"kg","prixUnitaire":"0.07","dt":"80083161\n80083211\n80083221\n80083254\n80083260\n80083300\n80083291"}],"avecTPS":true,"avecTVQ":true,"statut":"Envoyée","numero":"FAC-002","sousTotal":3632.3,"tps":181.62,"tvq":362.32,"total":4176.24}],clients:[{"id":"2fmamuwhq","nom":"TRANSPORT PRIOLEX INC.","adresse":"8631 Rue Basswood #3","ville":"Montréal, QC, H8Y 1S7","telephone":"(438) 227-9752","courriel":"salespriolex@gmail.com"}],vehicules:[{"id":"e0jmtma1p","nom":"HINO 195_2018","plaque":"L860450","annee":"2018","km":"269315","statut":"Actif"},{"id":"c9789kzkw","nom":"HINO 195_2013","plaque":"L998841","annee":"2013","km":"","statut":"Actif"},{"id":"zkf6xh3kt","nom":"Toyota Matrix _2009","plaque":"ARD 30N","annee":"2009","km":"174000","statut":"Actif"}],entretiens:[{"id":"e2koveyyf","vehiculeId":"e0jmtma1p","date":"2026-01-31","type":"Huile","description":"Pan a huile - Gasket pan a huile - Filtre a huile - Litres huile a moteur - Main d'œuvre - Changement de courroie alternateur.","cout":1676.71,"km":"750000"},{"id":"j16f1efi9","vehiculeId":"e0jmtma1p","date":"2026-01-23","type":"Filtre","description":"x2 Filtre a fuel - filtre a air - injecteur cleaner","cout":530.08,"km":""},{"id":"20eslpr8v","vehiculeId":"e0jmtma1p","date":"2026-01-19","type":"Réparation","description":"Mirroir cote gauche","cout":294.32,"km":""},{"id":"2ahtn3yuj","vehiculeId":"e0jmtma1p","date":"2026-01-15","type":"Autre","description":"Terminal Cable de Batterie - Main d'œuvre - Suspension a Air ne fonctionne pas Réparer filage corroder","cout":174.08,"km":""}],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,tpsNum:"745940213 RT0001",tvqNum:"4028093794 TQ0001",entreprise:{nom:"Jean Junior claudy Desroches (2278727070)",adresse:"11528 Ovide-Clermont",ville:"Montréal, QC, H1G 3Y8",telephone:"+1 (514) 706-1362",courriel:"jwtransportmtl@gmail.com",neq:"2278727070"}}};
 const PRELOAD_USERS={"admin":{username:"admin",displayName:"admin",hash:"kz4vem",created:"2026-02-14"}};
 const gMon=(d=new Date())=>{const dt=new Date(d);const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return toL(dt);};
 const gWk=m=>JRS.map((_,i)=>{const d=new Date(m+"T12:00:00");d.setDate(d.getDate()+i);return toL(d);});
+const getPayDate=(weekMon,settings)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const fri=new Date(weekMon+"T12:00:00");fri.setDate(fri.getDate()+4);const pd=new Date(fri);pd.setDate(pd.getDate()+ps.payDelay*7);const cur=pd.getDay();const tgt=ps.payDay===7?0:ps.payDay;pd.setDate(pd.getDate()+(tgt-cur));return toL(pd);};
+const getPayPeriods=(fromDate,count,settings,voyages)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const step=ps.frequency==="biweekly"?14:7;const periods=[];const c=new Date(gMon(new Date(fromDate+"T12:00:00"))+"T12:00:00");c.setDate(c.getDate()-10*7);for(let i=0;i<count;i++){const wm=toL(c);const wd=gWk(wm);const pd=getPayDate(wm,settings);const wv=(voyages||[]).filter(v=>v.date>=wd[0]&&v.date<=wd[4]);const tv=wv.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0);periods.push({weekMon:wm,weekFri:wd[4],payDate:pd,trips:tv,voyages:wv});c.setDate(c.getDate()+step);}return periods;};
+const JRSK=["","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const cTrip=(t,tare=DEF_TARE)=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);const r=ZR[t.zone]||0;const rv=pN*r*(t.nbVoyages||1);return{pN,rv:Math.round(rv*100)/100};};
 function agg(voys,tare=DEF_TARE){let tv=0,tp=0,rM=0,rL=0,nM=0,nL=0,pM=0,pL=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const c=cTrip(t,tare);tv+=(t.nbVoyages||0);tp+=c.pN*(t.nbVoyages||1);if(t.zone==="06"){rM+=c.rv;nM+=t.nbVoyages;pM+=c.pN*(t.nbVoyages||1);}if(t.zone==="13"){rL+=c.rv;nL+=t.nbVoyages;pL+=c.pN*(t.nbVoyages||1);}}));const rev=rM+rL;return{tv,tp,rM,rL,rev,ttc:Math.round(rev*(1+TPS_R+TVQ_R)*100)/100,nM,nL,pM,pL};}
 function calcZW(voyages,ws,zone,tare=DEF_TARE){const wd=gWk(ws);let tp=0,nv=0,nf=0,dt=[];voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{if(t.zone===zone){const pN=Math.max(0,(t.poidsChaj||0)-tare);tp+=pN*(t.nbVoyages||1);nv+=(t.nbVoyages||1);nf++;if(t.dt)dt.push(t.dt);}});});return{tp,nv,nf,dt};}
@@ -103,7 +106,7 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <Mo open={modal} onClose={()=>setModal(false)} title={`${eDate?JRS[wd.indexOf(eDate)]||"":""} — ${fD(eDate)}`} width={800}>
 <div style={{display:"flex",gap:10,marginBottom:12}}>
 <In label="Chauffeur" value={ch} onChange={setCh} options={[{value:"",label:"— Choisir —"},...data.chauffeurs.filter(c=>c.aktif&&c.role==="Chauffeur").map(c=>({value:c.id,label:c.nom}))]}/>
-<In label="🚛 Kamyon" value={veh} onChange={setVeh} options={[{value:"",label:"— Chwazi Kamyon —"},...(data.vehicules||[]).filter(v=>v.statut!=="Inactif").map(v=>({value:v.id,label:v.nom+(v.plaque?" — "+v.plaque:"")}))]}/>
+<In label="🚛 Camion" value={veh} onChange={setVeh} options={[{value:"",label:"— Choisir Camion —"},...(data.vehicules||[]).filter(v=>v.statut!=="Inactif").map(v=>({value:v.id,label:v.nom+(v.plaque?" — "+v.plaque:"")}))]}/>
 <div style={{flex:2}}><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Helpers</label><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{data.chauffeurs.filter(c=>c.aktif&&c.role==="Helper").map(h=><button key={h.id} onClick={()=>setHlp(p=>p.includes(h.id)?p.filter(x=>x!==h.id):[...p,h.id])} style={{padding:"4px 10px",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",border:`1.5px solid ${hlp.includes(h.id)?C.green:C.border}`,background:hlp.includes(h.id)?`${C.green}15`:"transparent",color:hlp.includes(h.id)?C.green:C.muted}}>{h.nom}</button>)}</div></div></div>
 {trips.map((t,idx)=>{const tc=cTrip(t);return<div key={t.id} style={{background:C.bg,borderRadius:10,padding:10,marginBottom:8,border:`1px solid ${C.border}`}}>
 <div style={{display:"flex",gap:8,alignItems:"center"}}><span style={{fontWeight:800,color:C.accent,width:20}}>{idx+1}</span><select value={t.zone} onChange={e=>upT(t.id,"zone",e.target.value)} style={{background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:5,padding:5,fontSize:12}}>{ZONES.map(z=><option key={z.v} value={z.v}>{z.l}</option>)}</select><In type="number" value={t.nbVoyages} onChange={v=>upT(t.id,"nbVoyages",v)} placeholder="Nb" style={{maxWidth:55}}/><In type="number" value={t.poidsChaj} onChange={v=>upT(t.id,"poidsChaj",v)} placeholder="Poids chargé" style={{maxWidth:110}}/><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>P.NET</div><div style={{fontSize:11,color:tc.pN>0?C.green:C.dim,fontWeight:700}}>{tc.pN>0?tc.pN.toLocaleString()+"kg":"—"}</div></div><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>REV</div><div style={{fontSize:11,color:tc.rv>0?C.cyan:C.dim,fontWeight:700}}>{tc.rv>0?fM(tc.rv):"—"}</div></div>{trips.length>1&&<button onClick={()=>setTrips(p=>p.filter(x=>x.id!==t.id))} style={{background:"none",border:"none",cursor:"pointer",color:C.red}}>X</button>}</div>
@@ -327,6 +330,132 @@ return<div><div style={{display:"flex",justifyContent:"space-between",alignItems
 </Mo>}
 </div>;}
 
+function KalandryePaie({data,sv,ms}){
+const st=data.settings||def.settings;
+const ps=st.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};
+const[month,setMonth]=useState(today().substring(0,7));
+const[showCfg,setShowCfg]=useState(false);
+const[cfgFreq,setCfgFreq]=useState(ps.frequency);
+const[cfgDelay,setCfgDelay]=useState(ps.payDelay);
+const[cfgDay,setCfgDay]=useState(ps.payDay);
+
+const periods=useMemo(()=>getPayPeriods(today(),30,st,data.voyages||[]),[st,data.voyages]);
+const todayStr=today();
+const upcoming=useMemo(()=>periods.filter(p=>p.payDate>=todayStr),[periods,todayStr]);
+const nextPay=upcoming[0];
+const daysUntil=nextPay?Math.ceil((new Date(nextPay.payDate+"T12:00:00")-new Date(todayStr+"T12:00:00"))/86400000):null;
+
+const payDates=useMemo(()=>{const s=new Set();periods.forEach(p=>s.add(p.payDate));return s;},[periods]);
+const workDates=useMemo(()=>{const s=new Set();(data.voyages||[]).forEach(v=>{if(v.date)s.add(v.date);});return s;},[data.voyages]);
+const payDateMap=useMemo(()=>{const m={};periods.forEach(p=>{m[p.payDate]=p;});return m;},[periods]);
+
+const saveCfg=()=>{const nd={...data,settings:{...st,payrollSchedule:{frequency:cfgFreq,payDelay:cfgDelay,payDay:cfgDay}}};sv(nd);ms("Paramètres de paie sauvegardés!");setShowCfg(false);};
+
+const[y,m]=month.split("-").map(Number);
+const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"numeric"});
+const firstDow=(new Date(y,m-1,1).getDay()+6)%7;
+const daysInMonth=new Date(y,m,0).getDate();
+const cells=[];
+for(let i=0;i<firstDow;i++)cells.push(null);
+for(let d=1;d<=daysInMonth;d++){const ds=`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;cells.push(ds);}
+
+const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+
+return<div>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12,marginBottom:20}}>
+<h1 style={{fontSize:22,fontWeight:900}}>Calendrier de Paie</h1>
+<Bt onClick={()=>setShowCfg(true)} variant="outline" size="sm">Param\u00e8tres</Bt>
+</div>
+
+<div className="jw-wrap" style={{display:"flex",gap:10,marginBottom:20,flexWrap:"wrap"}}>
+<St title="Prochaine Paie" value={nextPay?fDs(nextPay.payDate):"—"} color={C.accent}/>
+<St title="Dans" value={daysUntil!==null?(daysUntil===0?"Aujourd'hui!":daysUntil+" jours"):"—"} grad={daysUntil===0?C.g2:C.g1}/>
+<St title="D\u00e9lai" value={ps.payDelay+" sem."} color={C.orange}/>
+<St title="Fr\u00e9quence" value={ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque sem."} color={C.cyan}/>
+</div>
+
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+<button onClick={prevM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"\u25C0"}</button>
+<div style={{fontSize:16,fontWeight:800,color:C.text,textTransform:"capitalize"}}>{mName}</div>
+<button onClick={nextM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"\u25B6"}</button>
+</div>
+
+<div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2}}>
+{["LUN","MAR","MER","JEU","VEN","SAM","DIM"].map(d=><div key={d} style={{textAlign:"center",fontSize:9,fontWeight:700,color:C.muted,padding:"6px 0",textTransform:"uppercase"}}>{d}</div>)}
+{cells.map((ds,i)=>{
+if(!ds)return<div key={"e"+i}/>;
+const dayNum=parseInt(ds.split("-")[2]);
+const isPay=payDates.has(ds);
+const isToday=ds===todayStr;
+const isPast=ds<todayStr;
+const hasWork=workDates.has(ds);
+const isNext=nextPay&&ds===nextPay.payDate;
+const pInfo=payDateMap[ds];
+let bg="transparent";
+let border="2px solid transparent";
+let color=C.text;
+if(isPay&&isPast){bg=C.green+"20";color=C.green;}
+else if(isNext){bg=C.accent+"35";color="#fff";}
+else if(isPay){bg=C.purple+"20";color=C.purple;}
+if(isToday)border=`2px solid ${C.accentL}`;
+if(hasWork&&!isPay)bg=C.cyan+"10";
+return<div key={ds} title={isPay?(pInfo?`Paie pour sem. ${fDs(pInfo.weekMon)} - ${fDs(pInfo.weekFri)}${pInfo.trips?` (${pInfo.trips} voyages)`:""}`:ds):hasWork?"Jour de travail":""} style={{textAlign:"center",padding:"8px 2px",borderRadius:8,background:bg,border,cursor:isPay?"pointer":"default",position:"relative",minHeight:38}}>
+<div style={{fontSize:13,fontWeight:isPay||isToday?800:400,color}}>{dayNum}</div>
+{isPay&&<div style={{width:6,height:6,borderRadius:3,background:isPast?C.green:isNext?C.accent:C.purple,margin:"2px auto 0"}}/>}
+</div>;})}
+</div>
+
+<div style={{display:"flex",gap:16,marginTop:12,flexWrap:"wrap"}}>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.green}}/> D\u00e9j\u00e0 pay\u00e9</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.accent}}/> Prochaine paie</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.purple}}/> \u00C0 venir</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:2,background:C.cyan+"40"}}/> Jour de travail</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:2,border:`2px solid ${C.accentL}`}}/> Aujourd'hui</div>
+</div>
+</div>
+
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px"}}>
+<div style={{fontSize:13,fontWeight:800,color:C.text,marginBottom:12}}>Prochains Paiements</div>
+{upcoming.slice(0,6).map((p,i)=>{
+const tripCount=p.trips;
+const emps=data.chauffeurs?.filter(c=>c.aktif)||[];
+const weekVoys=p.voyages||[];
+let totalPay=0;
+emps.forEach(ch=>{let nv=0;weekVoys.forEach(v=>{if(v.chof\u00e8===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{nv+=(t.nbVoyages||0);});});const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;totalPay+=nv*tx;});
+const isPast=p.payDate<todayStr;
+const isNext=i===0;
+return<div key={p.weekMon} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,background:isNext?C.accent+"12":isPast?C.green+"08":"transparent",border:`1px solid ${isNext?C.accent+"30":isPast?C.green+"20":C.border}`,marginBottom:6}}>
+<div style={{width:40,height:40,borderRadius:10,background:isPast?C.green+"20":isNext?C.accent+"25":C.card2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{isPast?"\u2705":isNext?"\uD83D\uDCB0":"\uD83D\uDCC5"}</div>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:13,fontWeight:700,color:isNext?C.accentL:isPast?C.green:C.text}}>{fD(p.payDate)}</div>
+<div style={{fontSize:10,color:C.muted}}>Pour sem. {fDs(p.weekMon)} \u2192 {fDs(p.weekFri)} {tripCount>0?`\u2022 ${tripCount} voyages`:""}</div>
+</div>
+<div style={{textAlign:"right",flexShrink:0}}>
+{totalPay>0&&<div style={{fontSize:13,fontWeight:800,color:isNext?C.accentL:C.green}}>{fM(totalPay)}</div>}
+<div style={{fontSize:9,color:C.dim}}>{isPast?"Pay\u00e9":isNext?"Prochain":"\u00C0 venir"}</div>
+</div>
+</div>;})}
+</div>
+
+{showCfg&&<Mo open={true} onClose={()=>setShowCfg(false)} title="Param\u00e8tres du Calendrier de Paie" width={450}>
+<div style={{display:"flex",flexDirection:"column",gap:14}}>
+<In label="Fr\u00e9quence" value={cfgFreq} onChange={setCfgFreq} options={[{v:"weekly",l:"Chaque semaine"},{v:"biweekly",l:"Aux 2 semaines"}]}/>
+<In label="D\u00e9lai de paiement (semaines)" type="number" value={cfgDelay} onChange={v=>setCfgDelay(parseInt(v)||0)}/>
+<In label="Jour de paiement" value={cfgDay} onChange={v=>setCfgDay(parseInt(v)||5)} options={[{v:1,l:"Lundi"},{v:2,l:"Mardi"},{v:3,l:"Mercredi"},{v:4,l:"Jeudi"},{v:5,l:"Vendredi"}]}/>
+<div style={{background:C.card2,borderRadius:10,padding:14}}>
+<div style={{fontSize:11,color:C.muted,marginBottom:6}}>Explication</div>
+<div style={{fontSize:12,color:C.text,lineHeight:1.6}}>Si vous travaillez la semaine 1, avec un d\u00e9lai de {cfgDelay} semaine(s), vous serez pay\u00e9 le {JRSK[cfgDay]||"Vendredi"}, {cfgDelay} semaine(s) apr\u00e8s.</div>
+</div>
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowCfg(false)}>Annuler</Bt>
+<Bt onClick={saveCfg}>Sauvegarder</Bt>
+</div>
+</div>
+</Mo>}
+</div>;}
+
 function LivreComptable({data,sv,ms}){
 const[tab,setTab]=useState("journal");
 const[periodM,setPeriodM]=useState(today().substring(0,7));
@@ -420,7 +549,7 @@ const Sty={th:{padding:"8px 10px",textAlign:"left",fontSize:11,fontWeight:700,co
 
 return<div>
 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}}>
-<h2 style={{fontSize:18,fontWeight:800,color:C.text}}>📒 Teni Liv Kontab</h2>
+<h2 style={{fontSize:18,fontWeight:800,color:C.text}}>📒 Livre de Comptabilit\u00e9</h2>
 <div style={{display:"flex",gap:8,alignItems:"center"}}>
 <input type="month" value={periodM} onChange={e=>setPeriodM(e.target.value)} style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"6px 10px",fontSize:11}}/>
 <Bt onClick={()=>setShowAdd(true)} color={C.green} size="sm">+ Transaction</Bt>
@@ -430,10 +559,10 @@ return<div>
 {/* Summary cards */}
 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:16}}>
 {[
-{label:"Revni Total",val:fN(calc.totalRevenu),color:C.green,icon:"💰"},
-{label:"Depans Total",val:fN(calc.totalDepense),color:C.red,icon:"💸"},
-{label:"Profi Nèt",val:fN(calc.profit),color:calc.profit>=0?C.green:C.red,icon:"📈"},
-{label:"Konpte Kliyan",val:fN(calc.arTotal),color:C.orange,icon:"💳"},
+{label:"Revenu Total",val:fN(calc.totalRevenu),color:C.green,icon:"💰"},
+{label:"D\u00e9penses Total",val:fN(calc.totalDepense),color:C.red,icon:"💸"},
+{label:"Profit Net",val:fN(calc.profit),color:calc.profit>=0?C.green:C.red,icon:"📈"},
+{label:"Compte Client",val:fN(calc.arTotal),color:C.orange,icon:"💳"},
 {label:"Taxes Kolekte",val:fN(calc.totalPassif),color:C.purple,icon:"🧾"},
 ].map((c,i)=><div key={i} className="jw-st" style={{background:C.card,borderRadius:10,padding:"12px 14px",border:`1px solid ${C.border}`}}>
 <div style={{fontSize:10,color:C.dim,marginBottom:4}}>{c.icon} {c.label}</div>
@@ -450,21 +579,21 @@ return<div>
 {showAdd&&<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:16}}>
 <h3 style={{fontSize:13,fontWeight:700,color:C.text,marginBottom:12}}>Nouvo Transaction</h3>
 <div className="jw-grid2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-<div><label style={{fontSize:10,color:C.dim}}>Dat</label><input type="date" value={txForm.date} onChange={e=>setTxForm({...txForm,date:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}/></div>
+<div><label style={{fontSize:10,color:C.dim}}>Date</label><input type="date" value={txForm.date} onChange={e=>setTxForm({...txForm,date:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}/></div>
 <div><label style={{fontSize:10,color:C.dim}}>Tip</label><select value={txForm.type} onChange={e=>setTxForm({...txForm,type:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="debit">Débit (sòti)</option><option value="credit">Crédit (antre)</option></select></div>
 <div><label style={{fontSize:10,color:C.dim}}>Kategori</label><select value={txForm.categorie} onChange={e=>setTxForm({...txForm,categorie:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="revenu">Revenu</option><option value="depense">Dépense</option><option value="actif">Actif</option><option value="passif">Passif</option></select></div>
-<div><label style={{fontSize:10,color:C.dim}}>Kont</label><select value={txForm.compte} onChange={e=>setTxForm({...txForm,compte:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="">-- Chwazi --</option>{Object.values(COMPTES).flat().map(c=><option key={c} value={c}>{c}</option>)}</select></div>
-<div style={{gridColumn:"1/-1"}}><label style={{fontSize:10,color:C.dim}}>Deskripsyon</label><input value={txForm.description} onChange={e=>setTxForm({...txForm,description:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}} placeholder="Detay transaction"/></div>
+<div><label style={{fontSize:10,color:C.dim}}>Compte</label><select value={txForm.compte} onChange={e=>setTxForm({...txForm,compte:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="">-- Choisir --</option>{Object.values(COMPTES).flat().map(c=><option key={c} value={c}>{c}</option>)}</select></div>
+<div style={{gridColumn:"1/-1"}}><label style={{fontSize:10,color:C.dim}}>Description</label><input value={txForm.description} onChange={e=>setTxForm({...txForm,description:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}} placeholder="D\u00e9tails de la transaction"/></div>
 <div><label style={{fontSize:10,color:C.dim}}>Montan ($)</label><input type="number" step="0.01" value={txForm.montant} onChange={e=>setTxForm({...txForm,montant:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}/></div>
 </div>
-<div style={{display:"flex",gap:8,marginTop:12}}><Bt onClick={addTx} color={C.green} size="sm">Ajoute</Bt><Bt onClick={()=>setShowAdd(false)} variant="outline" size="sm">Anile</Bt></div>
+<div style={{display:"flex",gap:8,marginTop:12}}><Bt onClick={addTx} color={C.green} size="sm">Ajouter</Bt><Bt onClick={()=>setShowAdd(false)} variant="outline" size="sm">Annuler</Bt></div>
 </div>}
 
 {/* JOURNAL */}
 {tab==="journal"&&<div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"auto"}}>
 <div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>📒 Journal — {periodM} ({filteredTx.length} transaction{filteredTx.length>1?"s":""})</div>
 <table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
-<th style={Sty.th}>Dat</th><th style={Sty.th}>Kont</th><th style={Sty.th}>Deskripsyon</th><th style={{...Sty.th,textAlign:"right"}}>Débit</th><th style={{...Sty.th,textAlign:"right"}}>Crédit</th><th style={Sty.th}>Sous</th>
+<th style={Sty.th}>Date</th><th style={Sty.th}>Compte</th><th style={Sty.th}>Description</th><th style={{...Sty.th,textAlign:"right"}}>D\u00e9bit</th><th style={{...Sty.th,textAlign:"right"}}>Cr\u00e9dit</th><th style={Sty.th}>Source</th>
 </tr></thead><tbody>
 {filteredTx.map(t=><tr key={t.id} style={{background:t.source==="auto"?"transparent":C.accent+"11"}}>
 <td style={Sty.td}>{fD(t.date)}</td>
@@ -533,9 +662,9 @@ return<div>
 
 {/* COMPTES À RECEVOIR */}
 {tab==="ar"&&<div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"auto"}}>
-<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>💳 Konpte Kliyan (À Recevoir)</div>
+<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>💳 Compte Client (À Recevoir)</div>
 <table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
-<th style={Sty.th}>Kliyan</th><th style={Sty.th}>Fakti</th><th style={Sty.th}>Dat</th><th style={{...Sty.th,textAlign:"right"}}>Montan</th><th style={Sty.th}>Statu</th>
+<th style={Sty.th}>Client</th><th style={Sty.th}>Facture</th><th style={Sty.th}>Date</th><th style={{...Sty.th,textAlign:"right"}}>Montant</th><th style={Sty.th}>Statut</th>
 </tr></thead><tbody>
 {(data.factures||[]).map(f=>{const cli=(data.clients||[]).find(c=>c.id===f.clientId);return<tr key={f.id}>
 <td style={Sty.td}>{cli?.nom||"—"}</td>
@@ -581,15 +710,15 @@ return<div>
 <div style={{background:C.card,borderRadius:12,padding:16,border:`1px solid ${C.border}`,marginBottom:16}}>
 <h3 style={{fontSize:14,fontWeight:800,color:C.text,marginBottom:4}}>📅 Rapò Mansyèl — {periodM}</h3>
 <div className="jw-grid3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginTop:12}}>
-<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Revni</div><div style={{fontSize:18,fontWeight:800,color:C.green}}>{fN(pCalc.rev)} $</div></div>
-<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Depans</div><div style={{fontSize:18,fontWeight:800,color:C.red}}>{fN(pCalc.dep)} $</div></div>
-<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Profi</div><div style={{fontSize:18,fontWeight:800,color:pCalc.profit>=0?C.green:C.red}}>{fN(pCalc.profit)} $</div></div>
+<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Revenu</div><div style={{fontSize:18,fontWeight:800,color:C.green}}>{fN(pCalc.rev)} $</div></div>
+<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>D\u00e9penses</div><div style={{fontSize:18,fontWeight:800,color:C.red}}>{fN(pCalc.dep)} $</div></div>
+<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Profit</div><div style={{fontSize:18,fontWeight:800,color:pCalc.profit>=0?C.green:C.red}}>{fN(pCalc.profit)} $</div></div>
 </div>
 </div>
 <div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"auto"}}>
-<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>Tout Mwa yo</div>
+<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>Tous les Mois</div>
 <table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
-<th style={Sty.th}>Mwa</th><th style={{...Sty.th,textAlign:"right"}}>Revni</th><th style={{...Sty.th,textAlign:"right"}}>Depans</th><th style={{...Sty.th,textAlign:"right"}}>Profi</th><th style={{...Sty.th,textAlign:"right"}}>Maj %</th>
+<th style={Sty.th}>Mois</th><th style={{...Sty.th,textAlign:"right"}}>Revenu</th><th style={{...Sty.th,textAlign:"right"}}>D\u00e9penses</th><th style={{...Sty.th,textAlign:"right"}}>Profit</th><th style={{...Sty.th,textAlign:"right"}}>Marge %</th>
 </tr></thead><tbody>
 {Object.entries(calc.byMonth).sort().map(([m,v])=>{const p=v.rev-v.dep;return<tr key={m}>
 <td style={Sty.td}>{m}</td>
@@ -626,7 +755,7 @@ const runAgent=async()=>{setRunning(true);setLog([]);setStep(0);const tasks=[];
 emps.forEach(e=>{if(e.courriel)tasks.push({type:"paie",emp:e});});
 clientFacts.forEach(cf=>{if(cf.cl.courriel)tasks.push({type:"fact",cf});});
 setTotal(tasks.length);
-addLog(`\u{1F916} Ajan IA d\u00e9mar\u00e9 — ${tasks.length} t\u00e2ches d\u00e9tect\u00e9es`,"start");
+addLog(`\u{1F916} Agent IA d\u00e9mar\u00e9 — ${tasks.length} t\u00e2ches d\u00e9tect\u00e9es`,"start");
 addLog(`\u{1F4C5} Semaine: ${fD(wd[0])} au ${fD(wd[4])}`);
 const newFacs=[...facs];
 for(let i=0;i<tasks.length;i++){const t=tasks[i];setStep(i+1);
@@ -657,7 +786,7 @@ const empReady=emps.filter(e=>e.courriel);const empNoEmail=emps.filter(e=>!e.cou
 const clReady=clientFacts.filter(cf=>cf.cl.courriel);const clNoEmail=clientFacts.filter(cf=>!cf.cl.courriel);
 return<div>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-<div><h1 style={{fontSize:22,fontWeight:800}}>{"🤖"} Ajan IA</h1><div style={{fontSize:11,color:C.dim}}>Automatisation paie + factures fin de semaine</div></div>
+<div><h1 style={{fontSize:22,fontWeight:800}}>{"🤖"} Agent IA</h1><div style={{fontSize:11,color:C.dim}}>Automatisation paie + factures fin de semaine</div></div>
 </div>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
 <In label="Semaine" type="date" value={wk} onChange={setWk} style={{maxWidth:180}}/>
@@ -684,7 +813,7 @@ return<div>
 </div>
 <div style={{marginBottom:16}}>
 <button onClick={runAgent} disabled={running||(empReady.length===0&&clReady.length===0)} style={{width:"100%",padding:"14px 24px",borderRadius:10,border:"none",cursor:running?"wait":"pointer",background:running?C.dim:C.g1,color:"#fff",fontSize:16,fontWeight:900,opacity:(empReady.length===0&&clReady.length===0)?0.4:1}}>
-{running?`⏳ En cours... (${step}/${total})`:`🚀 Lancer l'Ajan IA — ${empReady.length} paie + ${clReady.length} factures`}
+{running?`⏳ En cours... (${step}/${total})`:`🚀 Lancer l'Agent IA — ${empReady.length} paie + ${clReady.length} factures`}
 </button>
 </div>
 {log.length>0&&<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:16,maxHeight:350,overflowY:"auto"}}>
@@ -789,7 +918,7 @@ return<div><h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>Sauvegarde &
 
 function ChatBot({data,user}){
 const[open,setOpen]=useState(false);
-const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjou! Mwen se asistan J&W Transport. 😊\n\nMwen ka ede ou ak:\n• 📊 Estatistik done ou yo\n• 📋 Kijan pou itilize app la\n• 💰 Kalkil revni, depans, profi\n• 🧾 Fakti ak paie\n• 🚛 Enfòmasyon sou vehicule\n\nPoze m yon kesyon!"}]);
+const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos donn\u00e9es\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, d\u00e9penses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les v\u00e9hicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
 const[input,setInput]=useState("");
 const[loading,setLoading]=useState(false);
 const[showKey,setShowKey]=useState(false);
@@ -798,8 +927,8 @@ const[aiMode,setAiMode]=useState(()=>!!localStorage.getItem("jw-api-key"));
 const chatRef=useRef(null);
 useEffect(()=>{if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scrollHeight;},[msgs]);
 
-const saveKey=(k)=>{const clean=k.trim().replace(/[^\x20-\x7E]/g,"");if(clean){localStorage.setItem("jw-api-key",clean);setApiKey(clean);setAiMode(true);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"✅ Kle API anregistre! Kounye a mwen itilize Claude AI pou reponn ou. 🧠"}]);}};
-const removeKey=()=>{localStorage.removeItem("jw-api-key");setApiKey("");setAiMode(false);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"🔄 Kle API retire. Mwen tounen nan mòd lokal."}]);};
+const saveKey=(k)=>{const clean=k.trim().replace(/[^\x20-\x7E]/g,"");if(clean){localStorage.setItem("jw-api-key",clean);setApiKey(clean);setAiMode(true);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"✅ Cl\u00e9 API enregistr\u00e9e! Maintenant j'utilise Claude AI pour vous r\u00e9pondre. 🧠"}]);}};
+const removeKey=()=>{localStorage.removeItem("jw-api-key");setApiKey("");setAiMode(false);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"🔄 Cl\u00e9 API supprim\u00e9e. Retour en mode local."}]);};
 
 const buildContext=()=>{
 const s=data.settings||{};const ent=s.entreprise||{};
@@ -810,13 +939,15 @@ const totDep=deps.reduce((a,d)=>a+(d.montant||0),0);
 const totFac=facs.reduce((a,f)=>a+(f.total||0),0);
 const tare=s.tare||DEF_TARE;
 let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);totRev+=pN*(ZR[t.zone]||0)*(t.nbVoyages||1);}));
-return `Tu es l'assistant IA de J&W Transport. Réponds en Créole Haïtien ou Français selon la langue.
+return `Tu es l'assistant IA de J&W Transport. R\u00e9ponds toujours en fran\u00e7ais.
 Entreprise: ${ent.nom||"J&W Transport"}, ${ent.adresse||""}, ${ent.ville||""}
 TPS: ${s.tpsNum||"N/A"}, TVQ: ${s.tvqNum||"N/A"}, NEQ: ${ent.neq||"N/A"}
 Taux: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
-Stats: ${emps.length} employés (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trips, ${(data.clients||[]).length} clients, ${vehs.length} véhicules, ${facs.length} factures(${totFac.toFixed(0)}$), ${deps.length} dépenses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu: ${totRev.toFixed(0)}$, Profit: ${(totRev-totDep).toFixed(0)}$
-Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employés, Clients, Véhicules+Entretiens, Paie(par semaine), Factures(TPS/TVQ+email), Comptabilité, Ajan IA(automatise paie+factures), Rapport Annuel, Backup(JSON).
-Sois concis, utile, et utilise les données réelles ci-dessus.`;};
+Stats: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${facs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu: ${totRev.toFixed(0)}$, Profit: ${(totRev-totDep).toFixed(0)}$
+Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, Backup(JSON).
+${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
+Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de d\u00e9lai.
+Sois concis, utile, et utilise les donn\u00e9es r\u00e9elles ci-dessus.`;};
 
 const analyze=(q)=>{
 const lo=q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -830,25 +961,26 @@ const totFac=facs.reduce((s,f)=>s+(f.total||0),0);
 const tare=s.tare||DEF_TARE;
 let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);totRev+=pN*(ZR[t.zone]||0)*(t.nbVoyages||1);}));
 const profit=totRev-totDep;
-if(lo.match(/^(bonjou|bonswa|hello|hi|hey|salut|sak pase|sa k ap|koman ou ye)/))return`Bonjou ${user?.displayName||""}! 👋 Kijan mwen ka ede ou jodi a?`;
-if(lo.match(/stati|resume|rezime|sommaire|overview|dashboard|done mwen|tout bagay|general/))return`📊 Rezime:\n👥 ${emps.length} Employé: ${emps.map(e=>e.nom).join(", ")||"okenn"}\n🚛 ${vehs.length} Véhicule: ${vehs.map(v=>v.nom).join(", ")||"okenn"}\n👤 ${clis.length} Kliyan: ${clis.map(c=>c.nom).join(", ")||"okenn"}\n📦 ${voys.length} jou voyaj (${totTrips} trips)\n🧾 ${facs.length} Fakti (${fN(totFac)} $)\n💸 ${deps.length} Depans (${fN(totDep)} $)\n🔧 ${ents.length} Entretien\n💰 Revni: ${fN(totRev)} $ | Profi: ${fN(profit)} $`;
-if(lo.match(/voyaj|voyage|trip|livrezon|combien voyage|konben voyage/)){const byM={};voys.forEach(v=>{const m=v.date?.substring(0,7);if(m){if(!byM[m])byM[m]=0;(v.trips||[]).forEach(t=>{byM[m]+=(t.nbVoyages||0);});}});return`📦 ${voys.length} jou, ${totTrips} trips\n${Object.entries(byM).sort().map(([m,n])=>`  ${m}: ${n}`).join("\n")}\n➡️ Ale nan "Voyages"`;}
-if(lo.match(/revni|revenu|revenue|lajan|konben mwen fe|konben m fe|gain|rantre/))return`💰 Revni: ${fN(totRev)} $\nFakti: ${fN(totFac)} $ | Depans: ${fN(totDep)} $\nProfi: ${fN(profit)} $ ${profit>=0?"✅":"⚠️"}\n➡️ "Rapport Annuel"`;
-if(lo.match(/depans|depens|expense|essence|assuranc|cout|kou|konben m depanse/)){const byCat={};deps.forEach(d=>{byCat[d.categorie||"Autre"]=(byCat[d.categorie||"Autre"]||0)+(d.montant||0);});return`💸 ${deps.length} depans = ${fN(totDep)} $\n${Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([c,m])=>`  ${c}: ${fN(m)} $`).join("\n")}\n➡️ "Comptabilité"`;}
-if(lo.match(/fakti|factur|invoice/)){return`🧾 ${facs.length} fakti = ${fN(totFac)} $\n${facs.map(f=>`  ${f.numero}: ${fN(f.total||0)} $ — ${f.statut}`).join("\n")}\n➡️ "Factures"`;}
-if(lo.match(/paie|pai|pay|salaire|saler|chofe|helper/))return`💵 Taux: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy\n${emps.map(e=>`  ${e.nom} (${e.role})`).join("\n")}\n➡️ "Paie" oswa "🤖 Ajan IA"`;
-if(lo.match(/kliyan|client/))return`👤 Kliyan:\n${clis.map(c=>`  ${c.nom} — ${c.telephone||""} — ${c.courriel||""}`).join("\n")||"Okenn"}\n➡️ "Clients"`;
-if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 Véhicule:\n${vehs.map(v=>`  ${v.nom} | ${v.plaque||"—"} | ${v.annee||"—"}`).join("\n")||"Okenn"}\n🔧 ${ents.length} entretien (${fN(ents.reduce((s,e)=>s+(e.cout||0),0))} $)\n➡️ "Véhicules"`;
-if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretien:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Okenn"}\n➡️ "Véhicules"`;
-if(lo.match(/employe|anplwaye|staff|ekip/))return`👥 Employé:\n${emps.map(e=>`  ${e.nom} — ${e.role} — ${e.courriel||"—"}`).join("\n")||"Okenn"}\n➡️ "Employés"`;
-if(lo.match(/entreprise|compani|info|tps|tvq|neq|adres/))return`🏢 ${ent.nom||"—"}\n${ent.adresse||""}, ${ent.ville||""}\nTel: ${ent.telephone||"—"} | Email: ${ent.courriel||"—"}\nTPS: ${s.tpsNum||"—"} | TVQ: ${s.tvqNum||"—"} | NEQ: ${ent.neq||"—"}`;
-if(lo.match(/ajan|agent|otomatiz|automati/))return`🤖 Ajan IA otomatize:\n1. Kalkile paie\n2. Kreye PDF talon\n3. Ouvri email\n4. Kreye fakti\n5. Voye pa email\n➡️ "🤖 Ajan IA"`;
-if(lo.match(/backup|save|sauvegard|restore|import|export/))return`💾 Ale nan "Backup" pou:\n📥 Download JSON | 📤 Import backup\n⚠️ Fè backup souvan!`;
-if(lo.match(/kijan|koman|how|comment|tutorial|gid|guide|ede|help|eksplik/))return`📖 Gid: Voyages→Factures→Paie→Comptabilité→Backup\nOu itilize "🤖 Ajan IA" pou otomatize tout!`;
-if(lo.match(/profi|profit|benef|margin|marge/))return`📈 Revni: ${fN(totRev)} $ | Depans: ${fN(totDep)} $\nProfi: ${fN(profit)} $ (${totRev>0?(profit/totRev*100).toFixed(1):0}%) ${profit>=0?"✅":"⚠️"}`;
-if(lo.match(/tare|pwa|poid|weight|kilo/))return`⚖️ TARE: ${s.tare||DEF_TARE}kg\nZone MTL(06): ${RM}$/kg | LAV(13): ${RL}$/kg\nKalkil: (Pwa − TARE) × Taux × Nb`;
-if(lo.match(/mesi|merci|thanks/))return`Avèk plezi! 😊`;
-return`Mwen pa fin konprann "${q}".\n\nEseye: "rezime", "voyaj", "depans", "fakti", "paie", "vehicule", "kliyan", "profi", "backup", "kijan itilize app la"`;
+if(lo.match(/^(bonjou|bonswa|hello|hi|hey|salut|sak pase|sa k ap|koman ou ye)/))return`Bonjour ${user?.displayName||""}! 👋 Comment puis-je vous aider aujourd'hui?`;
+if(lo.match(/stati|resume|rezime|sommaire|overview|dashboard|done mwen|tout bagay|general/))return`📊 R\u00e9sum\u00e9:\n👥 ${emps.length} Employ\u00e9(s): ${emps.map(e=>e.nom).join(", ")||"aucun"}\n🚛 ${vehs.length} V\u00e9hicule(s): ${vehs.map(v=>v.nom).join(", ")||"aucun"}\n👤 ${clis.length} Client(s): ${clis.map(c=>c.nom).join(", ")||"aucun"}\n📦 ${voys.length} jours de voyage (${totTrips} trajets)\n🧾 ${facs.length} Facture(s) (${fN(totFac)} $)\n💸 ${deps.length} D\u00e9pense(s) (${fN(totDep)} $)\n🔧 ${ents.length} Entretien(s)\n💰 Revenu: ${fN(totRev)} $ | Profit: ${fN(profit)} $`;
+if(lo.match(/voyaj|voyage|trip|livrezon|combien voyage|konben voyage/)){const byM={};voys.forEach(v=>{const m=v.date?.substring(0,7);if(m){if(!byM[m])byM[m]=0;(v.trips||[]).forEach(t=>{byM[m]+=(t.nbVoyages||0);});}});return`📦 ${voys.length} jours, ${totTrips} trajets\n${Object.entries(byM).sort().map(([m,n])=>`  ${m}: ${n}`).join("\n")}\n➡️ Allez \u00e0 "Voyages"`;}
+if(lo.match(/revni|revenu|revenue|lajan|konben mwen fe|konben m fe|gain|rantre/))return`💰 Revenu: ${fN(totRev)} $\nFactures: ${fN(totFac)} $ | D\u00e9penses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ ${profit>=0?"✅":"⚠️"}\n➡️ "Rapport Annuel"`;
+if(lo.match(/depans|depens|expense|essence|assuranc|cout|kou|konben m depanse/)){const byCat={};deps.forEach(d=>{byCat[d.categorie||"Autre"]=(byCat[d.categorie||"Autre"]||0)+(d.montant||0);});return`💸 ${deps.length} d\u00e9penses = ${fN(totDep)} $\n${Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([c,m])=>`  ${c}: ${fN(m)} $`).join("\n")}\n➡️ "Comptabilit\u00e9"`;}
+if(lo.match(/fakti|factur|invoice/)){return`🧾 ${facs.length} factures = ${fN(totFac)} $\n${facs.map(f=>`  ${f.numero}: ${fN(f.total||0)} $ — ${f.statut}`).join("\n")}\n➡️ "Factures"`;}
+if(lo.match(/kalandriye|calendrier|calendar|dat paie|next payday|kile.*touche|kile.*peye|prochen paie|prochen peman|prochaine paie|dat peman|jou paie|jour de paie|kile.*paye|touche kob|quand.*pay/)){const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const upc=pds.filter(p=>p.payDate>=today()).slice(0,3);if(upc.length===0)return`📅 Aucune date de paie trouv\u00e9e. Allez \u00e0 "📅 Calendrier" pour configurer votre horaire de paie.`;const nx=upc[0];const du=Math.ceil((new Date(nx.payDate+"T12:00:00")-new Date(today()+"T12:00:00"))/86400000);let r=`📅 Prochaine Paie:\n💰 ${fD(nx.payDate)} (${JRSK[ps.payDay]||"Vendredi"})`;r+=du===0?" — AUJOURD'HUI! 🎉\n":` — dans ${du} jours\n`;r+=`   Pour la semaine: ${fDs(nx.weekMon)} → ${fDs(nx.weekFri)}\n`;if(upc.length>1){r+=`\n📆 Ensuite:\n`;upc.slice(1).forEach(p=>{r+=`   ${fD(p.payDate)} → sem. ${fDs(p.weekMon)}-${fDs(p.weekFri)}\n`;});}r+=`\n⚙️ D\u00e9lai: ${ps.payDelay} semaines | ${ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque semaine"}`;r+=`\n➡️ "📅 Calendrier"`;return r;}
+if(lo.match(/paie|pai|pay|salaire|saler|chofe|helper/))return`💵 Taux: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy\n${emps.map(e=>`  ${e.nom} (${e.role})`).join("\n")}\n➡️ "Paie" ou "🤖 Agent IA"`;
+if(lo.match(/kliyan|client/))return`👤 Clients:\n${clis.map(c=>`  ${c.nom} — ${c.telephone||""} — ${c.courriel||""}`).join("\n")||"Aucun"}\n➡️ "Clients"`;
+if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 V\u00e9hicules:\n${vehs.map(v=>`  ${v.nom} | ${v.plaque||"—"} | ${v.annee||"—"}`).join("\n")||"Aucun"}\n🔧 ${ents.length} entretien(s) (${fN(ents.reduce((s,e)=>s+(e.cout||0),0))} $)\n➡️ "V\u00e9hicules"`;
+if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretiens:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Aucun"}\n➡️ "V\u00e9hicules"`;
+if(lo.match(/employe|anplwaye|staff|ekip/))return`👥 Employ\u00e9s:\n${emps.map(e=>`  ${e.nom} — ${e.role} — ${e.courriel||"—"}`).join("\n")||"Aucun"}\n➡️ "Employ\u00e9s"`;
+if(lo.match(/entreprise|compani|info|tps|tvq|neq|adres/))return`🏢 ${ent.nom||"—"}\n${ent.adresse||""}, ${ent.ville||""}\nT\u00e9l: ${ent.telephone||"—"} | Email: ${ent.courriel||"—"}\nTPS: ${s.tpsNum||"—"} | TVQ: ${s.tvqNum||"—"} | NEQ: ${ent.neq||"—"}`;
+if(lo.match(/ajan|agent|otomatiz|automati/))return`🤖 Agent IA automatise:\n1. Calculer la paie\n2. Cr\u00e9er PDF talon\n3. Ouvrir email\n4. Cr\u00e9er facture\n5. Envoyer par email\n➡️ "🤖 Agent IA"`;
+if(lo.match(/backup|save|sauvegard|restore|import|export/))return`💾 Allez \u00e0 "Backup" pour:\n📥 T\u00e9l\u00e9charger JSON | 📤 Importer backup\n⚠️ Faites des sauvegardes souvent!`;
+if(lo.match(/kijan|koman|how|comment|tutorial|gid|guide|ede|help|eksplik/))return`📖 Guide: Voyages→Factures→Paie→Comptabilit\u00e9→Backup\nUtilisez "🤖 Agent IA" pour tout automatiser!`;
+if(lo.match(/profi|profit|benef|margin|marge/))return`📈 Revenu: ${fN(totRev)} $ | D\u00e9penses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ (${totRev>0?(profit/totRev*100).toFixed(1):0}%) ${profit>=0?"✅":"⚠️"}`;
+if(lo.match(/tare|pwa|poid|weight|kilo/))return`⚖️ TARE: ${s.tare||DEF_TARE}kg\nZone MTL(06): ${RM}$/kg | LAV(13): ${RL}$/kg\nCalcul: (Poids − TARE) × Taux × Nb`;
+if(lo.match(/mesi|merci|thanks/))return`Avec plaisir! 😊`;
+return`Je n'ai pas bien compris "${q}".\n\nEssayez: "r\u00e9sum\u00e9", "voyages", "d\u00e9penses", "factures", "paie", "v\u00e9hicules", "clients", "profit", "backup", "comment utiliser l'app"`;
 };
 
 const sendMsg=async()=>{
@@ -862,10 +994,10 @@ const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
 const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system:buildContext(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
 const d=await res.json();
 if(d.error)throw new Error(d.error.message||"API error");
-const reply=d.content?.map(b=>b.text||"").join("")||"Eskize m, erè.";
+const reply=d.content?.map(b=>b.text||"").join("")||"Excusez-moi, une erreur est survenue.";
 setMsgs(prev=>[...prev,{role:"assistant",content:reply}]);
 }catch(e){
-setMsgs(prev=>[...prev,{role:"assistant",content:`⚠️ API erè: ${e.message}\n\nSolisyon:\n• Verifye kle API a nan ⚙️\n• Verifye ou gen kredi sou console.anthropic.com\n\nRepons lokal:\n${analyze(input.trim())}`}]);
+setMsgs(prev=>[...prev,{role:"assistant",content:`⚠️ Erreur API: ${e.message}\n\nSolutions:\n• V\u00e9rifiez la cl\u00e9 API dans ⚙️\n• V\u00e9rifiez vos cr\u00e9dits sur console.anthropic.com\n\nR\u00e9ponse locale:\n${analyze(input.trim())}`}]);
 }setLoading(false);
 }else{
 const reply=analyze(input.trim());
@@ -878,30 +1010,30 @@ return<>
 <div style={{padding:"12px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
 <div style={{display:"flex",alignItems:"center",gap:10}}>
 <div style={{width:32,height:32,borderRadius:8,background:aiMode?C.g2:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🤖</div>
-<div><div style={{fontWeight:700,fontSize:13,color:C.text}}>Asistan JW</div><div style={{fontSize:9,color:aiMode?C.green:C.dim}}>{aiMode?"🟢 Claude AI aktif":"⚡ Mòd lokal"}</div></div>
+<div><div style={{fontWeight:700,fontSize:13,color:C.text}}>Assistant JW</div><div style={{fontSize:9,color:aiMode?C.green:C.dim}}>{aiMode?"🟢 Claude AI actif":"⚡ Mode local"}</div></div>
 </div>
 <div style={{display:"flex",gap:6}}>
 <button onClick={()=>setShowKey(!showKey)} style={{background:"none",border:"none",cursor:"pointer",color:C.dim,fontSize:10}}>⚙️</button>
-<button onClick={()=>setMsgs([{role:"assistant",content:"Bonjou! Kijan mwen ka ede ou? 😊"}])} style={{background:"none",border:"none",cursor:"pointer",color:C.dim,fontSize:10}}>🔄</button>
+<button onClick={()=>setMsgs([{role:"assistant",content:"Bonjour! Comment puis-je vous aider? 😊"}])} style={{background:"none",border:"none",cursor:"pointer",color:C.dim,fontSize:10}}>🔄</button>
 </div>
 </div>
 {showKey&&<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,background:C.bg}}>
-<div style={{fontSize:10,color:C.muted,marginBottom:6}}>🔑 Kle API Anthropic (opsyonèl — pou Claude AI reyèl)</div>
+<div style={{fontSize:10,color:C.muted,marginBottom:6}}>🔑 Cl\u00e9 API Anthropic (optionnel — pour Claude AI)</div>
 <div style={{display:"flex",gap:6}}>
 <input type="password" value={apiKey} onChange={e=>setApiKey(e.target.value)} placeholder="sk-ant-..." style={{flex:1,background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"6px 10px",fontSize:11,outline:"none"}}/>
 <button onClick={()=>saveKey(apiKey)} style={{padding:"6px 10px",borderRadius:6,border:"none",cursor:"pointer",background:C.green,color:"#fff",fontSize:10,fontWeight:700}}>✓</button>
 </div>
-{aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Retire kle a / Retounen lokal</button>}
-<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 Kle a rete nan navigatè ou sèlman</div>
+{aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Supprimer la cl\u00e9 / Retour local</button>}
+<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 La cl\u00e9 reste uniquement dans votre navigateur</div>
 </div>}
 <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"12px 14px",display:"flex",flexDirection:"column",gap:10}}>
 {msgs.map((m,i)=><div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"85%"}}>
 <div style={{background:m.role==="user"?C.accent:C.card2,color:m.role==="user"?"#fff":C.text,padding:"8px 12px",borderRadius:m.role==="user"?"12px 12px 2px 12px":"12px 12px 12px 2px",fontSize:12,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{m.content}</div>
 </div>)}
-{loading&&<div style={{alignSelf:"flex-start"}}><div style={{background:C.card2,padding:"8px 16px",borderRadius:12,fontSize:12,color:C.dim}}>🧠 Claude ap reflechi...</div></div>}
+{loading&&<div style={{alignSelf:"flex-start"}}><div style={{background:C.card2,padding:"8px 16px",borderRadius:12,fontSize:12,color:C.dim}}>🧠 Claude r\u00e9fl\u00e9chit...</div></div>}
 </div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`,display:"flex",gap:8}}>
-<input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")sendMsg();}} placeholder={aiMode?"Poze Claude nenpòt kesyon...":"Ekri kesyon ou..."} style={{flex:1,background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"8px 12px",fontSize:12,outline:"none"}}/>
+<input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")sendMsg();}} placeholder={aiMode?"Posez n'importe quelle question...":"Posez votre question..."} style={{flex:1,background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"8px 12px",fontSize:12,outline:"none"}}/>
 <button onClick={sendMsg} disabled={!input.trim()||loading} style={{padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:aiMode?C.g2:C.g1,color:"#fff",fontSize:14,fontWeight:700,opacity:(!input.trim()||loading?0.5:1)}}>➤</button>
 </div>
 </div>}
@@ -945,7 +1077,7 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 
 const sv=useCallback(nd=>{setData(nd);(async()=>{try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});}catch(e){console.error('Save error:',e);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
-const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Liv Kontab"},{id:"agent",label:"🤖 Ajan IA"},{id:"revenus",label:"Rapport Annuel"},{id:"backup",label:"Backup"}];
+const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
 if(ld)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:40,fontWeight:900,background:C.g1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>J&W Transport</div></div>;
@@ -1000,6 +1132,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 {pg==="clients"&&<Clients data={data} sv={sv} ms={ms}/>}
 {pg==="vehicules"&&<Vehic data={data} sv={sv} ms={ms}/>}
 {pg==="paie"&&<Paie data={data}/>}
+{pg==="kalandriye"&&<KalandryePaie data={data} sv={sv} ms={ms}/>}
 {pg==="factures"&&<Fact data={data} sv={sv} ms={ms}/>}
 {pg==="comptabilite"&&<Compta data={data} sv={sv} ms={ms}/>}
 {pg==="livrecomptable"&&<LivreComptable data={data} sv={sv} ms={ms}/>}

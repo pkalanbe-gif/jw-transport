@@ -30,3 +30,6 @@ database.db-wal
 vercel.log
 .vercel
 .env
+
+# Local Netlify folder
+.netlify

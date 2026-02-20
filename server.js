@@ -43,7 +43,8 @@ const DEFAULT_DATA = {
   settings: {
     tauxChauffeur: 80, tauxHelper: 65, tare: 4560,
     tpsNum: "", tvqNum: "",
-    entreprise: { nom: "J&W Transport", adresse: "", ville: "", telephone: "", courriel: "", neq: "" }
+    entreprise: { nom: "J&W Transport", adresse: "", ville: "", telephone: "", courriel: "", neq: "" },
+    payrollSchedule: { frequency: "weekly", payDelay: 2, payDay: 5 }
   }
 };
 
