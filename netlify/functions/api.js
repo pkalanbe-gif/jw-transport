@@ -1,23 +1,16 @@
-const express = require('express');
-const serverless = require('serverless-http');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { getStore } = require('@netlify/blobs');
 
-const app = express();
-app.use(express.json({ limit: '10mb' }));
-
-// CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  if (req.method === 'OPTIONS') return res.sendStatus(200);
-  next();
-});
-
 const JWT_SECRET = process.env.JWT_SECRET || 'jw-transport-2026-netlify-fallback';
 const JWT_EXPIRES = '7d';
+
+const CORS_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+};
 
 const DEFAULT_DATA = {
   chauffeurs: [], voyages: [], depenses: [], factures: [],
@@ -30,16 +23,42 @@ const DEFAULT_DATA = {
   }
 };
 
-// Seed data for admin (embedded to avoid filesystem issues)
+// Seed data for admin
 let SEED_DATA = null;
 try {
   SEED_DATA = require('../../seed-admin-data.json');
-  // Add payrollSchedule if missing in seed
   if (SEED_DATA && SEED_DATA.settings && !SEED_DATA.settings.payrollSchedule) {
     SEED_DATA.settings.payrollSchedule = { frequency: "weekly", payDelay: 2, payDay: 5 };
   }
 } catch (e) {
   SEED_DATA = DEFAULT_DATA;
+}
+
+// Helper: response
+function res(statusCode, body) {
+  return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
+}
+
+// Helper: parse body from Netlify event
+function parseBody(event) {
+  if (!event.body) return {};
+  try {
+    const raw = event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString('utf8') : event.body;
+    return JSON.parse(raw);
+  } catch (e) {
+    return {};
+  }
+}
+
+// Helper: verify JWT token from Authorization header
+function verifyAuth(event) {
+  const h = (event.headers || {}).authorization || (event.headers || {}).Authorization || '';
+  if (!h.startsWith('Bearer ')) return null;
+  try {
+    return jwt.verify(h.split(' ')[1], JWT_SECRET);
+  } catch (e) {
+    return null;
+  }
 }
 
 // Helper: get Blobs stores
@@ -50,67 +69,45 @@ function dataStore() {
   return getStore({ name: 'user_data', consistency: 'strong' });
 }
 
-// Auth middleware
-function auth(req, res, next) {
-  const h = req.headers.authorization;
-  if (!h || !h.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token requis' });
-  }
+// ==================== ROUTE HANDLERS ====================
+
+async function handleRegister(body) {
   try {
-    const decoded = jwt.verify(h.split(' ')[1], JWT_SECRET);
-    req.userId = decoded.userId;
-    req.username = decoded.username;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Token invalide ou expiré' });
-  }
-}
-
-// ==================== API ROUTER ====================
-// All routes use /api/ prefix since Netlify passes full URL path to Express
-
-const router = express.Router();
-
-// Register
-router.post('/auth/register', async (req, res) => {
-  try {
-    const { username, password, displayName } = req.body;
+    const { username, password, displayName } = body;
     if (!username || !username.trim() || username.length < 3) {
-      return res.status(400).json({ error: "Nom d'utilisateur: 3 caractères min." });
+      return res(400, { error: "Nom d'utilisateur: 3 caractères min." });
     }
     if (!password || password.length < 4) {
-      return res.status(400).json({ error: "Mot de passe: 4 caractères min." });
+      return res(400, { error: "Mot de passe: 4 caractères min." });
     }
 
     const store = usersStore();
     const uKey = username.toLowerCase();
     const existing = await store.get(uKey, { type: 'json' }).catch(() => null);
     if (existing) {
-      return res.status(409).json({ error: "Ce nom d'utilisateur est déjà pris." });
+      return res(409, { error: "Ce nom d'utilisateur est déjà pris." });
     }
 
     const hash = await bcrypt.hash(password, 10);
     const user = { username: uKey, displayName: displayName || username, passwordHash: hash, createdAt: new Date().toISOString() };
     await store.setJSON(uKey, user);
 
-    // Init empty data
     const ds = dataStore();
     await ds.setJSON(uKey, DEFAULT_DATA);
 
     const token = jwt.sign({ userId: uKey, username: uKey }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
-    res.json({ token, user: { username: uKey, displayName: user.displayName } });
+    return res(200, { token, user: { username: uKey, displayName: user.displayName } });
   } catch (error) {
     console.error('Register error:', error);
-    res.status(500).json({ error: 'Erreur serveur' });
+    return res(500, { error: 'Erreur serveur' });
   }
-});
+}
 
-// Login (auto-seeds admin on first login)
-router.post('/auth/login', async (req, res) => {
+async function handleLogin(body) {
   try {
-    const { username, password } = req.body;
+    const { username, password } = body;
     if (!username || !password) {
-      return res.status(400).json({ error: "Remplir tous les champs." });
+      return res(400, { error: "Remplir tous les champs." });
     }
 
     const store = usersStore();
@@ -128,74 +125,107 @@ router.post('/auth/login', async (req, res) => {
     }
 
     if (!user) {
-      return res.status(401).json({ error: "Nom d'utilisateur ou mot de passe incorrect." });
+      return res(401, { error: "Nom d'utilisateur ou mot de passe incorrect." });
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
-      return res.status(401).json({ error: "Nom d'utilisateur ou mot de passe incorrect." });
+      return res(401, { error: "Nom d'utilisateur ou mot de passe incorrect." });
     }
 
     const token = jwt.sign({ userId: uKey, username: uKey }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
-    res.json({ token, user: { username: user.username, displayName: user.displayName } });
+    return res(200, { token, user: { username: user.username, displayName: user.displayName } });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Erreur serveur' });
+    return res(500, { error: 'Erreur serveur' });
   }
-});
+}
 
-// Get current user
-router.get('/auth/me', auth, async (req, res) => {
+async function handleMe(decoded) {
   try {
     const store = usersStore();
-    const user = await store.get(req.username, { type: 'json' }).catch(() => null);
+    const user = await store.get(decoded.username, { type: 'json' }).catch(() => null);
     if (!user) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return res(404, { error: 'Utilisateur non trouvé' });
     }
-    res.json({ user: { username: user.username, displayName: user.displayName } });
+    return res(200, { user: { username: user.username, displayName: user.displayName } });
   } catch (error) {
-    res.status(500).json({ error: 'Erreur serveur' });
+    return res(500, { error: 'Erreur serveur' });
   }
-});
+}
 
-// Get user data
-router.get('/data', auth, async (req, res) => {
+async function handleGetData(decoded) {
   try {
     const ds = dataStore();
-    const data = await ds.get(req.username, { type: 'json' }).catch(() => null);
-    res.json(data || DEFAULT_DATA);
+    const data = await ds.get(decoded.username, { type: 'json' }).catch(() => null);
+    return res(200, data || DEFAULT_DATA);
   } catch (error) {
     console.error('Get data error:', error);
-    res.status(500).json({ error: 'Erreur serveur' });
+    return res(500, { error: 'Erreur serveur' });
   }
-});
+}
 
-// Save user data
-router.put('/data', auth, async (req, res) => {
+async function handleSaveData(decoded, body) {
   try {
-    const data = req.body;
-    if (!data || typeof data !== 'object') {
-      return res.status(400).json({ error: 'Données invalides' });
+    if (!body || typeof body !== 'object') {
+      return res(400, { error: 'Données invalides' });
     }
     const ds = dataStore();
-    await ds.setJSON(req.username, data);
-    res.json({ success: true });
+    await ds.setJSON(decoded.username, body);
+    return res(200, { success: true });
   } catch (error) {
     console.error('Save data error:', error);
-    res.status(500).json({ error: 'Erreur serveur' });
+    return res(500, { error: 'Erreur serveur' });
   }
-});
+}
 
-// Health check
-router.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'JW Transport API on Netlify', timestamp: new Date().toISOString() });
-});
+// ==================== MAIN HANDLER ====================
 
-// Mount router at /api (Netlify passes full URL path to Express)
-app.use('/api', router);
+exports.handler = async (event, context) => {
+  const method = event.httpMethod;
 
-// Also mount at root for direct function calls
-app.use('/', router);
+  // CORS preflight
+  if (method === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
 
-// Export
-module.exports.handler = serverless(app);
+  // Parse path: strip function prefix and /api prefix
+  let path = event.path || '';
+  path = path.replace('/.netlify/functions/api', '');
+  path = path.replace(/^\/api/, '');
+  if (!path.startsWith('/')) path = '/' + path;
+
+  // Parse body for POST/PUT
+  const body = parseBody(event);
+
+  // Health check (no auth needed)
+  if (method === 'GET' && path === '/health') {
+    return res(200, { status: 'OK', message: 'JW Transport API on Netlify', timestamp: new Date().toISOString() });
+  }
+
+  // Auth routes (no token needed)
+  if (method === 'POST' && path === '/auth/login') {
+    return handleLogin(body);
+  }
+  if (method === 'POST' && path === '/auth/register') {
+    return handleRegister(body);
+  }
+
+  // Protected routes (token required)
+  const decoded = verifyAuth(event);
+  if (!decoded) {
+    return res(401, { error: 'Token requis' });
+  }
+
+  if (method === 'GET' && path === '/auth/me') {
+    return handleMe(decoded);
+  }
+  if (method === 'GET' && path === '/data') {
+    return handleGetData(decoded);
+  }
+  if (method === 'PUT' && path === '/data') {
+    return handleSaveData(decoded, body);
+  }
+
+  return res(404, { error: 'Route non trouvée' });
+};
