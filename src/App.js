@@ -929,85 +929,168 @@ const missing=emps.filter(e=>!e.sin||!e.adresse);
 const saveEmpInfo=()=>{if(!editModal)return;sv({...data,chauffeurs:data.chauffeurs.map(c=>c.id===editModal?{...c,sin:editF.sin,adresse:editF.adresse}:c)});ms("OK!");setEditModal(null);};
 const genT4A=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
 const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>T4A - ${emp.nom}</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{background:#fff;color:#1a1a1a}
-.page{max-width:780px;margin:0 auto;padding:30px;page-break-after:always}
-.page:last-child{page-break-after:auto}
-.header{background:#1e3a5f;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:18px;font-weight:800}.header .sub{font-size:11px;opacity:.8}
-.body{border:2px solid #1e3a5f;border-top:none;border-radius:0 0 8px 8px;padding:20px}
-.section{margin-bottom:16px}.section-title{font-size:11px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
-.row{display:flex;gap:16px;margin-bottom:8px}.col{flex:1}
-.label{font-size:9px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
-.value{font-size:13px;font-weight:600;color:#1a1a1a;padding:4px 0}
-.box{border:2px solid #1e3a5f;border-radius:6px;padding:12px;text-align:center;margin:12px 0}
-.box .case{font-size:10px;color:#64748b;font-weight:700}.box .amount{font-size:22px;font-weight:900;color:#1e3a5f}
-.copy-label{text-align:center;font-size:11px;font-weight:700;color:#fff;background:#1e3a5f;padding:6px;border-radius:4px;margin-bottom:12px}
-.footer{text-align:center;font-size:9px;color:#94a3b8;margin-top:16px;padding-top:10px;border-top:1px solid #e2e8f0}
-.note{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px;font-size:10px;color:#92400e;margin-top:12px}
-@media print{.page{padding:20px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}body{background:#fff;color:#000}
+.page{max-width:760px;margin:0 auto;padding:20px;page-break-after:always}.page:last-child{page-break-after:auto}
+.copy-label{text-align:center;font-size:10px;font-weight:700;color:#fff;background:#000;padding:4px 12px;display:inline-block;margin-bottom:6px}
+.form{border:2px solid #000}
+.form-header{display:flex;border-bottom:2px solid #000}
+.fh-left{flex:1;padding:6px 8px;border-right:1px solid #000}
+.fh-mid{width:180px;padding:6px 8px;border-right:1px solid #000;display:flex;align-items:center;gap:8px}
+.fh-right{width:220px;padding:6px 8px}
+.fh-right .t4a-big{font-size:28px;font-weight:900;text-align:right}
+.fh-right .t4a-title{font-size:8px;text-align:right;line-height:1.3}
+.lbl{font-size:7px;color:#333;line-height:1.2}.val{font-size:11px;font-weight:700;min-height:16px;padding:2px 0}
+.row2{display:flex;border-top:1px solid #000}
+.row2 .cell{flex:1;padding:5px 8px;border-right:1px solid #000}.row2 .cell:last-child{border-right:none}
+.case-num{font-size:8px;font-weight:700;color:#000;background:#e5e5e5;display:inline-block;padding:1px 4px;margin-bottom:1px}
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #000}
+.case-cell{padding:4px 6px;border-right:1px solid #000;border-bottom:1px solid #000;min-height:36px}
+.case-cell:nth-child(4n){border-right:none}
+.case-cell.highlight{background:#ffffcc}
+.recip{padding:6px 8px;border-top:1px solid #000}
+.recip-title{font-size:8px;font-weight:700;background:#000;color:#fff;padding:2px 6px;display:inline-block;margin-bottom:4px}
+.maple{font-size:16px;color:#c00}
+.note{background:#f9f9f9;border:1px solid #ccc;padding:8px;font-size:9px;color:#333;margin-top:8px}
+.footer{text-align:center;font-size:8px;color:#999;margin-top:8px}
+@media print{.page{padding:10px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
 ${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
 <div class="page">
 <div class="copy-label">${copy}</div>
-<div class="header"><div><h1>T4A &mdash; \u00C9tat du revenu de pension, de retraite, de rente ou d'autres sources</h1><div class="sub">Ann\u00e9e d'imposition ${year}</div></div><div style="font-size:24px;font-weight:900">T4A</div></div>
-<div class="body">
-<div class="section"><div class="section-title">Payeur / Entreprise</div>
-<div class="row"><div class="col"><div class="label">Nom de l'entreprise</div><div class="value">${ent.nom||"J&W Transport"}</div></div></div>
-<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${ent.adresse||""}, ${ent.ville||""}</div></div></div>
-<div class="row"><div class="col"><div class="label">Num\u00e9ro de compte du payeur (TPS)</div><div class="value">${st.tpsNum||"N/A"}</div></div><div class="col"><div class="label">T\u00e9l\u00e9phone</div><div class="value">${ent.telephone||""}</div></div></div>
+<div class="form">
+<div class="form-header">
+<div class="fh-left"><div class="lbl">Payer's name &ndash; Nom du payeur</div><div class="val">${ent.nom||"J&W Transport"}</div><div class="val" style="font-size:9px;font-weight:400">${ent.adresse||""}, ${ent.ville||""}</div></div>
+<div class="fh-mid"><span class="maple">\u{1F341}</span><div><div style="font-size:7px;font-weight:700">Canada Revenue<br/>Agency</div><div style="font-size:7px">Agence du revenu<br/>du Canada</div></div></div>
+<div class="fh-right"><div class="t4a-big">T4A</div><div class="t4a-title">Statement of Pension, Retirement, Annuity,<br/>and Other Income<br/><b>\u00C9tat du revenu de pension, de retraite, de rente<br/>ou d'autres sources</b></div></div>
 </div>
-<div class="section"><div class="section-title">B\u00e9n\u00e9ficiaire</div>
-<div class="row"><div class="col"><div class="label">Nom</div><div class="value">${emp.nom}</div></div><div class="col"><div class="label">NAS</div><div class="value">${emp.sin||"___-___-___"}</div></div></div>
-<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${emp.adresse||"N/A"}</div></div></div>
+<div class="row2">
+<div class="cell" style="max-width:60px"><div class="case-num">061</div><div class="lbl">Year<br/>Ann\u00e9e</div><div class="val">${year}</div></div>
+<div class="cell"><div class="lbl">Payer-offered dental benefits / Prestations dentaires offertes par le payeur</div><div class="val"></div></div>
+<div class="cell"><div class="lbl">Pension or superannuation &ndash; line 11500<br/>Prestation de retraite ou autres pensions &ndash; ligne 11500</div><div class="val"></div></div>
+<div class="cell"><div class="case-num">022</div><div class="lbl">Income tax deducted &ndash; line 43700<br/>Imp\u00f4t sur le revenu retenu &ndash; ligne 43700</div><div class="val"></div></div>
 </div>
-<div class="section"><div class="section-title">Montants d\u00e9clar\u00e9s</div>
-<div class="box"><div class="case">Case 048 &mdash; Honoraires ou autres montants pour services rendus</div><div class="amount">${brut} $</div></div>
-<div class="row"><div class="col"><div class="label">Nombre de voyages</div><div class="value">${emp.totalVoy}</div></div><div class="col"><div class="label">Taux par voyage</div><div class="value">${fN(emp.tx)} $</div></div></div>
+<div class="row2">
+<div class="cell"><div class="case-num">061</div><div class="lbl">Payer's program account number<br/>Num\u00e9ro de compte de programme du payeur</div><div class="val">${st.tpsNum||""}</div></div>
+<div class="cell"><div class="case-num">018</div><div class="lbl">Lump-sum payments &ndash; line 13000<br/>Paiements forfaitaires &ndash; ligne 13000</div><div class="val"></div></div>
+<div class="cell"><div class="case-num">020</div><div class="lbl">Self-employed commissions<br/>Commissions d'un travail ind\u00e9pendant</div><div class="val"></div></div>
 </div>
-<div class="note">\u26A0\uFE0F Ce formulaire est un r\u00e9sum\u00e9 des honoraires vers\u00e9s \u00e0 un travailleur autonome. Aucune retenue \u00e0 la source n'a \u00e9t\u00e9 effectu\u00e9e. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu et de payer les imp\u00f4ts applicables. Consultez votre comptable.</div>
-<div class="footer">${ent.nom||"J&W Transport"} &mdash; NEQ: ${ent.neq||"N/A"} &mdash; Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
-</div></div>`).join("")}
+<div class="row2">
+<div class="cell"><div class="lbl">Social insurance number<br/>Num\u00e9ro d'assurance sociale</div><div class="val">${emp.sin||""}</div></div>
+<div class="cell"><div class="lbl">Recipient's program account number<br/>Num\u00e9ro de compte de programme du b\u00e9n\u00e9ficiaire</div><div class="val"></div></div>
+<div class="cell" style="border-right:none"><div class="case-num">048</div><div class="lbl" style="font-weight:700">Fees for services<br/>Honoraires ou autres sommes<br/>pour services rendus</div><div class="val" style="font-size:16px;color:#c00">${brut} $</div></div>
+</div>
+<div class="recip"><div class="recip-title">Recipient's name and address &ndash; Nom et adresse du b\u00e9n\u00e9ficiaire</div>
+<div class="val">${emp.nom}</div><div class="val" style="font-weight:400;font-size:10px">${emp.adresse||"N/A"}</div></div>
+<div style="padding:4px 8px;border-top:1px solid #000"><div class="lbl" style="font-weight:700">Other information (see page 2) / Autres renseignements (voir \u00e0 la page 2)</div>
+<div class="case-grid">
+<div class="case-cell highlight"><div class="case-num">048</div><div class="lbl">Fees for services / Honoraires</div><div class="val" style="color:#c00">${brut} $</div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
+</div></div>
+</div>
+<div class="note"><b>Travailleur autonome</b> &mdash; ${emp.totalVoy} voyages \u00d7 ${fN(emp.tx)} $/voy = ${brut} $ &mdash; Aucune retenue \u00e0 la source. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable.</div>
+<div class="footer">${ent.nom||"J&W Transport"} | NEQ: ${ent.neq||""} | Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
+</div>`).join("")}
 <script>window.onload=function(){window.print()}<\/script></body></html>`;
 w.document.write(html);w.document.close();};
 const genRL1=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
 const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>RL-1 - ${emp.nom}</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{background:#fff;color:#1a1a1a}
-.page{max-width:780px;margin:0 auto;padding:30px;page-break-after:always}
-.page:last-child{page-break-after:auto}
-.header{background:#003366;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:16px;font-weight:800}.header .sub{font-size:11px;opacity:.8}
-.body{border:2px solid #003366;border-top:none;border-radius:0 0 8px 8px;padding:20px}
-.section{margin-bottom:16px}.section-title{font-size:11px;font-weight:700;color:#003366;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
-.row{display:flex;gap:16px;margin-bottom:8px}.col{flex:1}
-.label{font-size:9px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
-.value{font-size:13px;font-weight:600;color:#1a1a1a;padding:4px 0}
-.box{border:2px solid #003366;border-radius:6px;padding:12px;text-align:center;margin:12px 0}
-.box .case{font-size:10px;color:#64748b;font-weight:700}.box .amount{font-size:22px;font-weight:900;color:#003366}
-.copy-label{text-align:center;font-size:11px;font-weight:700;color:#fff;background:#003366;padding:6px;border-radius:4px;margin-bottom:12px}
-.footer{text-align:center;font-size:9px;color:#94a3b8;margin-top:16px;padding-top:10px;border-top:1px solid #e2e8f0}
-.note{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px;font-size:10px;color:#92400e;margin-top:12px}
-.qc-logo{font-size:10px;font-weight:700;color:#fff;opacity:.9}
-@media print{.page{padding:20px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}body{background:#fff;color:#000}
+.page{max-width:760px;margin:0 auto;padding:20px;page-break-after:always}.page:last-child{page-break-after:auto}
+.copy-label{text-align:center;font-size:10px;font-weight:700;color:#fff;background:#003366;padding:4px 12px;display:inline-block;margin-bottom:6px}
+.form{border:2px solid #000}
+.form-header{display:flex;border-bottom:2px solid #000;background:#f0f6fc}
+.fh-logo{width:80px;padding:8px;display:flex;align-items:center;justify-content:center;border-right:1px solid #000}
+.fh-logo div{text-align:center}
+.fh-logo .rq{font-size:9px;font-weight:900;color:#003366;line-height:1.1}
+.fh-title{flex:1;padding:6px 10px}
+.fh-title h1{font-size:14px;font-weight:900;color:#003366}
+.fh-title .sub{font-size:9px;color:#333}
+.fh-year{width:60px;padding:6px;border-left:1px solid #000;text-align:center}
+.fh-year .lbl{font-size:7px}.fh-year .val{font-size:18px;font-weight:900}
+.fh-info{width:180px;padding:4px 6px;border-left:1px solid #000}
+.fh-info .lbl{font-size:6px;color:#333}.fh-info .val{font-size:9px;font-weight:600}
+.fh-rl{width:120px;padding:6px;border-left:1px solid #000;text-align:right;display:flex;flex-direction:column;justify-content:center}
+.fh-rl .big{font-size:10px;font-weight:700;color:#333}.fh-rl .ver{font-size:7px;color:#666}
+.cases{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #000}
+.cs{padding:3px 5px;border-right:1px solid #000;border-bottom:1px solid #000;min-height:32px}
+.cs:nth-child(4n){border-right:none}
+.cs.hl{background:#ffffcc}
+.cs .cn{font-size:7px;font-weight:700;color:#000;display:inline-block;margin-bottom:1px}
+.cs .ct{font-size:6px;color:#333;line-height:1.2}
+.cs .cv{font-size:11px;font-weight:700;min-height:14px}
+.cs .cv.red{color:#c00}
+.sep{background:#003366;color:#fff;font-size:8px;font-weight:700;padding:3px 8px;grid-column:1/-1}
+.recip{padding:6px 8px;border-top:1px solid #000;display:flex;gap:12px}
+.recip .rc{flex:1}.recip .lbl{font-size:7px;color:#333}.recip .val{font-size:11px;font-weight:700}
+.payeur{padding:6px 8px;border-top:1px solid #000}
+.payeur .lbl{font-size:7px;color:#333}.payeur .val{font-size:10px;font-weight:600}
+.note{background:#f9f9f9;border:1px solid #ccc;padding:8px;font-size:9px;color:#333;margin-top:8px}
+.footer{text-align:center;font-size:8px;color:#999;margin-top:8px}
+@media print{.page{padding:10px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
 ${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
 <div class="page">
 <div class="copy-label">${copy}</div>
-<div class="header"><div><h1>Relev\u00e9 1 (RL-1) &mdash; Revenus d'emploi et revenus divers</h1><div class="sub">Ann\u00e9e d'imposition ${year}</div></div><div><div style="font-size:24px;font-weight:900">RL-1</div><div class="qc-logo">Revenu Qu\u00e9bec</div></div></div>
-<div class="body">
-<div class="section"><div class="section-title">Payeur / Entreprise</div>
-<div class="row"><div class="col"><div class="label">Nom de l'entreprise</div><div class="value">${ent.nom||"J&W Transport"}</div></div></div>
-<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${ent.adresse||""}, ${ent.ville||""}</div></div></div>
-<div class="row"><div class="col"><div class="label">NEQ</div><div class="value">${ent.neq||"N/A"}</div></div><div class="col"><div class="label">No TPS</div><div class="value">${st.tpsNum||"N/A"}</div></div><div class="col"><div class="label">No TVQ</div><div class="value">${st.tvqNum||"N/A"}</div></div></div>
+<div class="form">
+<div class="form-header">
+<div class="fh-logo"><div><div class="rq">REVENU<br/>QU\u00C9BEC</div><div style="font-size:7px;color:#003366">\u269C</div></div></div>
+<div class="fh-title"><h1>RELEV\u00C9 1</h1><div class="sub">Revenus d'emploi et revenus divers</div></div>
+<div class="fh-year"><div class="lbl">Ann\u00e9e</div><div class="val">${year}</div></div>
+<div class="fh-info"><div class="lbl">Code du relev\u00e9</div><div class="val"></div><div style="margin-top:4px"><div class="lbl">No du dernier relev\u00e9 transmis</div><div class="val"></div></div></div>
+<div class="fh-rl"><div class="big">RL-1 (${year}-10)</div><div class="ver">Revenu Qu\u00e9bec</div></div>
 </div>
-<div class="section"><div class="section-title">B\u00e9n\u00e9ficiaire</div>
-<div class="row"><div class="col"><div class="label">Nom</div><div class="value">${emp.nom}</div></div><div class="col"><div class="label">NAS</div><div class="value">${emp.sin||"___-___-___"}</div></div></div>
-<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${emp.adresse||"N/A"}</div></div></div>
+<div class="cases">
+<div class="cs"><div class="cn">A</div><div class="ct">Revenus d'emploi</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">B</div><div class="ct">Cotisation au RRQ</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">B-1</div><div class="ct">Cotisation suppl\u00e9mentaire au RRQ</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">C</div><div class="ct">Cotisation \u00e0 l'assurance emploi</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">D</div><div class="ct">Cotisation syndicale</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">E</div><div class="ct">Salaire admissible au RRQ</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">F</div><div class="ct">Cotisation au RQAP</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">G</div><div class="ct">Salaire admissible au RQAP</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">H</div><div class="ct">Cotisation \u00e0 un RPA</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">I</div><div class="ct">Salaire admissible au R\u00e9g. ass. m\u00e9d.</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">J</div><div class="ct">R\u00e9gime priv\u00e9 d'ass. maladie</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">K</div><div class="ct">Voyages (r\u00e9gion d\u00e9sign\u00e9e)</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">L</div><div class="ct">Autres avantages</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">M</div><div class="ct">Commissions</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">N</div><div class="ct">Dons de bienfaisance</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">O</div><div class="ct">Autres revenus</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">P</div><div class="ct">R\u00e9gime d'ass. interentreprises</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">Q</div><div class="ct">Salaires diff\u00e9r\u00e9s</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">R</div><div class="ct">Revenu \u00ab situ\u00e9 \u00bb dans une r\u00e9serve</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">S</div><div class="ct">Pourboires re\u00e7us</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">T</div><div class="ct">Pourboires attribu\u00e9s</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">U</div><div class="ct">Retraite progressive</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">V</div><div class="ct">Nourriture et logement</div><div class="cv"></div></div>
+<div class="cs hl"><div class="cn" style="background:#003366;color:#fff;padding:1px 6px">W</div><div class="ct" style="font-weight:700">Autres revenus</div><div class="cv red" style="font-size:14px">${brut} $</div></div>
+<div class="cs"><div class="cn">Imp\u00f4t du Qu\u00e9bec</div><div class="ct">retenu</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">V\u00e9hicule \u00e0 moteur</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">Code (case O)</div><div class="cv"></div></div>
 </div>
-<div class="section"><div class="section-title">Montants d\u00e9clar\u00e9s</div>
-<div class="box"><div class="case">Case W &mdash; Autres revenus</div><div class="amount">${brut} $</div></div>
-<div class="row"><div class="col"><div class="label">Nombre de voyages</div><div class="value">${emp.totalVoy}</div></div><div class="col"><div class="label">Taux par voyage</div><div class="value">${fN(emp.tx)} $</div></div></div>
+<div class="recip">
+<div class="rc"><div class="lbl">Num\u00e9ro d'assurance sociale du particulier</div><div class="val">${emp.sin||""}</div></div>
+<div class="rc" style="max-width:160px"><div class="lbl">Num\u00e9ro de r\u00e9f\u00e9rence (facultatif)</div><div class="val"></div></div>
 </div>
-<div class="note">\u26A0\uFE0F Travailleur autonome &mdash; Aucune retenue \u00e0 la source n'a \u00e9t\u00e9 effectu\u00e9e. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable pour les d\u00e9ductions applicables.</div>
-<div class="footer">${ent.nom||"J&W Transport"} &mdash; NEQ: ${ent.neq||"N/A"} &mdash; Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
-</div></div>`).join("")}
+<div style="padding:4px 8px;border-top:1px solid #000">
+<div class="lbl">Nom de famille, pr\u00e9nom et adresse du particulier</div>
+<div class="val" style="font-size:11px">${emp.nom}</div>
+<div style="font-size:9px">${emp.adresse||"N/A"}</div>
+</div>
+<div class="payeur" style="border-top:1px solid #000">
+<div class="lbl">Nom et adresse de l'employeur ou du payeur</div>
+<div class="val">${ent.nom||"J&W Transport"}</div>
+<div style="font-size:9px">${ent.adresse||""}, ${ent.ville||""}</div>
+<div style="font-size:8px;color:#666;margin-top:2px">NEQ: ${ent.neq||""} | TPS: ${st.tpsNum||""} | TVQ: ${st.tvqNum||""}</div>
+</div>
+</div>
+<div class="note"><b>Travailleur autonome</b> &mdash; Case W: ${brut} $ (${emp.totalVoy} voyages \u00d7 ${fN(emp.tx)} $/voy) &mdash; Aucune retenue \u00e0 la source. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable.</div>
+<div class="footer">${ent.nom||"J&W Transport"} | NEQ: ${ent.neq||""} | Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
+</div>`).join("")}
 <script>window.onload=function(){window.print()}<\/script></body></html>`;
 w.document.write(html);w.document.close();};
 return<div>
