@@ -26,6 +26,56 @@ const cTrip=(t,tare=DEF_TARE)=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);const
 function agg(voys,tare=DEF_TARE){let tv=0,tp=0,rM=0,rL=0,nM=0,nL=0,pM=0,pL=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const c=cTrip(t,tare);tv+=(t.nbVoyages||0);tp+=c.pN*(t.nbVoyages||1);if(t.zone==="06"){rM+=c.rv;nM+=t.nbVoyages;pM+=c.pN*(t.nbVoyages||1);}if(t.zone==="13"){rL+=c.rv;nL+=t.nbVoyages;pL+=c.pN*(t.nbVoyages||1);}}));const rev=rM+rL;return{tv,tp,rM,rL,rev,ttc:Math.round(rev*(1+TPS_R+TVQ_R)*100)/100,nM,nL,pM,pL};}
 function calcFiscal(data,year){const st=data.settings||def.settings;const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));return(data.chauffeurs||[]).filter(c=>c.aktif).map(ch=>{let totalVoy=0;voys.forEach(v=>{if(v.chofè===ch.id||(v.helpers||[]).includes(ch.id))(v.trips||[]).forEach(t=>{totalVoy+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{...ch,totalVoy,tx,brut:totalVoy*tx};});}
 function calcZW(voyages,ws,zone,tare=DEF_TARE){const wd=gWk(ws);let tp=0,nv=0,nf=0,dt=[];voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{if(t.zone===zone){const pN=Math.max(0,(t.poidsChaj||0)-tare);tp+=pN*(t.nbVoyages||1);nv+=(t.nbVoyages||1);nf++;if(t.dt)dt.push(t.dt);}});});return{tp,nv,nf,dt};}
+function calcTaxSummary(data,year){
+const facs=(data.factures||[]).filter(f=>f.date&&f.date.startsWith(String(year)));
+const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
+const ents=(data.entretiens||[]).filter(e=>e.date&&e.date.startsWith(String(year)));
+let tpsC=0,tvqC=0;facs.forEach(f=>{tpsC+=(f.tps||0);tvqC+=(f.tvq||0);});
+const HALF_CATS=["Nourriture/Repas"];const NO_ITC=["Salaires","CNESST","Amortissement"];
+let tpsITC=0,tvqITC=0;
+deps.forEach(d=>{const m=d.montant||0;if(NO_ITC.includes(d.categorie))return;const mult=HALF_CATS.includes(d.categorie)?0.5:1;tpsITC+=m*TPS_R/(1+TPS_R)*mult;tvqITC+=m*TVQ_R/(1+TVQ_R)*mult;});
+ents.forEach(e=>{const c=e.cout||0;tpsITC+=c*TPS_R/(1+TPS_R);tvqITC+=c*TVQ_R/(1+TVQ_R);});
+tpsITC=Math.round(tpsITC*100)/100;tvqITC=Math.round(tvqITC*100)/100;
+return{tpsCollected:Math.round(tpsC*100)/100,tvqCollected:Math.round(tvqC*100)/100,tpsITC,tvqITC,tpsNet:Math.round((tpsC-tpsITC)*100)/100,tvqNet:Math.round((tvqC-tvqITC)*100)/100,totalNet:Math.round((tpsC-tpsITC+tvqC-tvqITC)*100)/100,facCount:facs.length,depCount:deps.length};}
+function calcFiscalHealth(data){
+const alerts=[];const yr=String(new Date().getFullYear());const td=toL(new Date());
+const emps=(data.chauffeurs||[]).filter(c=>c.aktif);
+const noSin=emps.filter(e=>!e.sin);if(noSin.length)alerts.push({type:"warning",icon:"⚠️",msg:`${noSin.length} employé(s) sans NAS: ${noSin.map(e=>e.nom).join(", ")}`});
+const noAddr=emps.filter(e=>!e.adresse);if(noAddr.length)alerts.push({type:"warning",icon:"📍",msg:`${noAddr.length} employé(s) sans adresse: ${noAddr.map(e=>e.nom).join(", ")}`});
+const st=data.settings||{};if(!st.tpsNum)alerts.push({type:"warning",icon:"🔢",msg:"Numéro TPS manquant dans Paramètres"});
+if(!st.tvqNum)alerts.push({type:"warning",icon:"🔢",msg:"Numéro TVQ manquant dans Paramètres"});
+const unpaid=(data.factures||[]).filter(f=>f.statut!=="Payée"&&f.statut!=="Annulée");
+const overdue=unpaid.filter(f=>f.dateLimite&&f.dateLimite<td);
+if(overdue.length)alerts.push({type:"warning",icon:"🔴",msg:`${overdue.length} facture(s) en retard: ${fN(overdue.reduce((s,f)=>s+(f.total||0),0))} $`});
+else if(unpaid.length)alerts.push({type:"info",icon:"📄",msg:`${unpaid.length} facture(s) en attente: ${fN(unpaid.reduce((s,f)=>s+(f.total||0),0))} $`});
+const autres=(data.depenses||[]).filter(d=>d.categorie==="Autre"&&d.date?.startsWith(yr));
+if(autres.length>3)alerts.push({type:"info",icon:"📋",msg:`${autres.length} dépenses catégorisées "Autre" — vérifiez si une meilleure catégorie existe`});
+const deadlines=[];const m=new Date().getMonth()+1;
+if(m<=2)deadlines.push("28 fév: Date limite T4A/RL-1");
+if(m<=4)deadlines.push("30 avr: Déclaration de revenus");
+if(m<=6)deadlines.push("15 juin: Remise TPS/TVQ (annuelle)");
+if(deadlines.length)alerts.push({type:"info",icon:"📅",msg:"Échéances à venir: "+deadlines.join(" | ")});
+if(!alerts.length)alerts.push({type:"success",icon:"✅",msg:"Tout est en ordre! Aucun problème fiscal détecté."});
+return alerts;}
+function calcProfitAnalysis(data,year){
+const st=data.settings||def.settings;const tare=st.tare||DEF_TARE;
+const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));
+const a=agg(voys,tare);
+const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
+const ents=(data.entretiens||[]).filter(e=>e.date&&e.date.startsWith(String(year)));
+const totalDeps=deps.reduce((s,d)=>s+(d.montant||0),0);
+const totalEnts=ents.reduce((s,e)=>s+(e.cout||0),0);
+const emps=calcFiscal(data,year);const totalEmp=emps.reduce((s,e)=>s+e.brut,0);
+const totalCost=totalDeps+totalEnts+totalEmp;
+const margin=a.rev>0?Math.round((a.rev-totalCost)/a.rev*1000)/10:0;
+const avgRevPerTrip=a.tv>0?Math.round(a.rev/a.tv*100)/100:0;
+const avgCostPerTrip=a.tv>0?Math.round(totalCost/a.tv*100)/100:0;
+const now=new Date();const w4ago=new Date(now);w4ago.setDate(w4ago.getDate()-28);const w4s=toL(w4ago);
+const recent=voys.filter(v=>v.date>=w4s);const recentA=agg(recent,tare);
+const projection=Math.round(recentA.rev/4*4.33*100)/100;
+const topDeps={};deps.forEach(d=>{topDeps[d.categorie]=(topDeps[d.categorie]||0)+(d.montant||0);});
+const topCats=Object.entries(topDeps).sort((a,b)=>b[1]-a[1]).slice(0,5);
+return{rev:a.rev,revM:a.rM,revL:a.rL,ttc:a.ttc,tv:a.tv,totalDeps,totalEnts,totalEmp,totalCost,margin,avgRevPerTrip,avgCostPerTrip,projection,topCats};}
 const openPrint=(title,html)=>{const w=window.open('','_blank');if(!w)return;w.document.write(`<!DOCTYPE html><html><head><meta charset=utf-8><title>${title}</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{background:#fff;color:#1a1a1a}.inv{max-width:780px;margin:0 auto;padding:30px}.hdr{display:flex;gap:16px;margin-bottom:20px}.av{width:80px;height:80px;border-radius:8px;background:#334155;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900}.ci{font-size:12px;color:#475569;line-height:1.6}.ci strong{font-size:14px;color:#1a1a1a}.per{font-size:14px;font-weight:600;margin-bottom:12px}.mr{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px}.mr .l{color:#64748b}.mr .v{font-weight:600}.bg{background:#dbeafe;color:#2563eb;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;display:inline-block}.cb{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px;font-size:12px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:16px 0}th{background:#f1f5f9;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;color:#64748b;border:1px solid #e2e8f0}td{padding:10px 14px;font-size:12px;border:1px solid #e2e8f0;vertical-align:top}.r{text-align:right}.b{font-weight:700}.ts{margin-left:auto;width:320px}.tr{display:flex;justify-content:space-between;padding:6px 14px;font-size:12px;border-bottom:1px solid #e2e8f0}.tr.t{background:#1e293b;color:#fff;font-weight:700;font-size:14px;border-radius:0 0 6px 6px}.ft{text-align:center;font-size:9px;color:#94a3b8;margin-top:24px;padding-top:10px;border-top:1px solid #e2e8f0}@media print{.inv{padding:20px}}</style></head><body><div class=inv>${html}</div><script>window.onload=function(){window.print()}<\/script></body></html>`);w.document.close();};
 const Bt=({children,onClick,color=C.accent,variant="solid",size="md",disabled,style:sx})=><button onClick={onClick} disabled={disabled} style={{padding:size==="sm"?"6px 14px":size==="lg"?"12px 22px":"8px 16px",fontSize:size==="sm"?11:size==="lg"?14:12,fontWeight:700,border:variant==="solid"?"none":`1.5px solid ${color}`,borderRadius:8,cursor:disabled?"not-allowed":"pointer",display:"inline-flex",alignItems:"center",gap:6,background:variant==="solid"?color:"transparent",color:variant==="solid"?"#fff":color,opacity:(disabled?0.5:1),minHeight:36,...sx}}>{children}</button>;
 const In=({label,value,onChange,type="text",placeholder,options,style:sx,multiline,disabled:dis})=><div style={{display:"flex",flexDirection:"column",gap:4,flex:1,minWidth:0,...sx}}>{label&&<label style={{fontSize:11,color:C.muted,fontWeight:600}}>{label}</label>}{options?<select value={value} onChange={e=>onChange(e.target.value)} disabled={dis} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",minHeight:40}}>{options.map(o=><option key={o.value??o} value={o.value??o}>{o.label??o}</option>)}</select>:multiline?<textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={2} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",width:"100%",resize:"vertical"}}/>:<input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} disabled={dis} style={{background:dis?C.card2:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",width:"100%",minHeight:40}}/>}</div>;
@@ -1107,6 +1157,224 @@ return<div>
 </Mo>
 </div>;}
 
+function AgentComptable({data,sv,ms}){
+const[tab,setTab]=useState("apercu");
+const[year,setYear]=useState(new Date().getFullYear());
+const[chatMsgs,setChatMsgs]=useState([{role:"assistant",content:"🧮 Bonjour! Je suis votre agent comptable IA.\n\nJe peux vous aider avec:\n• TPS/TVQ — montants à remettre\n• Déductions fiscales\n• T4A / RL-1\n• Analyse de rentabilité\n• Échéances fiscales\n\nPosez-moi une question!"}]);
+const[chatInput,setChatInput]=useState("");const[chatLoading,setChatLoading]=useState(false);
+const apiKey=localStorage.getItem("jw-api-key")||"";
+const st=data.settings||def.settings;const ent=st.entreprise||{};const tare=st.tare||DEF_TARE;
+const taxSum=useMemo(()=>calcTaxSummary(data,year),[data,year]);
+const health=useMemo(()=>calcFiscalHealth(data),[data]);
+const profit=useMemo(()=>calcProfitAnalysis(data,year),[data,year]);
+const emps=useMemo(()=>calcFiscal(data,year),[data,year]);
+const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
+const depsByCat={};deps.forEach(d=>{depsByCat[d.categorie]=(depsByCat[d.categorie]||0)+(d.montant||0);});
+const depCats=Object.entries(depsByCat).sort((a,b)=>b[1]-a[1]);
+const totalDepsDeductible=depCats.reduce((s,[cat,amt])=>{const info=TAX_INFO[cat]||"";if(info.includes("50%"))return s+amt*0.5;if(info.includes("✅"))return s+amt;return s;},0);
+const score=(()=>{let s=0,t=0;const ac=(data.chauffeurs||[]).filter(c=>c.aktif);
+t+=25;if(ac.length&&ac.every(c=>c.sin))s+=25;t+=25;if(ac.length&&ac.every(c=>c.adresse))s+=25;
+t+=15;if(st.tpsNum)s+=15;t+=15;if(st.tvqNum)s+=15;
+t+=10;const facs=(data.factures||[]).filter(f=>f.date?.startsWith(String(year)));if(facs.length&&facs.every(f=>f.avecTPS&&f.avecTVQ))s+=10;
+t+=10;const autres=deps.filter(d=>d.categorie==="Autre");if(!autres.length||autres.length<=2)s+=10;
+return t>0?Math.round(s/t*100):0;})();
+const scoreColor=score>=80?C.green:score>=50?C.orange:C.red;
+
+const DEADLINES=[
+{date:`${year}-02-28`,label:"T4A / RL-1 — Date limite de production",cat:"Fiscal"},
+{date:`${year}-03-15`,label:"CNESST — Déclaration des salaires",cat:"CNESST"},
+{date:`${year}-03-31`,label:"Acompte provisionnel T1 (1er trimestre)",cat:"Impôt"},
+{date:`${year}-04-30`,label:"Déclaration de revenus des particuliers",cat:"Impôt"},
+{date:`${year}-06-15`,label:"Remise TPS/TVQ (déclarant annuel)",cat:"TPS/TVQ"},
+{date:`${year}-06-15`,label:"Déclaration revenus travailleur autonome",cat:"Impôt"},
+{date:`${year}-06-30`,label:"Acompte provisionnel T1 (2e trimestre)",cat:"Impôt"},
+{date:`${year}-09-30`,label:"Acompte provisionnel T1 (3e trimestre)",cat:"Impôt"},
+{date:`${year}-12-31`,label:"Acompte provisionnel T1 (4e trimestre)",cat:"Impôt"},
+];
+const td=toL(new Date());
+
+const buildFiscalCtx=()=>{
+return`Tu es un agent comptable IA spécialisé pour "${ent.nom||"J&W Transport"}", entreprise de transport en vrac au Québec.
+DONNÉES RÉELLES ${year}:
+- Revenus HT: ${fN(profit.rev)} $ (MTL: ${fN(profit.revM)} $, LAV: ${fN(profit.revL)} $)
+- Revenus TTC: ${fN(profit.ttc)} $ | Voyages: ${profit.tv}
+- Dépenses: ${fN(profit.totalDeps)} $ | Entretien: ${fN(profit.totalEnts)} $ | Paie employés: ${fN(profit.totalEmp)} $
+- Coût total: ${fN(profit.totalCost)} $ | Profit net: ${fN(profit.rev-profit.totalCost)} $ | Marge: ${profit.margin}%
+- TPS collectée: ${fN(taxSum.tpsCollected)} $ | CTI estimé: ${fN(taxSum.tpsITC)} $ | TPS net à remettre: ${fN(taxSum.tpsNet)} $
+- TVQ collectée: ${fN(taxSum.tvqCollected)} $ | RTI estimé: ${fN(taxSum.tvqITC)} $ | TVQ net à remettre: ${fN(taxSum.tvqNet)} $
+- Total taxes à remettre: ${fN(taxSum.totalNet)} $
+- Projection mensuelle: ${fN(profit.projection)} $ (basée sur les 4 dernières semaines)
+- Top dépenses: ${profit.topCats.map(([c,a])=>`${c}: ${fN(a)} $`).join(", ")}
+- Employés: ${emps.map(e=>`${e.nom} (${e.role}, ${e.totalVoy} voy, ${fN(e.brut)} $)`).join("; ")}
+- Numéros: NEQ ${ent.neq||"N/A"}, TPS ${st.tpsNum||"N/A"}, TVQ ${st.tvqNum||"N/A"}
+RÈGLES FISCALES QUÉBEC/CANADA:
+- TPS: 5% (GST) — Crédit de taxe sur intrants (CTI) récupérable sur dépenses admissibles
+- TVQ: 9,975% (QST) — Remboursement de taxe sur intrants (RTI) récupérable
+- T4A case 048: Honoraires pour travailleurs autonomes (>500$/an)
+- RL-1 case W: Autres revenus (Revenu Québec)
+- Nourriture/Repas: 50% déductible seulement
+- Véhicules commerciaux: DPA catégorie 10 (30%)
+- Carburant, assurance, entretien: 100% déductible
+- Acomptes provisionnels: si impôt net >3000$ (fédéral) ou >1800$ (Québec)
+Réponds en français, de façon concise. Utilise les données réelles ci-dessus. Mentionne les montants exacts.
+IMPORTANT: Tu n'es pas un comptable agréé. Pour les décisions importantes, recommande toujours de consulter un CPA.`;};
+
+const sendChat=async()=>{if(!chatInput.trim())return;const q=chatInput.trim();setChatInput("");
+const userMsg={role:"user",content:q};setChatMsgs(p=>[...p,userMsg]);
+if(!apiKey){
+let reply="💡 ";
+const ql=q.toLowerCase();
+if(ql.match(/tps|tvq|tax|remett/))reply+=`TPS à remettre: ${fN(taxSum.tpsNet)} $ | TVQ à remettre: ${fN(taxSum.tvqNet)} $ | Total: ${fN(taxSum.totalNet)} $\n\nDétail: TPS collectée ${fN(taxSum.tpsCollected)} $ − CTI ${fN(taxSum.tpsITC)} $ = ${fN(taxSum.tpsNet)} $`;
+else if(ql.match(/deduct|dedui|depens/))reply+=`Dépenses ${year}: ${fN(profit.totalDeps)} $\nDéductible estimé: ${fN(totalDepsDeductible)} $\nTop: ${profit.topCats.slice(0,3).map(([c,a])=>`${c} ${fN(a)} $`).join(", ")}`;
+else if(ql.match(/profit|marge|rentab/))reply+=`Revenus: ${fN(profit.rev)} $ | Coûts: ${fN(profit.totalCost)} $ | Profit: ${fN(profit.rev-profit.totalCost)} $ | Marge: ${profit.margin}%`;
+else if(ql.match(/t4a|rl-1|rl1|relev|fiscal/))reply+=`Employés pour formulaires:\n${emps.map(e=>`• ${e.nom}: ${e.totalVoy} voy × ${fN(e.tx)} $ = ${fN(e.brut)} $ ${!e.sin?"⚠️ NAS manquant":"✅"}`).join("\n")}`;
+else if(ql.match(/echeance|deadline|date limit/))reply+=DEADLINES.filter(d=>d.date>=td).slice(0,4).map(d=>`${fD(d.date)}: ${d.label}`).join("\n");
+else if(ql.match(/project|prevision|estimat/))reply+=`Projection mensuelle: ${fN(profit.projection)} $ (basée sur 4 dernières semaines)\nRevenu moyen/voyage: ${fN(profit.avgRevPerTrip)} $`;
+else reply+=`Revenus ${year}: ${fN(profit.rev)} $ | Profit: ${fN(profit.rev-profit.totalCost)} $ (${profit.margin}%)\nTPS/TVQ net: ${fN(taxSum.totalNet)} $\n\n💡 Ajoutez une clé API Claude (⚙️) pour des réponses IA détaillées.`;
+setChatMsgs(p=>[...p,{role:"assistant",content:reply}]);return;}
+setChatLoading(true);
+try{const hist=[...chatMsgs.filter(m=>m.role!=="system"),userMsg].slice(-10);
+const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,system:buildFiscalCtx(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
+if(!res.ok)throw new Error(`API ${res.status}`);const d=await res.json();
+setChatMsgs(p=>[...p,{role:"assistant",content:d.content?.[0]?.text||"Pas de réponse."}]);
+}catch(e){setChatMsgs(p=>[...p,{role:"assistant",content:"❌ Erreur: "+e.message}]);}
+setChatLoading(false);};
+
+const tabs=[{id:"apercu",label:"📊 Aperçu"},{id:"tpstvq",label:"💰 TPS/TVQ"},{id:"deductions",label:"📋 Déductions"},{id:"deadlines",label:"📅 Échéances"},{id:"chat",label:"🤖 Assistant IA"}];
+const quickQs=["Combien de TPS/TVQ je dois remettre?","Quelles sont mes dépenses déductibles?","Suis-je prêt pour les T4A?","Quelle est ma marge de profit?","Prochaines échéances fiscales?"];
+
+return<div style={{padding:"clamp(8px,2vw,20px)",maxWidth:1100,margin:"0 auto"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:8}}>
+<h2 style={{color:C.text,fontSize:"clamp(16px,3vw,22px)",fontWeight:900,margin:0}}>🧮 Agent Comptable & Fiscal</h2>
+<div style={{display:"flex",alignItems:"center",gap:8}}>
+<Bt size="sm" variant="outline" color={C.muted} onClick={()=>setYear(y=>y-1)}>◀</Bt>
+<span style={{color:C.text,fontWeight:800,fontSize:16,minWidth:50,textAlign:"center"}}>{year}</span>
+<Bt size="sm" variant="outline" color={C.muted} onClick={()=>setYear(y=>y+1)}>▶</Bt>
+</div></div>
+
+<div style={{display:"flex",gap:6,marginBottom:16,overflowX:"auto",paddingBottom:4}}>
+{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"8px 14px",borderRadius:8,border:tab===t.id?"none":`1px solid ${C.border}`,background:tab===t.id?C.accent:"transparent",color:tab===t.id?"#fff":C.muted,fontWeight:700,fontSize:11,cursor:"pointer",whiteSpace:"nowrap"}}>{t.label}</button>)}
+</div>
+
+{tab==="apercu"&&<div>
+<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
+<St title="Revenu HT" value={fN(profit.rev)+" $"} color={C.green}/>
+<St title="Dépenses" value={fN(profit.totalCost)+" $"} color={C.orange}/>
+<St title="Profit Net" value={fN(profit.rev-profit.totalCost)+" $"} color={profit.rev-profit.totalCost>=0?C.green:C.red}/>
+<St title="TPS/TVQ Net" value={fN(taxSum.totalNet)+" $"} color={C.purple}/>
+<St title="Marge" value={profit.margin+"%"} color={profit.margin>=20?C.green:profit.margin>=10?C.orange:C.red}/>
+</div>
+
+<div style={{display:"flex",gap:12,marginBottom:16,flexWrap:"wrap"}}>
+<div style={{flex:"1 1 200px",background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
+<div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:8,textTransform:"uppercase"}}>Score Préparation Fiscale</div>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{width:60,height:60,borderRadius:"50%",border:`4px solid ${scoreColor}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+<span style={{fontSize:18,fontWeight:900,color:scoreColor}}>{score}%</span></div>
+<div style={{fontSize:11,color:C.muted,lineHeight:1.6}}>
+{emps.every(e=>e.sin)?"✅":"❌"} NAS employés<br/>
+{emps.every(e=>e.adresse)?"✅":"❌"} Adresses<br/>
+{st.tpsNum?"✅":"❌"} # TPS<br/>
+{st.tvqNum?"✅":"❌"} # TVQ</div></div></div>
+
+<div style={{flex:"2 1 300px",background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
+<div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:8,textTransform:"uppercase"}}>Alertes & Avertissements</div>
+{health.map((h,i)=><div key={i} style={{padding:"6px 10px",marginBottom:4,borderRadius:6,fontSize:11,fontWeight:600,background:h.type==="warning"?`${C.orange}15`:h.type==="success"?`${C.green}15`:`${C.cyan}15`,color:h.type==="warning"?C.orange:h.type==="success"?C.green:C.cyan}}>{h.icon} {h.msg}</div>)}
+</div></div>
+
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
+<div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:8,textTransform:"uppercase"}}>Répartition des Revenus</div>
+<div style={{display:"flex",gap:16,flexWrap:"wrap",fontSize:12,color:C.text}}>
+<div>🏙️ Montréal (06): <strong style={{color:C.cyan}}>{fN(profit.revM)} $</strong> ({profit.rev>0?Math.round(profit.revM/profit.rev*100):0}%)</div>
+<div>🏘️ Laval (13): <strong style={{color:C.purple}}>{fN(profit.revL)} $</strong> ({profit.rev>0?Math.round(profit.revL/profit.rev*100):0}%)</div>
+<div>📦 Moy/voyage: <strong>{fN(profit.avgRevPerTrip)} $</strong></div>
+<div>📈 Projection/mois: <strong style={{color:C.green}}>{fN(profit.projection)} $</strong></div>
+</div></div>
+</div>}
+
+{tab==="tpstvq"&&<div>
+<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
+<St title="TPS Collectée" value={fN(taxSum.tpsCollected)+" $"} color={C.cyan}/>
+<St title="CTI (TPS)" value={"−"+fN(taxSum.tpsITC)+" $"} color={C.green}/>
+<St title="TPS Nette" value={fN(taxSum.tpsNet)+" $"} color={taxSum.tpsNet>0?C.orange:C.green}/>
+</div>
+<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
+<St title="TVQ Collectée" value={fN(taxSum.tvqCollected)+" $"} color={C.purple}/>
+<St title="RTI (TVQ)" value={"−"+fN(taxSum.tvqITC)+" $"} color={C.green}/>
+<St title="TVQ Nette" value={fN(taxSum.tvqNet)+" $"} color={taxSum.tvqNet>0?C.orange:C.green}/>
+</div>
+<div style={{background:C.card,border:`2px solid ${C.accent}`,borderRadius:12,padding:16,marginBottom:16,textAlign:"center"}}>
+<div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:4}}>TOTAL À REMETTRE</div>
+<div style={{fontSize:28,fontWeight:900,color:taxSum.totalNet>0?C.orange:C.green}}>{fN(taxSum.totalNet)} $</div>
+<div style={{fontSize:10,color:C.dim,marginTop:4}}>TPS {fN(taxSum.tpsNet)} $ + TVQ {fN(taxSum.tvqNet)} $</div>
+</div>
+
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:12}}>
+<div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:8}}>DÉTAIL CTI/RTI PAR CATÉGORIE DE DÉPENSES</div>
+<Tb columns={[{key:"cat",label:"Catégorie"},{key:"amt",label:"Montant",align:"right"},{key:"cti",label:"CTI (TPS)",align:"right"},{key:"rti",label:"RTI (TVQ)",align:"right"},{key:"info",label:"Déductible"}]}
+data={depCats.map(([cat,amt])=>{const info=TAX_INFO[cat]||"";const noItc=["Salaires","CNESST","Amortissement"].includes(cat);const half=cat==="Nourriture/Repas";
+const cti=noItc?0:Math.round(amt*TPS_R/(1+TPS_R)*(half?0.5:1)*100)/100;
+const rti=noItc?0:Math.round(amt*TVQ_R/(1+TVQ_R)*(half?0.5:1)*100)/100;
+return{id:cat,cat,amt:fN(amt)+" $",cti:cti?fN(cti)+" $":"—",rti:rti?fN(rti)+" $":"—",info:info.substring(0,30)};})}/>
+</div>
+<div style={{fontSize:10,color:C.dim,padding:"8px 12px",background:`${C.orange}10`,borderRadius:8}}>⚠️ Estimations basées sur les dépenses enregistrées. Les CTI/RTI réels dépendent des factures d'achat avec TPS/TVQ. Consultez votre CPA pour les montants exacts à déclarer.</div>
+</div>}
+
+{tab==="deductions"&&<div>
+<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
+<St title="Total Dépenses" value={fN(profit.totalDeps)+" $"} color={C.orange}/>
+<St title="Déductible Estimé" value={fN(totalDepsDeductible)+" $"} color={C.green}/>
+<St title="Entretien Véhicules" value={fN(profit.totalEnts)+" $"} color={C.cyan}/>
+</div>
+<Tb columns={[{key:"cat",label:"Catégorie"},{key:"amt",label:"Total",align:"right"},{key:"ded",label:"% Déductible"},{key:"dedAmt",label:"Montant Déductible",align:"right"},{key:"info",label:"Note fiscale"}]}
+data={depCats.map(([cat,amt])=>{const info=TAX_INFO[cat]||"⚠️ Selon nature";
+let pct=100;if(info.includes("50%"))pct=50;else if(info.includes("% usage"))pct=75;else if(info.includes("⚠️"))pct=0;
+return{id:cat,cat,amt:fN(amt)+" $",ded:pct+"%",dedAmt:fN(amt*pct/100)+" $",info};})}/>
+<div style={{marginTop:12,background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
+<div style={{fontSize:12,fontWeight:700,color:C.text,marginBottom:8}}>📘 Notes Importantes</div>
+<div style={{fontSize:11,color:C.muted,lineHeight:1.8}}>
+• <strong>Véhicule commercial 100%:</strong> Carburant, assurance, entretien, réparation sont 100% déductibles<br/>
+• <strong>Repas:</strong> 50% seulement (sauf conducteur longue distance: 80%)<br/>
+• <strong>Téléphone/Internet:</strong> Déductible au prorata de l'usage commercial (estimé 75%)<br/>
+• <strong>Amortissement:</strong> DPA Catégorie 10 (30%) ou 10.1 pour véhicules &gt;$34,000<br/>
+• <strong>Équipement &lt;1,500$:</strong> Dépense courante (100% déductible l'année d'achat)<br/>
+• <strong>CNESST/Salaires:</strong> Déductibles mais pas de CTI/RTI récupérable
+</div></div>
+</div>}
+
+{tab==="deadlines"&&<div>
+<div style={{fontSize:12,color:C.muted,marginBottom:12}}>Année fiscale <strong style={{color:C.text}}>{year}</strong> — Échéances importantes pour entreprise individuelle au Québec</div>
+{DEADLINES.map((dl,i)=>{const isPast=dl.date<td;const isSoon=!isPast&&dl.date<=toL(new Date(Date.now()+30*86400000));
+const color=isPast?C.dim:isSoon?C.orange:C.green;
+return<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",marginBottom:6,background:C.card,border:`1px solid ${isPast?C.border:color}40`,borderRadius:10,opacity:isPast?0.5:1}}>
+<div style={{minWidth:80,fontSize:11,fontWeight:700,color}}>{fD(dl.date)}</div>
+<div style={{flex:1,fontSize:12,color:C.text,fontWeight:600}}>{dl.label}</div>
+<Bg text={dl.cat} color={color}/>
+{isPast&&<span style={{fontSize:10,color:C.dim}}>✓ Passé</span>}
+{isSoon&&<span style={{fontSize:10,color:C.orange,fontWeight:700}}>⏰ Bientôt!</span>}
+</div>;})}
+<div style={{marginTop:12,fontSize:10,color:C.dim,padding:"8px 12px",background:`${C.cyan}10`,borderRadius:8}}>
+💡 Les dates peuvent varier. Vérifiez sur <strong>canada.ca</strong> (fédéral) et <strong>revenuquebec.ca</strong> (provincial) pour les dates officielles de l'année en cours.
+</div></div>}
+
+{tab==="chat"&&<div>
+<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
+{quickQs.map((q,i)=><button key={i} onClick={()=>{setChatInput(q);}} style={{padding:"6px 12px",borderRadius:20,border:`1px solid ${C.border}`,background:C.card2,color:C.accentL,fontSize:10,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>💬 {q}</button>)}
+</div>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:12,height:380,overflowY:"auto",marginBottom:8}}>
+{chatMsgs.map((m,i)=><div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start",marginBottom:8}}>
+<div style={{maxWidth:"85%",padding:"8px 12px",borderRadius:12,fontSize:12,lineHeight:1.5,whiteSpace:"pre-wrap",background:m.role==="user"?C.accent:C.card2,color:m.role==="user"?"#fff":C.text}}>{m.content}</div></div>)}
+{chatLoading&&<div style={{padding:8,fontSize:11,color:C.muted}}>🧮 Analyse en cours...</div>}
+</div>
+<div style={{display:"flex",gap:6}}>
+<input value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat();}}} placeholder="Posez une question comptable ou fiscale..." style={{flex:1,background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none"}}/>
+<Bt onClick={sendChat} disabled={chatLoading||!chatInput.trim()}>Envoyer</Bt>
+</div>
+{!apiKey&&<div style={{marginTop:8,fontSize:10,color:C.dim,padding:"6px 10px",background:`${C.orange}10`,borderRadius:6}}>💡 Mode local actif. Ajoutez une clé API Claude dans le chatbot (💬) pour des réponses IA avancées.</div>}
+</div>}
+</div>;}
+
 function ChatBot({data,user}){
 const[open,setOpen]=useState(false);
 const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos donn\u00e9es\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, d\u00e9penses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les v\u00e9hicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
@@ -1139,7 +1407,9 @@ Stats: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}
 Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, 📋 Fiscal(T4A fédéral Case 048 + RL-1 Québec Case W pour travailleur autonome), Backup(JSON).
 ${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
 Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de d\u00e9lai.
-Sois concis, utile, et utilise les donn\u00e9es r\u00e9elles ci-dessus.`;};
+Sois concis, utile, et utilise les donn\u00e9es r\u00e9elles ci-dessus.
+${(()=>{try{const yr=new Date().getFullYear();const tx=calcTaxSummary(data,yr);const pa=calcProfitAnalysis(data,yr);return`COMPTABILITÉ ${yr}: Marge profit ${pa.margin}%, TPS/TVQ net à remettre: ${tx.totalNet.toFixed(0)}$ (TPS ${tx.tpsNet.toFixed(0)}$, TVQ ${tx.tvqNet.toFixed(0)}$). Top dépenses: ${pa.topCats.slice(0,3).map(([c,a])=>c+":"+a.toFixed(0)+"$").join(", ")}. Projection mensuelle: ${pa.projection.toFixed(0)}$.`;}catch(e){return"";}})()}
+Nouveau: Page "Agent Comptable" avec analyse TPS/TVQ, déductions, échéances fiscales et assistant IA spécialisé.`;};
 
 const analyze=(q)=>{
 const lo=q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -1270,7 +1540,7 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 
 const sv=useCallback(nd=>{setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
-const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"\uD83D\uDCCB Fiscal"},{id:"backup",label:"Backup"}];
+const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"\uD83D\uDCCB Fiscal"},{id:"agentcompta",label:"🧮 Agent Comptable"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
 if(ld)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:40,fontWeight:900,background:C.g1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>J&W Transport</div></div>;
@@ -1333,6 +1603,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 {pg==="agent"&&<AjanIA data={data} sv={sv} ms={ms}/>}
 {pg==="revenus"&&<RevAn data={data}/>}
 {pg==="fiscal"&&<Fiscal data={data} sv={sv} ms={ms}/>}
+{pg==="agentcompta"&&<AgentComptable data={data} sv={sv} ms={ms}/>}
 {pg==="backup"&&<Back data={data} sv={sv} ms={ms}/>}
 </main>
 </div>
