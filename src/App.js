@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 const gid=()=>Math.random().toString(36).substr(2,9);
 const toL=d=>{const dt=new Date(d);return`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(dt.getDate()).padStart(2,"0")}`;};
 const fD=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-CA",{day:"numeric",month:"short",year:"numeric"}):"";
@@ -927,76 +928,49 @@ const ent=st.entreprise||{};
 const emps=useMemo(()=>calcFiscal(data,year),[data,year]);
 const missing=emps.filter(e=>!e.sin||!e.adresse);
 const saveEmpInfo=()=>{if(!editModal)return;sv({...data,chauffeurs:data.chauffeurs.map(c=>c.id===editModal?{...c,sin:editF.sin,adresse:editF.adresse}:c)});ms("OK!");setEditModal(null);};
-const genT4A=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
-const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>T4A - ${emp.nom}</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}body{background:#fff;color:#000}
-.page{max-width:760px;margin:0 auto;padding:20px;page-break-after:always}.page:last-child{page-break-after:auto}
-.copy-label{text-align:center;font-size:10px;font-weight:700;color:#fff;background:#000;padding:4px 12px;display:inline-block;margin-bottom:6px}
-.form{border:2px solid #000}
-.form-header{display:flex;border-bottom:2px solid #000}
-.fh-left{flex:1;padding:6px 8px;border-right:1px solid #000}
-.fh-mid{width:180px;padding:6px 8px;border-right:1px solid #000;display:flex;align-items:center;gap:8px}
-.fh-right{width:220px;padding:6px 8px}
-.fh-right .t4a-big{font-size:28px;font-weight:900;text-align:right}
-.fh-right .t4a-title{font-size:8px;text-align:right;line-height:1.3}
-.lbl{font-size:7px;color:#333;line-height:1.2}.val{font-size:11px;font-weight:700;min-height:16px;padding:2px 0}
-.row2{display:flex;border-top:1px solid #000}
-.row2 .cell{flex:1;padding:5px 8px;border-right:1px solid #000}.row2 .cell:last-child{border-right:none}
-.case-num{font-size:8px;font-weight:700;color:#000;background:#e5e5e5;display:inline-block;padding:1px 4px;margin-bottom:1px}
-.case-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #000}
-.case-cell{padding:4px 6px;border-right:1px solid #000;border-bottom:1px solid #000;min-height:36px}
-.case-cell:nth-child(4n){border-right:none}
-.case-cell.highlight{background:#ffffcc}
-.recip{padding:6px 8px;border-top:1px solid #000}
-.recip-title{font-size:8px;font-weight:700;background:#000;color:#fff;padding:2px 6px;display:inline-block;margin-bottom:4px}
-.maple{font-size:16px;color:#c00}
-.note{background:#f9f9f9;border:1px solid #ccc;padding:8px;font-size:9px;color:#333;margin-top:8px}
-.footer{text-align:center;font-size:8px;color:#999;margin-top:8px}
-@media print{.page{padding:10px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
-${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
-<div class="page">
-<div class="copy-label">${copy}</div>
-<div class="form">
-<div class="form-header">
-<div class="fh-left"><div class="lbl">Payer's name &ndash; Nom du payeur</div><div class="val">${ent.nom||"J&W Transport"}</div><div class="val" style="font-size:9px;font-weight:400">${ent.adresse||""}, ${ent.ville||""}</div></div>
-<div class="fh-mid"><span class="maple">\u{1F341}</span><div><div style="font-size:7px;font-weight:700">Canada Revenue<br/>Agency</div><div style="font-size:7px">Agence du revenu<br/>du Canada</div></div></div>
-<div class="fh-right"><div class="t4a-big">T4A</div><div class="t4a-title">Statement of Pension, Retirement, Annuity,<br/>and Other Income<br/><b>\u00C9tat du revenu de pension, de retraite, de rente<br/>ou d'autres sources</b></div></div>
-</div>
-<div class="row2">
-<div class="cell" style="max-width:60px"><div class="case-num">061</div><div class="lbl">Year<br/>Ann\u00e9e</div><div class="val">${year}</div></div>
-<div class="cell"><div class="lbl">Payer-offered dental benefits / Prestations dentaires offertes par le payeur</div><div class="val"></div></div>
-<div class="cell"><div class="lbl">Pension or superannuation &ndash; line 11500<br/>Prestation de retraite ou autres pensions &ndash; ligne 11500</div><div class="val"></div></div>
-<div class="cell"><div class="case-num">022</div><div class="lbl">Income tax deducted &ndash; line 43700<br/>Imp\u00f4t sur le revenu retenu &ndash; ligne 43700</div><div class="val"></div></div>
-</div>
-<div class="row2">
-<div class="cell"><div class="case-num">061</div><div class="lbl">Payer's program account number<br/>Num\u00e9ro de compte de programme du payeur</div><div class="val">${st.tpsNum||""}</div></div>
-<div class="cell"><div class="case-num">018</div><div class="lbl">Lump-sum payments &ndash; line 13000<br/>Paiements forfaitaires &ndash; ligne 13000</div><div class="val"></div></div>
-<div class="cell"><div class="case-num">020</div><div class="lbl">Self-employed commissions<br/>Commissions d'un travail ind\u00e9pendant</div><div class="val"></div></div>
-</div>
-<div class="row2">
-<div class="cell"><div class="lbl">Social insurance number<br/>Num\u00e9ro d'assurance sociale</div><div class="val">${emp.sin||""}</div></div>
-<div class="cell"><div class="lbl">Recipient's program account number<br/>Num\u00e9ro de compte de programme du b\u00e9n\u00e9ficiaire</div><div class="val"></div></div>
-<div class="cell" style="border-right:none"><div class="case-num">048</div><div class="lbl" style="font-weight:700">Fees for services<br/>Honoraires ou autres sommes<br/>pour services rendus</div><div class="val" style="font-size:16px;color:#c00">${brut} $</div></div>
-</div>
-<div class="recip"><div class="recip-title">Recipient's name and address &ndash; Nom et adresse du b\u00e9n\u00e9ficiaire</div>
-<div class="val">${emp.nom}</div><div class="val" style="font-weight:400;font-size:10px">${emp.adresse||"N/A"}</div></div>
-<div style="padding:4px 8px;border-top:1px solid #000"><div class="lbl" style="font-weight:700">Other information (see page 2) / Autres renseignements (voir \u00e0 la page 2)</div>
-<div class="case-grid">
-<div class="case-cell highlight"><div class="case-num">048</div><div class="lbl">Fees for services / Honoraires</div><div class="val" style="color:#c00">${brut} $</div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-<div class="case-cell"><div class="lbl">Box &ndash; Case</div><div class="val"></div></div>
-</div></div>
-</div>
-<div class="note"><b>Travailleur autonome</b> &mdash; ${emp.totalVoy} voyages \u00d7 ${fN(emp.tx)} $/voy = ${brut} $ &mdash; Aucune retenue \u00e0 la source. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable.</div>
-<div class="footer">${ent.nom||"J&W Transport"} | NEQ: ${ent.neq||""} | Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
-</div>`).join("")}
-<script>window.onload=function(){window.print()}<\/script></body></html>`;
-w.document.write(html);w.document.close();};
+const genT4A=async(emp)=>{try{
+const brut=fN(emp.brut);const payerName=ent.nom||"J&W Transport";const payerAddr=(ent.adresse||"")+(ent.ville?", "+ent.ville:"");
+const res=await fetch("/t4a-print.pdf");const pdfBytes=await res.arrayBuffer();
+const doc=await PDFDocument.load(pdfBytes);
+const font=await doc.embedFont(StandardFonts.Helvetica);
+const fontB=await doc.embedFont(StandardFonts.HelveticaBold);
+const black=rgb(0,0,0);const pages=doc.getPages();
+// T4A has 2 pages, each with 2 slips (top & bottom). Page=612x1008
+// Top slip: y offset ~504, Bottom slip: y offset ~0
+// We fill slip 1 (top of page1) = Employeur copy, slip 2 (bottom of page1) = Employe copy
+const fillSlip=(page,baseY)=>{
+// Payer name
+page.drawText(payerName,{x:40,y:baseY+467,size:8,font:fontB,color:black});
+page.drawText(payerAddr,{x:40,y:baseY+456,size:7,font,color:black});
+// Year
+page.drawText(String(year),{x:330,y:baseY+458,size:11,font:fontB,color:black});
+// Payer account number
+page.drawText(st.tpsNum||"",{x:40,y:baseY+418,size:8,font,color:black});
+// SIN
+page.drawText(emp.sin||"",{x:40,y:baseY+383,size:8,font:fontB,color:black});
+// Case 048 — Fees for services (right side, 3rd row)
+page.drawText(brut,{x:485,y:baseY+383,size:9,font:fontB,color:black});
+// Recipient name
+page.drawText(emp.nom,{x:40,y:baseY+348,size:8,font:fontB,color:black});
+// Recipient address
+const addrParts=(emp.adresse||"").split(",").map(s=>s.trim());
+if(addrParts[0])page.drawText(addrParts[0],{x:40,y:baseY+337,size:7,font,color:black});
+if(addrParts.length>1)page.drawText(addrParts.slice(1).join(", "),{x:40,y:baseY+327,size:7,font,color:black});
+// Other info box: Box 048
+page.drawText("048",{x:42,y:baseY+290,size:7,font,color:black});
+page.drawText(brut,{x:78,y:baseY+290,size:7,font:fontB,color:black});
+};
+// Fill top slip (employeur) and bottom slip (employe) on page 1
+fillSlip(pages[0],504);
+fillSlip(pages[0],0);
+// Remove page 2 if exists (unused)
+if(pages.length>1)doc.removePage(1);
+const filledBytes=await doc.save();
+const blob=new Blob([filledBytes],{type:"application/pdf"});
+const url=URL.createObjectURL(blob);
+const w=window.open(url,"_blank");
+if(!w){const a=document.createElement("a");a.href=url;a.download=`T4A_${year}_${emp.nom.replace(/\s/g,"_")}.pdf`;a.click();}
+}catch(e){console.error("T4A PDF error:",e);ms("Erreur PDF T4A: "+e.message,"error");}};
 const genRL1=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
 const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>RL-1 - ${emp.nom}</title>
 <style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}body{background:#fff;color:#000}
