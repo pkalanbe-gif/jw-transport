@@ -1057,6 +1057,1405 @@
   ],
   "factures": [
     {
+      "id": "xsg7ciior",
+      "clientId": "2fmamuwhq",
+      "date": "2025-01-12",
+      "dateLimite": "2025-02-11",
+      "periode": "06-01-2025 au 10-01-2025",
+      "details": [
+        {
+          "id": "tmbhd2f5g",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "10440",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80070658\nMercredi : 80070673"
+        },
+        {
+          "id": "05z1md8xf",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "20060",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80070610\nMercredi : 80070621\nJeudi : 80070698\nVendredi : 80070714"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-031"
+    },
+    {
+      "id": "yhhh4kjzv",
+      "clientId": "2fmamuwhq",
+      "date": "2025-01-19",
+      "dateLimite": "2025-02-18",
+      "periode": "13-01-2025 au 17-01-2025",
+      "details": [
+        {
+          "id": "jmncmh8yb",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "19050",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80070858\nMardi : 80070880\nMercredi : 80070912\nJeudi : 80070963"
+        },
+        {
+          "id": "fxxxk112m",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "25790",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80070769\nMardi : 80070757\nMercredi : 80070821\nJeudi : 80070807\nVendredi : 80070969"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-032"
+    },
+    {
+      "id": "yazn5v9ww",
+      "clientId": "2fmamuwhq",
+      "date": "2025-01-26",
+      "dateLimite": "2025-02-25",
+      "periode": "20-01-2025 au 24-01-2025",
+      "details": [
+        {
+          "id": "9owfjr7eb",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "19240",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80071004\nMardi : 80071054\nMercredi : 80071105\nJeudi : 80071152"
+        },
+        {
+          "id": "09ozphk3m",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "18700",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80071019\nMardi : 80071071\nMercredi : 80071121\nJeudi : 80071164"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-033"
+    },
+    {
+      "id": "ho6af830f",
+      "clientId": "2fmamuwhq",
+      "date": "2025-02-02",
+      "dateLimite": "2025-03-04",
+      "periode": "27-01-2025 au 31-01-2025",
+      "details": [
+        {
+          "id": "zaur91a29",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "29390",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "1pu9sqnh1",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 2",
+          "quantite": "10290",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-034"
+    },
+    {
+      "id": "i4p3kabqm",
+      "clientId": "2fmamuwhq",
+      "date": "2025-02-09",
+      "dateLimite": "2025-03-11",
+      "periode": "03-02-2025 au 07-02-2025",
+      "details": [
+        {
+          "id": "qxhyi6i3k",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "24970",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "9idkrhlma",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "21240",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-035"
+    },
+    {
+      "id": "gfjeqs9rp",
+      "clientId": "2fmamuwhq",
+      "date": "2025-02-16",
+      "dateLimite": "2025-03-18",
+      "periode": "10-02-2025 au 14-02-2025",
+      "details": [
+        {
+          "id": "ebr5tmv8x",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 1",
+          "quantite": "4840",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "b17nr1hyb",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "20900",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-036"
+    },
+    {
+      "id": "f3p2uvtx4",
+      "clientId": "2fmamuwhq",
+      "date": "2025-03-02",
+      "dateLimite": "2025-04-01",
+      "periode": "24-02-2025 au 28-02-2025",
+      "details": [
+        {
+          "id": "wig21pbtn",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "10030",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "36k6k6lei",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 1",
+          "quantite": "5090",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-037"
+    },
+    {
+      "id": "ybacdwkrr",
+      "clientId": "2fmamuwhq",
+      "date": "2025-03-09",
+      "dateLimite": "2025-04-08",
+      "periode": "03-03-2025 au 07-03-2025",
+      "details": [
+        {
+          "id": "7v5prbush",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "14290",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-038"
+    },
+    {
+      "id": "nlxnepn2d",
+      "clientId": "2fmamuwhq",
+      "date": "2025-03-16",
+      "dateLimite": "2025-04-15",
+      "periode": "10-03-2025 au 14-03-2025",
+      "details": [
+        {
+          "id": "hwpr59ibw",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 3",
+          "quantite": "14130",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-039"
+    },
+    {
+      "id": "38mo52m77",
+      "clientId": "2fmamuwhq",
+      "date": "2025-03-24",
+      "dateLimite": "2025-04-23",
+      "periode": "24-03-2025 au 28-03-2025",
+      "details": [
+        {
+          "id": "4dy68gauu",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "25010",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80072370\nMardi : 80072409\nMercredi : 80072452 ; 80072478\nJeudi : 80072482 ; 80072506"
+        },
+        {
+          "id": "9n6ioj9d8",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "15750",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80072384\nMardi : 80072426\nJeudi : 80072509 ; 80072517"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-040"
+    },
+    {
+      "id": "rp2uzz2r1",
+      "clientId": "2fmamuwhq",
+      "date": "2025-03-31",
+      "dateLimite": "2025-04-30",
+      "periode": "31-03-2025 au 04-04-2025",
+      "details": [
+        {
+          "id": "domwxuw8k",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "24820",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "36u7jf0cd",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 2",
+          "quantite": "8560",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-041"
+    },
+    {
+      "id": "wtopiqfzn",
+      "clientId": "2fmamuwhq",
+      "date": "2025-04-06",
+      "dateLimite": "2025-05-06",
+      "periode": "31-03-2025 au 04-04-2025",
+      "details": [
+        {
+          "id": "21nl1b2bg",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 1",
+          "quantite": "4400",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "y9xsq87xb",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 1",
+          "quantite": "4400",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-042"
+    },
+    {
+      "id": "dcalwsvqj",
+      "clientId": "2fmamuwhq",
+      "date": "2025-04-13",
+      "dateLimite": "2025-05-13",
+      "periode": "07-04-2025 au 11-04-2025",
+      "details": [
+        {
+          "id": "u7hkkkwb2",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "16560",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "s9ymz645m",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "26590",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-043"
+    },
+    {
+      "id": "oy0f2j5q5",
+      "clientId": "2fmamuwhq",
+      "date": "2025-04-20",
+      "dateLimite": "2025-05-20",
+      "periode": "14-04-2025 au 18-04-2025",
+      "details": [
+        {
+          "id": "ts0bu7so7",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "8330",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "h3h3g4trd",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "29470",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-044"
+    },
+    {
+      "id": "jzt9t7f2s",
+      "clientId": "2fmamuwhq",
+      "date": "2025-04-27",
+      "dateLimite": "2025-05-27",
+      "periode": "21-04-2025 au 25-04-2025",
+      "details": [
+        {
+          "id": "xdz0l4ptt",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 8",
+          "quantite": "32410",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "bba7ciemz",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 7",
+          "quantite": "28180",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-045"
+    },
+    {
+      "id": "6s7uwe4f5",
+      "clientId": "2fmamuwhq",
+      "date": "2025-05-04",
+      "dateLimite": "2025-06-03",
+      "periode": "28-04-2025 au 02-05-2025",
+      "details": [
+        {
+          "id": "hq0hxeyu0",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "26170",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": ""
+        },
+        {
+          "id": "u5m2p99k0",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "25780",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-046"
+    },
+    {
+      "id": "grwwe4y4g",
+      "clientId": "2fmamuwhq",
+      "date": "2025-05-11",
+      "dateLimite": "2025-06-10",
+      "periode": "05-05-2025 au 09-05-2025",
+      "details": [
+        {
+          "id": "4be5jc3te",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "21260",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80073823 ; 80073846\nMardi : 80073915\nMercredi : 80073969\nJeudi : 80074031"
+        },
+        {
+          "id": "9sr9ioscw",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 7",
+          "quantite": "29660",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80073863\nMardi : 80073937\nMercredi : 80073953\nJeudi : 80073993\nVendredi : 80074081 ; 80074092 ; 80074098"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-047"
+    },
+    {
+      "id": "reqvsktc9",
+      "clientId": "2fmamuwhq",
+      "date": "2025-05-18",
+      "dateLimite": "2025-06-17",
+      "periode": "12-05-2025 au 16-05-2025",
+      "details": [
+        {
+          "id": "pambs350e",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "20670",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80074138\nMardi : 80074216\nJeudi : 80074331 ; 80074342\nVendredi : 80074391"
+        },
+        {
+          "id": "991eilp6q",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "24940",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80074158\nMardi : 80074199 ; 80074243\nMercredi : 80074263 ; 80074276\nVendredi : 80074379"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-048"
+    },
+    {
+      "id": "qsas9kd0e",
+      "clientId": "2fmamuwhq",
+      "date": "2025-05-25",
+      "dateLimite": "2025-06-24",
+      "periode": "19-05-2025 au 23-05-2025",
+      "details": [
+        {
+          "id": "bq86cdxnm",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 7",
+          "quantite": "30540",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80074433 ; 80074450\nMercredi : 80074483\nJeudi : 80074535 ; 80074572\nVendredi : 80074597 ; 80074602"
+        },
+        {
+          "id": "gov5okxgz",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 4",
+          "quantite": "17090",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nMardi : 80074411\nMercredi : 80074464\nJeudi : 80074549\nVendredi : 80074614"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-049"
+    },
+    {
+      "id": "h6tr076xm",
+      "clientId": "2fmamuwhq",
+      "date": "2025-06-01",
+      "dateLimite": "2025-07-01",
+      "periode": "26-05-2025 au 30-05-2025",
+      "details": [
+        {
+          "id": "x21pr5reg",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "13090",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80074728\nMercredi : 80074771\nJeudi : 80074771"
+        },
+        {
+          "id": "oiwjyna82",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "26030",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80074630\nMardi : 80074699\nMercredi : 80074743\nJeudi : 80074821\nVendredi : 80074855 ; 80074860"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-050"
+    },
+    {
+      "id": "lxfavohsb",
+      "clientId": "2fmamuwhq",
+      "date": "2025-06-08",
+      "dateLimite": "2025-07-08",
+      "periode": "02-06-2025 au 06-06-2025",
+      "details": [
+        {
+          "id": "rwv923p4b",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "17360",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80074951\nMercredi : 80075011\nJeudi : 80075073\nVendredi : 80075114"
+        },
+        {
+          "id": "lxggei4p3",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "26090",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80074882 ; 80074898\nMardi : 80074963\nMercredi : 80075025\nJeudi : 80075092\nVendredi : 80075118"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-051"
+    },
+    {
+      "id": "s1u9wc40l",
+      "clientId": "2fmamuwhq",
+      "date": "2025-06-15",
+      "dateLimite": "2025-07-15",
+      "periode": "09-06-2025 au 13-06-2025",
+      "details": [
+        {
+          "id": "6ehk59ear",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "21400",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80075168 ; 80075161\nMardi : 80075214\nJeudi : 80075318\nVendredi : 80075369"
+        },
+        {
+          "id": "0vaco6f9o",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 8",
+          "quantite": "35220",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nMardi : 80075205 ; 80075231\nMercredi : 80075265 ; 80075249 ; 80075254\nJeudi : 80075307 ; 80075336\nVendredi : 80075360"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-053"
+    },
+    {
+      "id": "864ojegq3",
+      "clientId": "2fmamuwhq",
+      "date": "2025-06-21",
+      "dateLimite": "2025-07-21",
+      "periode": "16-06-2025 au 20-06-2025",
+      "details": [
+        {
+          "id": "hlzmhu9fj",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "12810",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80075410 ; 80075426\nVendredi : 80075651"
+        },
+        {
+          "id": "a3dl8nzu8",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 9",
+          "quantite": "39390",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nMardi : 80075459 ; 80075478 ; 80075488\nMercredi : 80075553 ; 80075526\nJeudi : 80075576 ; 80075592\nVendredi : 80075644"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Payée",
+      "numero": "FAC-055"
+    },
+    {
+      "id": "eh8yrirue",
+      "clientId": "2fmamuwhq",
+      "date": "2025-06-29",
+      "dateLimite": "2025-07-29",
+      "periode": "23-06-2025 au 27-06-2025",
+      "details": [
+        {
+          "id": "qni1vpi3u",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "17590",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80075696\nMercredi : 80075764\nJeudi : 80075827\nVendredi : 80075869"
+        },
+        {
+          "id": "wo4kv66o7",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "26160",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80075675 ; 80075708\nMercredi : 80075745\nJeudi : 80075801\nVendredi : 80075860\n18-06-2025 : 80075542"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Payée",
+      "numero": "FAC-057"
+    },
+    {
+      "id": "xt2eay4eo",
+      "clientId": "2fmamuwhq",
+      "date": "2025-07-06",
+      "dateLimite": "2025-08-05",
+      "periode": "30-06-2025 au 04-07-2025",
+      "details": [
+        {
+          "id": "2fnafviz7",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "12940",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80075906\nJeudi : 80076022\nVendredi : 80076060"
+        },
+        {
+          "id": "jmqjgdlrj",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "20680",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80075888\nMercredi : 80075957 ; 80075966\nJeudi : 80076019\nVendredi : 80076073"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-059"
+    },
+    {
+      "id": "mfbes40nb",
+      "clientId": "2fmamuwhq",
+      "date": "2025-07-20",
+      "dateLimite": "2025-08-19",
+      "periode": "14-07-2025 au 18-07-2025",
+      "details": [
+        {
+          "id": "4d43xqhfh",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "17680",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80076435\nMercredi : 80076498\nJeudi : 80076538\nVendredi : 80076570"
+        },
+        {
+          "id": "0k2dbd1yg",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 8",
+          "quantite": "34020",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80076272 ; 80076378 ; 80076394\nMardi : 80076418 ; 80076423\nMercredi : 80076484 ; 80076470\nJeudi : 80076550"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-063"
+    },
+    {
+      "id": "0x5t5rqve",
+      "clientId": "2fmamuwhq",
+      "date": "2025-08-10",
+      "dateLimite": "2025-09-09",
+      "periode": "04-08-2025 au 08-08-2025",
+      "details": [
+        {
+          "id": "5xw8ee2xa",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "15380",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80076793\nMercredi : 80076881\nJeudi : 80076932\nVendredi : 80076983"
+        },
+        {
+          "id": "9frb0yxti",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 11",
+          "quantite": "44540",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80076728 ; 80076748 ; 80076755 ; 80076760\nMardi : 80076812 ; 80076819 ; 80076840\nMercredi : 80076873\nJeudi : 80076923\nVendredi : 80076971 ; 80076946"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-065"
+    },
+    {
+      "id": "c4i0vxpaq",
+      "clientId": "2fmamuwhq",
+      "date": "2025-08-17",
+      "dateLimite": "2025-09-16",
+      "periode": "11-08-2025 au 15-08-2025",
+      "details": [
+        {
+          "id": "ebsrs7ot7",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "20210",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80077019\nMardi : 80077065 ; 80077075\nVendredi : 80077186 ; 80077197"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-066"
+    },
+    {
+      "id": "fo9uceih4",
+      "clientId": "2fmamuwhq",
+      "date": "2025-08-24",
+      "dateLimite": "2025-09-23",
+      "periode": "18-08-2025 au 22-08-2025",
+      "details": [
+        {
+          "id": "7h9i72eco",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "20820",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80077231\nMardi : 80077266 ; 80077275\nJeudi : 80077361\nVendredi : 80077400"
+        },
+        {
+          "id": "zgy0gy8mi",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "22680",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80077221\nMercredi : 80077303 ; 80077323\nJeudi : 80077329\nVendredi : 80077405"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-067"
+    },
+    {
+      "id": "ldo9ga459",
+      "clientId": "2fmamuwhq",
+      "date": "2025-08-31",
+      "dateLimite": "2025-09-30",
+      "periode": "25-08-2025 au 29-08-2025",
+      "details": [
+        {
+          "id": "06rlektob",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "20790",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80077438\nMardi : 80077490\nJeudi : 80077565 ; 80077472\nVendredi : 80077611"
+        },
+        {
+          "id": "e3f042xif",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "20620",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80077440\nMardi : 80077482\nMercredi : 80077521 ; 80077532\nVendredi : 80077597"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-068"
+    },
+    {
+      "id": "wj4ybc68u",
+      "clientId": "2fmamuwhq",
+      "date": "2025-09-07",
+      "dateLimite": "2025-10-07",
+      "periode": "01-09-2025 au 05-09-2025",
+      "details": [
+        {
+          "id": "1le6hjvuz",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "8360",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80077446\nMercredi : 80077702"
+        },
+        {
+          "id": "sftkthdl1",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "21390",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nMercredi : 80077677 ; 80077687\nJeudi : 80077737 ; 80077750\nVendredi : 80077787 ; 80077782"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-069"
+    },
+    {
+      "id": "tgmm4tykd",
+      "clientId": "2fmamuwhq",
+      "date": "2025-09-14",
+      "dateLimite": "2025-10-14",
+      "periode": "08-09-2025 au 12-09-2025",
+      "details": [
+        {
+          "id": "n7dst5xa8",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "16330",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80077832\nMercredi : 80077948\nJeudi : 80077988\nVendredi : 80078030"
+        },
+        {
+          "id": "mhbml0642",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : ",
+          "quantite": "24420",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-070"
+    },
+    {
+      "id": "wg5h2bse2",
+      "clientId": "2fmamuwhq",
+      "date": "2025-09-21",
+      "dateLimite": "2025-10-21",
+      "periode": "15-09-2025 au 19-09-2025",
+      "details": [
+        {
+          "id": "8i74o15r3",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "15420",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80078130\nMercredi : 80078179\nJeudi : 80078242\nVendredi : 80078283"
+        },
+        {
+          "id": "fc5asft8p",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "24560",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80078062 ; 80078085\nMardi : 80078007\nMercredi : 80078195\nJeudi : 80078195\nVendredi : 80078277"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Envoyée",
+      "numero": "FAC-071"
+    },
+    {
+      "id": "39htsp4gj",
+      "clientId": "2fmamuwhq",
+      "date": "2025-09-28",
+      "dateLimite": "2025-10-28",
+      "periode": "22-09-2025 au 26-09-2025",
+      "details": [
+        {
+          "id": "tbnd55tzw",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "17110",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80078365 ; 80078380\nJeudi : 80078482\nVendredi : 80078522"
+        },
+        {
+          "id": "iz3ng36f7",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "24920",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80078323 ; 80078334\nMercredi : 80078440 ; 80078426\nJeudi : 80078472\nVendredi : 80078517"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-072"
+    },
+    {
+      "id": "1dt57s211",
+      "clientId": "2fmamuwhq",
+      "date": "2025-10-05",
+      "dateLimite": "2025-11-04",
+      "periode": "29-09-2025 au 03-10-2025",
+      "details": [
+        {
+          "id": "apr2myxsi",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "12120",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80078612 ; 80078636\nJeudi : Moto"
+        },
+        {
+          "id": "zwcmslhob",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 7",
+          "quantite": "27880",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80078565 ; 80078558\nMercredi : 80078649 ; 80078674\nJeudi : 80078711\nVendredi : 80078765 ; 80078775"
+        },
+        {
+          "id": "zjxul537t",
+          "zone": "",
+          "description": "Prime de $ 50",
+          "quantite": "1",
+          "unite": "",
+          "prixUnitaire": "50",
+          "dt": ""
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-074"
+    },
+    {
+      "id": "m93ekgbvb",
+      "clientId": "2fmamuwhq",
+      "date": "2025-10-12",
+      "dateLimite": "2025-11-11",
+      "periode": "06-10-2025 au 10-10-2025",
+      "details": [
+        {
+          "id": "8h37ij1l7",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 4",
+          "quantite": "17420",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80078812\nMardi : 80078870\nMercredi : 80078914\nVendredi : 80078990"
+        },
+        {
+          "id": "b4fct6jm6",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 7",
+          "quantite": "32240",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80078796\nMardi : 80078854\nMercredi : 80078895\nJeudi : 80078942 ; 80079950\nVendredi : 80079008 ; 80078996"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-076"
+    },
+    {
+      "id": "ugqoihiz0",
+      "clientId": "2fmamuwhq",
+      "date": "2025-10-19",
+      "dateLimite": "2025-11-18",
+      "periode": "13-10-2025 au 17-10-2025",
+      "details": [
+        {
+          "id": "nk1twuuy6",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 8",
+          "quantite": "34950",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nMardi : 80079054 ; 80079033\nMercredi : 80079079 ; 80079096\nJeudi : 80079128 ; 80079141\nVendredi : 80079187 ; 80079198"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-077"
+    },
+    {
+      "id": "j60axffyq",
+      "clientId": "2fmamuwhq",
+      "date": "2025-10-26",
+      "dateLimite": "2025-11-25",
+      "periode": "20-10-2025 au 24-10-2025",
+      "details": [
+        {
+          "id": "jdqhoyhfq",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 5",
+          "quantite": "21650",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80079275\nMercredi : NO DT\nJeudi : 80079392 ; 80079431\nVendredi : 80079480"
+        },
+        {
+          "id": "mh5ex3r09",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 9",
+          "quantite": "39120",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80079224 ; 80079249\nMardi : 80079290 ; 80079300\nMercredi : 80079349 ; NO DT\nJeudi : 80079427 ; No DT\nVendredi : 80079464"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-078"
+    },
+    {
+      "id": "cg5vue72d",
+      "clientId": "2fmamuwhq",
+      "date": "2025-11-02",
+      "dateLimite": "2025-12-02",
+      "periode": "27-10-2025 au 31-10-2025",
+      "details": [
+        {
+          "id": "jz8xnyga1",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "26310",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80079495\nMercredi : 80079629 ; 80079645\nJeudi : 80079704 ; 80079717\nVendredi : 80079759"
+        },
+        {
+          "id": "3ccrqmmp0",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 11",
+          "quantite": "47840",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80079521 ; 80079538\nMardi : 80079568 ; 80079577 ; 80079595\nMercredi : 80079634\nJeudi : 80079670 ; 80079712\nVendredi : 80079768 ; 80079752 ; 80079737"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-079"
+    },
+    {
+      "id": "66jlyrds4",
+      "clientId": "2fmamuwhq",
+      "date": "2025-11-11",
+      "dateLimite": "2025-12-11",
+      "periode": "03-11-2025 au 07-11-2025",
+      "details": [
+        {
+          "id": "xddymnlc6",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 1",
+          "quantite": "4370",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80079808"
+        },
+        {
+          "id": "kmtetsgpo",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 11",
+          "quantite": "48080",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80079786 ; 80079816\nMercredi : 80079750 ; 80079935 ; 80079919\nJeudi : 80079987 ; 80079998 ; 80070015\nVendredi : 80070069 ; 80070057 ; 80080042"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-081"
+    },
+    {
+      "id": "2nrivgfs7",
+      "clientId": "2fmamuwhq",
+      "date": "2025-11-16",
+      "dateLimite": "2025-12-16",
+      "periode": "10-11-2025 au 14-11-2025",
+      "details": [
+        {
+          "id": "3cl377chs",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "9020",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80080109 ; 80080126"
+        },
+        {
+          "id": "fvzlyavdb",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 5",
+          "quantite": "21280",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nJeudi : 80080296 ; 80080300 ; 80080308 ; 80080316 ; 80080335"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-082"
+    },
+    {
+      "id": "vchqxur7n",
+      "clientId": "2fmamuwhq",
+      "date": "2025-11-23",
+      "dateLimite": "2025-12-23",
+      "periode": "17-11-2025 au 21-11-2025",
+      "details": [
+        {
+          "id": "9jmxxih9k",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 3",
+          "quantite": "15580",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nMardi : 80080527\nJeudi : 80080625\nVendredi : 80080674"
+        },
+        {
+          "id": "fij79ulaj",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 17",
+          "quantite": "83260",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80080450 ; 80080387 ; 80080441 ; 80080425 ; 80080409\nMardi : 80080498 ; 80080485 ; 80080474\nMercredi : 80080572 ; 80080562 ; 80080556 ; 80080594\nJeudi : 80080610 ; 80080635\nVendredi : 80080688 ; 80080696 ; 80080707"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-083"
+    },
+    {
+      "id": "2rioj13uj",
+      "clientId": "2fmamuwhq",
+      "date": "2025-11-30",
+      "dateLimite": "2025-12-30",
+      "periode": "24-11-2025 au 28-11-2025",
+      "details": [
+        {
+          "id": "xdpw268u5",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 7",
+          "quantite": "32420",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80080755\nMardi : 80080799 ; 80080816 ; 80080840\nMercredi : 80080881\nJeudi : 80080920 ; 80080944"
+        },
+        {
+          "id": "phs922b5m",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 6",
+          "quantite": "28660",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80080744 ; 80080772\nMercredi : 80080895\nJeudi : 80080956 ; 80080963 ; 80080983"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-084"
+    },
+    {
+      "id": "3doo46z8d",
+      "clientId": "2fmamuwhq",
+      "date": "2025-12-07",
+      "dateLimite": "2026-01-06",
+      "periode": "01-12-2025 au 04-12-2025",
+      "details": [
+        {
+          "id": "1l0jvk1zk",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 2",
+          "quantite": "8870",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nJeudi : 80081284\nVendredi : 80081331"
+        },
+        {
+          "id": "mop9jhjs3",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 15",
+          "quantite": "69720",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80081066 ; 80081074 ; 80081083 ; 80081091\nMardi : 80081161 ; 80081143 ; 80081130\nMercredi : 80081230 ; 80081216 ; 80081205\nJeudi : 80081294 ; 80081272 ; 80081262\nVendredi : 80081346 ; 80081321"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-085"
+    },
+    {
+      "id": "9qind6uwr",
+      "clientId": "2fmamuwhq",
+      "date": "2025-12-14",
+      "dateLimite": "2026-01-13",
+      "periode": "08-12-2025 au 12-12-2025",
+      "details": [
+        {
+          "id": "tjenqn2zt",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 6",
+          "quantite": "28040",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80081393 ; 80081385 ; 80081373\nMercredi : 80081523 ; 80081494 ; 80081505"
+        },
+        {
+          "id": "kkzc6l1lc",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 10",
+          "quantite": "45310",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80081353\nMardi : 80081462 ; 80081448 ; 80081432 ; 80081432\nMercredi : 80081484\nVendredi : 80081630 ; 80081622 ; 80081608 ; 80081602"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-086"
+    },
+    {
+      "id": "hik9uwib0",
+      "clientId": "2fmamuwhq",
+      "date": "2025-12-21",
+      "dateLimite": "2026-01-20",
+      "periode": "15-12-2025 au 19-12-2025",
+      "details": [
+        {
+          "id": "x2z8c18jy",
+          "zone": "06",
+          "description": "Nbre de fiches livrés a Montréal : 7",
+          "quantite": "33650",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "\nLundi : 80081642 ; 80081670 ; 80081683\nMardi : 89981735\nMercredi : 80081774 ; 80081795\nVendredi : 80081908"
+        },
+        {
+          "id": "69ak0ppo9",
+          "zone": "13",
+          "description": "Nbre de fiches livrés a Laval : 11",
+          "quantite": "53110",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "\nLundi : 80081630\nMardi : 80081722 ; 80081715\nMercredi : 80081811 ; 80081765\nJeudi : 80081842 ; 80081854 ; 80081666 ; 80081878\nVendredi : 80081914 ; 80081901"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Nouvelle",
+      "numero": "FAC-087"
+    },
+    {
       "id": "boipjj630",
       "clientId": "2fmamuwhq",
       "date": "2026-02-02",
