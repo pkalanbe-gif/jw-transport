@@ -23,6 +23,7 @@ const getPayPeriods=(fromDate,count,settings,voyages)=>{const ps=settings?.payro
 const JRSK=["","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const cTrip=(t,tare=DEF_TARE)=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);const r=ZR[t.zone]||0;const rv=pN*r*(t.nbVoyages||1);return{pN,rv:Math.round(rv*100)/100};};
 function agg(voys,tare=DEF_TARE){let tv=0,tp=0,rM=0,rL=0,nM=0,nL=0,pM=0,pL=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const c=cTrip(t,tare);tv+=(t.nbVoyages||0);tp+=c.pN*(t.nbVoyages||1);if(t.zone==="06"){rM+=c.rv;nM+=t.nbVoyages;pM+=c.pN*(t.nbVoyages||1);}if(t.zone==="13"){rL+=c.rv;nL+=t.nbVoyages;pL+=c.pN*(t.nbVoyages||1);}}));const rev=rM+rL;return{tv,tp,rM,rL,rev,ttc:Math.round(rev*(1+TPS_R+TVQ_R)*100)/100,nM,nL,pM,pL};}
+function calcFiscal(data,year){const st=data.settings||def.settings;const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));return(data.chauffeurs||[]).filter(c=>c.aktif).map(ch=>{let totalVoy=0;voys.forEach(v=>{if(v.chofè===ch.id||(v.helpers||[]).includes(ch.id))(v.trips||[]).forEach(t=>{totalVoy+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{...ch,totalVoy,tx,brut:totalVoy*tx};});}
 function calcZW(voyages,ws,zone,tare=DEF_TARE){const wd=gWk(ws);let tp=0,nv=0,nf=0,dt=[];voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{if(t.zone===zone){const pN=Math.max(0,(t.poidsChaj||0)-tare);tp+=pN*(t.nbVoyages||1);nv+=(t.nbVoyages||1);nf++;if(t.dt)dt.push(t.dt);}});});return{tp,nv,nf,dt};}
 const openPrint=(title,html)=>{const w=window.open('','_blank');if(!w)return;w.document.write(`<!DOCTYPE html><html><head><meta charset=utf-8><title>${title}</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{background:#fff;color:#1a1a1a}.inv{max-width:780px;margin:0 auto;padding:30px}.hdr{display:flex;gap:16px;margin-bottom:20px}.av{width:80px;height:80px;border-radius:8px;background:#334155;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900}.ci{font-size:12px;color:#475569;line-height:1.6}.ci strong{font-size:14px;color:#1a1a1a}.per{font-size:14px;font-weight:600;margin-bottom:12px}.mr{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px}.mr .l{color:#64748b}.mr .v{font-weight:600}.bg{background:#dbeafe;color:#2563eb;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;display:inline-block}.cb{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px;font-size:12px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:16px 0}th{background:#f1f5f9;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;color:#64748b;border:1px solid #e2e8f0}td{padding:10px 14px;font-size:12px;border:1px solid #e2e8f0;vertical-align:top}.r{text-align:right}.b{font-weight:700}.ts{margin-left:auto;width:320px}.tr{display:flex;justify-content:space-between;padding:6px 14px;font-size:12px;border-bottom:1px solid #e2e8f0}.tr.t{background:#1e293b;color:#fff;font-weight:700;font-size:14px;border-radius:0 0 6px 6px}.ft{text-align:center;font-size:9px;color:#94a3b8;margin-top:24px;padding-top:10px;border-top:1px solid #e2e8f0}@media print{.inv{padding:20px}}</style></head><body><div class=inv>${html}</div><script>window.onload=function(){window.print()}<\/script></body></html>`);w.document.close();};
 const Bt=({children,onClick,color=C.accent,variant="solid",size="md",disabled,style:sx})=><button onClick={onClick} disabled={disabled} style={{padding:size==="sm"?"6px 14px":size==="lg"?"12px 22px":"8px 16px",fontSize:size==="sm"?11:size==="lg"?14:12,fontWeight:700,border:variant==="solid"?"none":`1.5px solid ${color}`,borderRadius:8,cursor:disabled?"not-allowed":"pointer",display:"inline-flex",alignItems:"center",gap:6,background:variant==="solid"?color:"transparent",color:variant==="solid"?"#fff":color,opacity:(disabled?0.5:1),minHeight:36,...sx}}>{children}</button>;
@@ -115,11 +116,11 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setModal(false)}>Annuler</Bt><Bt onClick={saveDay} size="lg">Enregistrer</Bt></div>
 </Mo></div>;}
 
-function Chauf({data,sv,ms}){const st=data.settings||def.settings;const[m,setM]=useState(false);const[eid,setEid]=useState(null);const e={nom:"",role:"Chauffeur",aktif:true,courriel:"",tauxPersonnel:""};const[f,setF]=useState(e);
+function Chauf({data,sv,ms}){const st=data.settings||def.settings;const[m,setM]=useState(false);const[eid,setEid]=useState(null);const e={nom:"",role:"Chauffeur",aktif:true,courriel:"",tauxPersonnel:"",sin:"",adresse:""};const[f,setF]=useState(e);
 const hs=()=>{if(!f.nom){ms("Nom!","error");return;}sv({...data,chauffeurs:eid?data.chauffeurs.map(c=>c.id===eid?{id:eid,...f}:c):[...data.chauffeurs,{id:gid(),...f}]});ms("OK!");setM(false);setEid(null);setF(e);};
 return<div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h1 style={{fontSize:22,fontWeight:800}}>Employés</h1><Bt onClick={()=>{setEid(null);setF(e);setM(true);}}>+</Bt></div>
-<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"courriel",label:"Email",render:r=><span style={{fontSize:10,color:r.courriel?C.cyan:C.dim}}>{r.courriel||"—"}</span>},{key:"tauxPersonnel",label:"Taux ($)",render:r=>{const tx=r.tauxPersonnel||(r.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return<span style={{fontSize:11,fontWeight:700,color:r.tauxPersonnel?C.cyan:C.dim}}>${tx}{r.tauxPersonnel?"":" (déf)"}</span>;}},{key:"aktif",label:"",render:r=><Bg text={r.aktif?"Actif":"Inactif"} color={r.aktif?C.green:C.red}/>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:3}}><button onClick={()=>{setEid(r.id);setF({nom:r.nom,role:r.role,aktif:r.aktif,courriel:r.courriel||"",tauxPersonnel:r.tauxPersonnel||""});setM(true);}} style={{background:"none",border:"none",cursor:"pointer",color:C.accent,fontSize:10}}>Edit</button><button onClick={()=>{sv({...data,chauffeurs:data.chauffeurs.filter(c=>c.id!==r.id)});ms("OK!");}} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>Del</button></div>}]} data={data.chauffeurs}/>
-<Mo open={m} onClose={()=>setM(false)} title={eid?"Modifier":"Nouveau"} width={400}><In label="Nom" value={f.nom} onChange={v=>setF({...f,nom:v})} style={{marginBottom:10}}/><In label="Rôle" value={f.role} onChange={v=>setF({...f,role:v})} options={["Chauffeur","Helper"]} style={{marginBottom:10}}/><In label="Courriel" value={f.courriel} onChange={v=>setF({...f,courriel:v})} placeholder="email@exemple.com" style={{marginBottom:10}}/><In label={`Taux Personnel ($/voy) — Défaut: $${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} type="number" value={f.tauxPersonnel} onChange={v=>setF({...f,tauxPersonnel:v})} placeholder={`${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} style={{marginBottom:10}}/><Ck label="Actif" checked={f.aktif} onChange={v=>setF({...f,aktif:v})}/><div style={{display:"flex",justifyContent:"flex-end",gap:8,marginTop:10}}><Bt variant="outline" color={C.muted} onClick={()=>setM(false)}>Annuler</Bt><Bt onClick={hs}>OK</Bt></div></Mo></div>;}
+<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"courriel",label:"Email",render:r=><span style={{fontSize:10,color:r.courriel?C.cyan:C.dim}}>{r.courriel||"—"}</span>},{key:"tauxPersonnel",label:"Taux ($)",render:r=>{const tx=r.tauxPersonnel||(r.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return<span style={{fontSize:11,fontWeight:700,color:r.tauxPersonnel?C.cyan:C.dim}}>${tx}{r.tauxPersonnel?"":" (déf)"}</span>;}},{key:"aktif",label:"",render:r=><Bg text={r.aktif?"Actif":"Inactif"} color={r.aktif?C.green:C.red}/>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:3}}><button onClick={()=>{setEid(r.id);setF({nom:r.nom,role:r.role,aktif:r.aktif,courriel:r.courriel||"",tauxPersonnel:r.tauxPersonnel||"",sin:r.sin||"",adresse:r.adresse||""});setM(true);}} style={{background:"none",border:"none",cursor:"pointer",color:C.accent,fontSize:10}}>Edit</button><button onClick={()=>{sv({...data,chauffeurs:data.chauffeurs.filter(c=>c.id!==r.id)});ms("OK!");}} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>Del</button></div>}]} data={data.chauffeurs}/>
+<Mo open={m} onClose={()=>setM(false)} title={eid?"Modifier":"Nouveau"} width={400}><In label="Nom" value={f.nom} onChange={v=>setF({...f,nom:v})} style={{marginBottom:10}}/><In label="Rôle" value={f.role} onChange={v=>setF({...f,role:v})} options={["Chauffeur","Helper"]} style={{marginBottom:10}}/><In label="Courriel" value={f.courriel} onChange={v=>setF({...f,courriel:v})} placeholder="email@exemple.com" style={{marginBottom:10}}/><In label={`Taux Personnel ($/voy) — Défaut: $${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} type="number" value={f.tauxPersonnel} onChange={v=>setF({...f,tauxPersonnel:v})} placeholder={`${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} style={{marginBottom:10}}/><In label="NAS (XXX-XXX-XXX)" value={f.sin} onChange={v=>setF({...f,sin:v})} placeholder="123-456-789" style={{marginBottom:10}}/><In label="Adresse complète" value={f.adresse} onChange={v=>setF({...f,adresse:v})} placeholder="123 Rue, Ville, QC, H1A 1A1" style={{marginBottom:10}}/><Ck label="Actif" checked={f.aktif} onChange={v=>setF({...f,aktif:v})}/><div style={{display:"flex",justifyContent:"flex-end",gap:8,marginTop:10}}><Bt variant="outline" color={C.muted} onClick={()=>setM(false)}>Annuler</Bt><Bt onClick={hs}>OK</Bt></div></Mo></div>;}
 
 function Clients({data,sv,ms}){const cls=data.clients||[];const[m,setM]=useState(false);const[eid,setEid]=useState(null);const ef={nom:"",adresse:"",ville:"",telephone:"",courriel:""};const[f,setF]=useState(ef);
 const hs=()=>{if(!f.nom){ms("Nom!","error");return;}sv({...data,clients:eid?cls.map(c=>c.id===eid?{id:eid,...f}:c):[...cls,{id:gid(),...f}]});ms("OK!");setM(false);setEid(null);setF(ef);};
@@ -917,6 +918,138 @@ return<div><h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>Sauvegarde &
 </div>
 <div style={{display:"flex",gap:8}}><Bt onClick={()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.download=`jw_backup_${today()}.json`;a.click();ms("OK!");}}>JSON</Bt><Bt variant="outline" color={C.purple} onClick={()=>{const i=document.createElement("input");i.type="file";i.accept=".json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{sv({...def,...JSON.parse(ev.target.result)});ms("OK!");}catch{ms("Erreur!","error");}};r.readAsText(f);};i.click();}}>Importer</Bt></div></div>;}
 
+function Fiscal({data,sv,ms}){
+const[year,setYear]=useState(2025);
+const[editModal,setEditModal]=useState(null);
+const[editF,setEditF]=useState({sin:"",adresse:""});
+const st=data.settings||def.settings;
+const ent=st.entreprise||{};
+const emps=useMemo(()=>calcFiscal(data,year),[data,year]);
+const missing=emps.filter(e=>!e.sin||!e.adresse);
+const saveEmpInfo=()=>{if(!editModal)return;sv({...data,chauffeurs:data.chauffeurs.map(c=>c.id===editModal?{...c,sin:editF.sin,adresse:editF.adresse}:c)});ms("OK!");setEditModal(null);};
+const genT4A=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
+const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>T4A - ${emp.nom}</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{background:#fff;color:#1a1a1a}
+.page{max-width:780px;margin:0 auto;padding:30px;page-break-after:always}
+.page:last-child{page-break-after:auto}
+.header{background:#1e3a5f;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:800}.header .sub{font-size:11px;opacity:.8}
+.body{border:2px solid #1e3a5f;border-top:none;border-radius:0 0 8px 8px;padding:20px}
+.section{margin-bottom:16px}.section-title{font-size:11px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
+.row{display:flex;gap:16px;margin-bottom:8px}.col{flex:1}
+.label{font-size:9px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
+.value{font-size:13px;font-weight:600;color:#1a1a1a;padding:4px 0}
+.box{border:2px solid #1e3a5f;border-radius:6px;padding:12px;text-align:center;margin:12px 0}
+.box .case{font-size:10px;color:#64748b;font-weight:700}.box .amount{font-size:22px;font-weight:900;color:#1e3a5f}
+.copy-label{text-align:center;font-size:11px;font-weight:700;color:#fff;background:#1e3a5f;padding:6px;border-radius:4px;margin-bottom:12px}
+.footer{text-align:center;font-size:9px;color:#94a3b8;margin-top:16px;padding-top:10px;border-top:1px solid #e2e8f0}
+.note{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px;font-size:10px;color:#92400e;margin-top:12px}
+@media print{.page{padding:20px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
+${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
+<div class="page">
+<div class="copy-label">${copy}</div>
+<div class="header"><div><h1>T4A &mdash; \u00C9tat du revenu de pension, de retraite, de rente ou d'autres sources</h1><div class="sub">Ann\u00e9e d'imposition ${year}</div></div><div style="font-size:24px;font-weight:900">T4A</div></div>
+<div class="body">
+<div class="section"><div class="section-title">Payeur / Entreprise</div>
+<div class="row"><div class="col"><div class="label">Nom de l'entreprise</div><div class="value">${ent.nom||"J&W Transport"}</div></div></div>
+<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${ent.adresse||""}, ${ent.ville||""}</div></div></div>
+<div class="row"><div class="col"><div class="label">Num\u00e9ro de compte du payeur (TPS)</div><div class="value">${st.tpsNum||"N/A"}</div></div><div class="col"><div class="label">T\u00e9l\u00e9phone</div><div class="value">${ent.telephone||""}</div></div></div>
+</div>
+<div class="section"><div class="section-title">B\u00e9n\u00e9ficiaire</div>
+<div class="row"><div class="col"><div class="label">Nom</div><div class="value">${emp.nom}</div></div><div class="col"><div class="label">NAS</div><div class="value">${emp.sin||"___-___-___"}</div></div></div>
+<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${emp.adresse||"N/A"}</div></div></div>
+</div>
+<div class="section"><div class="section-title">Montants d\u00e9clar\u00e9s</div>
+<div class="box"><div class="case">Case 048 &mdash; Honoraires ou autres montants pour services rendus</div><div class="amount">${brut} $</div></div>
+<div class="row"><div class="col"><div class="label">Nombre de voyages</div><div class="value">${emp.totalVoy}</div></div><div class="col"><div class="label">Taux par voyage</div><div class="value">${fN(emp.tx)} $</div></div></div>
+</div>
+<div class="note">\u26A0\uFE0F Ce formulaire est un r\u00e9sum\u00e9 des honoraires vers\u00e9s \u00e0 un travailleur autonome. Aucune retenue \u00e0 la source n'a \u00e9t\u00e9 effectu\u00e9e. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu et de payer les imp\u00f4ts applicables. Consultez votre comptable.</div>
+<div class="footer">${ent.nom||"J&W Transport"} &mdash; NEQ: ${ent.neq||"N/A"} &mdash; Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
+</div></div>`).join("")}
+<script>window.onload=function(){window.print()}<\/script></body></html>`;
+w.document.write(html);w.document.close();};
+const genRL1=(emp)=>{const w=window.open("","_blank");if(!w)return;const brut=fN(emp.brut);
+const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>RL-1 - ${emp.nom}</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{background:#fff;color:#1a1a1a}
+.page{max-width:780px;margin:0 auto;padding:30px;page-break-after:always}
+.page:last-child{page-break-after:auto}
+.header{background:#003366;color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:16px;font-weight:800}.header .sub{font-size:11px;opacity:.8}
+.body{border:2px solid #003366;border-top:none;border-radius:0 0 8px 8px;padding:20px}
+.section{margin-bottom:16px}.section-title{font-size:11px;font-weight:700;color:#003366;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
+.row{display:flex;gap:16px;margin-bottom:8px}.col{flex:1}
+.label{font-size:9px;color:#64748b;text-transform:uppercase;margin-bottom:2px}
+.value{font-size:13px;font-weight:600;color:#1a1a1a;padding:4px 0}
+.box{border:2px solid #003366;border-radius:6px;padding:12px;text-align:center;margin:12px 0}
+.box .case{font-size:10px;color:#64748b;font-weight:700}.box .amount{font-size:22px;font-weight:900;color:#003366}
+.copy-label{text-align:center;font-size:11px;font-weight:700;color:#fff;background:#003366;padding:6px;border-radius:4px;margin-bottom:12px}
+.footer{text-align:center;font-size:9px;color:#94a3b8;margin-top:16px;padding-top:10px;border-top:1px solid #e2e8f0}
+.note{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px;font-size:10px;color:#92400e;margin-top:12px}
+.qc-logo{font-size:10px;font-weight:700;color:#fff;opacity:.9}
+@media print{.page{padding:20px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
+${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
+<div class="page">
+<div class="copy-label">${copy}</div>
+<div class="header"><div><h1>Relev\u00e9 1 (RL-1) &mdash; Revenus d'emploi et revenus divers</h1><div class="sub">Ann\u00e9e d'imposition ${year}</div></div><div><div style="font-size:24px;font-weight:900">RL-1</div><div class="qc-logo">Revenu Qu\u00e9bec</div></div></div>
+<div class="body">
+<div class="section"><div class="section-title">Payeur / Entreprise</div>
+<div class="row"><div class="col"><div class="label">Nom de l'entreprise</div><div class="value">${ent.nom||"J&W Transport"}</div></div></div>
+<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${ent.adresse||""}, ${ent.ville||""}</div></div></div>
+<div class="row"><div class="col"><div class="label">NEQ</div><div class="value">${ent.neq||"N/A"}</div></div><div class="col"><div class="label">No TPS</div><div class="value">${st.tpsNum||"N/A"}</div></div><div class="col"><div class="label">No TVQ</div><div class="value">${st.tvqNum||"N/A"}</div></div></div>
+</div>
+<div class="section"><div class="section-title">B\u00e9n\u00e9ficiaire</div>
+<div class="row"><div class="col"><div class="label">Nom</div><div class="value">${emp.nom}</div></div><div class="col"><div class="label">NAS</div><div class="value">${emp.sin||"___-___-___"}</div></div></div>
+<div class="row"><div class="col"><div class="label">Adresse</div><div class="value">${emp.adresse||"N/A"}</div></div></div>
+</div>
+<div class="section"><div class="section-title">Montants d\u00e9clar\u00e9s</div>
+<div class="box"><div class="case">Case W &mdash; Autres revenus</div><div class="amount">${brut} $</div></div>
+<div class="row"><div class="col"><div class="label">Nombre de voyages</div><div class="value">${emp.totalVoy}</div></div><div class="col"><div class="label">Taux par voyage</div><div class="value">${fN(emp.tx)} $</div></div></div>
+</div>
+<div class="note">\u26A0\uFE0F Travailleur autonome &mdash; Aucune retenue \u00e0 la source n'a \u00e9t\u00e9 effectu\u00e9e. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable pour les d\u00e9ductions applicables.</div>
+<div class="footer">${ent.nom||"J&W Transport"} &mdash; NEQ: ${ent.neq||"N/A"} &mdash; Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
+</div></div>`).join("")}
+<script>window.onload=function(){window.print()}<\/script></body></html>`;
+w.document.write(html);w.document.close();};
+return<div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,flexWrap:"wrap",gap:10}}>
+<h1 style={{fontSize:22,fontWeight:800}}>Formulaires Fiscaux &mdash; T4A / Relev&eacute; 1</h1>
+<div style={{display:"flex",alignItems:"center",gap:8}}>
+<Bt variant="outline" color={C.muted} size="sm" onClick={()=>setYear(y=>y-1)}>&laquo;</Bt>
+<span style={{fontSize:18,fontWeight:800,color:C.accentL,minWidth:60,textAlign:"center"}}>{year}</span>
+<Bt variant="outline" color={C.muted} size="sm" onClick={()=>setYear(y=>y+1)}>&raquo;</Bt>
+</div>
+</div>
+{missing.length>0&&<div style={{background:`${C.orange}15`,border:`1px solid ${C.orange}40`,borderRadius:10,padding:"12px 16px",marginBottom:14}}>
+<div style={{fontSize:12,fontWeight:700,color:C.orange,marginBottom:4}}>&#9888;&#65039; Informations manquantes</div>
+<div style={{fontSize:11,color:C.orange}}>{missing.map(e=>e.nom).join(", ")} &mdash; NAS ou adresse manquant(e). Cliquez &quot;Edit&quot; pour compl&eacute;ter.</div>
+</div>}
+<div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
+<Bt color={C.accent} size="sm" onClick={()=>emps.forEach(e=>genT4A(e))}>Tout T4A ({emps.length})</Bt>
+<Bt color="#003366" size="sm" onClick={()=>emps.forEach(e=>genRL1(e))}>Tout RL-1 ({emps.length})</Bt>
+</div>
+<Tb columns={[
+{key:"nom",label:"Nom",render:r=><b>{r.nom}</b>},
+{key:"role",label:"R\u00f4le",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},
+{key:"sin",label:"NAS",render:r=><span style={{fontSize:10,color:r.sin?C.green:C.red,fontWeight:600}}>{r.sin||"Manquant"}</span>},
+{key:"adresse",label:"Adresse",render:r=><span style={{fontSize:10,color:r.adresse?C.text:C.red}}>{r.adresse||"Manquant"}</span>},
+{key:"totalVoy",label:"Voyages",align:"right",render:r=><span style={{fontWeight:700,color:C.cyan}}>{r.totalVoy}</span>},
+{key:"tx",label:"Taux",align:"right",render:r=><span style={{fontSize:11}}>${fN(r.tx)}</span>},
+{key:"brut",label:"Brut ($)",align:"right",render:r=><span style={{fontWeight:800,color:C.green}}>{fM(r.brut)}</span>},
+{key:"a",label:"Actions",render:r=><div style={{display:"flex",gap:4,flexWrap:"wrap"}}><Bt size="sm" color={C.accent} onClick={()=>genT4A(r)}>T4A</Bt><Bt size="sm" color="#003366" onClick={()=>genRL1(r)}>RL-1</Bt><button onClick={()=>{setEditModal(r.id);setEditF({sin:r.sin||"",adresse:r.adresse||""});}} style={{background:"none",border:`1px solid ${C.border}`,borderRadius:6,cursor:"pointer",color:C.muted,fontSize:10,padding:"4px 8px"}}>Edit</button></div>}
+]} data={emps}/>
+<div style={{marginTop:16,background:C.card2,borderRadius:10,padding:14,border:`1px solid ${C.border}`}}>
+<div style={{fontSize:11,color:C.dim,lineHeight:1.6}}>
+<b>T4A</b> &mdash; F&eacute;d&eacute;ral (ARC) &mdash; Case 048: Honoraires pour services rendus<br/>
+<b>RL-1</b> &mdash; Qu&eacute;bec (Revenu Qu&eacute;bec) &mdash; Case W: Autres revenus<br/>
+&#9888;&#65039; Ces formulaires sont des r&eacute;sum&eacute;s pour impression. Pour la d&eacute;claration officielle, consultez votre comptable.
+</div></div>
+<Mo open={!!editModal} onClose={()=>setEditModal(null)} title="Modifier NAS / Adresse" width={450}>
+<In label="NAS (XXX-XXX-XXX)" value={editF.sin} onChange={v=>setEditF({...editF,sin:v})} placeholder="123-456-789" style={{marginBottom:10}}/>
+<In label="Adresse compl&egrave;te" value={editF.adresse} onChange={v=>setEditF({...editF,adresse:v})} placeholder="123 Rue, Ville, QC, H1A 1A1" style={{marginBottom:10}}/>
+<div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setEditModal(null)}>Annuler</Bt><Bt onClick={saveEmpInfo} color={C.green}>Sauvegarder</Bt></div>
+</Mo>
+</div>;}
+
 function ChatBot({data,user}){
 const[open,setOpen]=useState(false);
 const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos donn\u00e9es\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, d\u00e9penses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les v\u00e9hicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
@@ -946,7 +1079,7 @@ TPS: ${s.tpsNum||"N/A"}, TVQ: ${s.tvqNum||"N/A"}, NEQ: ${ent.neq||"N/A"}
 Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
 Employés et taux: ${emps.map(e=>`${e.nom}(${e.role})=${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}$/voy`).join(", ")}
 Stats: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${facs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu: ${totRev.toFixed(0)}$, Profit: ${(totRev-totDep).toFixed(0)}$
-Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, Backup(JSON).
+Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, 📋 Fiscal(T4A fédéral Case 048 + RL-1 Québec Case W pour travailleur autonome), Backup(JSON).
 ${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
 Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de d\u00e9lai.
 Sois concis, utile, et utilise les donn\u00e9es r\u00e9elles ci-dessus.`;};
@@ -976,6 +1109,7 @@ if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 V\u00e9hicules:
 if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretiens:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Aucun"}\n➡️ "V\u00e9hicules"`;
 if(lo.match(/employe|anplwaye|staff|ekip/))return`👥 Employ\u00e9s:\n${emps.map(e=>`  ${e.nom} — ${e.role} — ${e.courriel||"—"}`).join("\n")||"Aucun"}\n➡️ "Employ\u00e9s"`;
 if(lo.match(/entreprise|compani|info|tps|tvq|neq|adres/))return`🏢 ${ent.nom||"—"}\n${ent.adresse||""}, ${ent.ville||""}\nT\u00e9l: ${ent.telephone||"—"} | Email: ${ent.courriel||"—"}\nTPS: ${s.tpsNum||"—"} | TVQ: ${s.tvqNum||"—"} | NEQ: ${ent.neq||"—"}`;
+if(lo.match(/fiscal|t4a|rl-1|rl1|releve|relevé|impot|impôt|nas|taxe|tax|formulaire fiscal/)){const fe=calcFiscal(data,new Date().getFullYear());const tot=fe.reduce((s,e)=>s+e.brut,0);return`📋 Formulaires Fiscaux:\n${fe.map(e=>`  ${e.nom}: ${e.totalVoy} voyages × $${fN(e.tx)} = ${fM(e.brut)}`).join("\n")}\nTotal: ${fM(tot)}\n\nT4A (Fédéral) → Case 048: Honoraires\nRL-1 (Québec) → Case W: Autres revenus\n➡️ "📋 Fiscal"`;}
 if(lo.match(/ajan|agent|otomatiz|automati/))return`🤖 Agent IA automatise:\n1. Calculer la paie\n2. Cr\u00e9er PDF talon\n3. Ouvrir email\n4. Cr\u00e9er facture\n5. Envoyer par email\n➡️ "🤖 Agent IA"`;
 if(lo.match(/backup|save|sauvegard|restore|import|export/))return`💾 Allez \u00e0 "Backup" pour:\n📥 T\u00e9l\u00e9charger JSON | 📤 Importer backup\n⚠️ Faites des sauvegardes souvent!`;
 if(lo.match(/kijan|koman|how|comment|tutorial|gid|guide|ede|help|eksplik/))return`📖 Guide: Voyages→Factures→Paie→Comptabilit\u00e9→Backup\nUtilisez "🤖 Agent IA" pour tout automatiser!`;
@@ -1079,7 +1213,7 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 
 const sv=useCallback(nd=>{setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
-const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"backup",label:"Backup"}];
+const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"\uD83D\uDCCB Fiscal"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
 if(ld)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:40,fontWeight:900,background:C.g1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>J&W Transport</div></div>;
@@ -1141,6 +1275,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 {pg==="livrecomptable"&&<LivreComptable data={data} sv={sv} ms={ms}/>}
 {pg==="agent"&&<AjanIA data={data} sv={sv} ms={ms}/>}
 {pg==="revenus"&&<RevAn data={data}/>}
+{pg==="fiscal"&&<Fiscal data={data} sv={sv} ms={ms}/>}
 {pg==="backup"&&<Back data={data} sv={sv} ms={ms}/>}
 </main>
 </div>
