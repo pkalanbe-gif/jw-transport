@@ -17,8 +17,14 @@ app.use(express.json({ limit: '10mb' }));
 
 // ==================== DATABASE SETUP ====================
 
-const DB_DIR = process.env.NODE_ENV === 'production' && require('fs').existsSync('/opt/render/project/src/data') ? '/opt/render/project/src/data' : __dirname;
+const fs = require('fs');
+const RENDER_DATA_DIR = '/opt/render/project/src/data';
+if (process.env.NODE_ENV === 'production' && !fs.existsSync(RENDER_DATA_DIR)) {
+  try { fs.mkdirSync(RENDER_DATA_DIR, { recursive: true }); } catch(e) { console.error('Cannot create data dir:', e); }
+}
+const DB_DIR = process.env.NODE_ENV === 'production' && fs.existsSync(RENDER_DATA_DIR) ? RENDER_DATA_DIR : __dirname;
 const DB_PATH = path.join(DB_DIR, 'database.db');
+console.log(`[DB] Database path: ${DB_PATH}`);
 const db = new sqlite3.Database(DB_PATH);
 
 // Enable WAL mode and foreign keys

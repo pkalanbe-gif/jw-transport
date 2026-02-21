@@ -38,7 +38,7 @@ const wd=useMemo(()=>gWk(wk),[wk]);const st=data.settings||def.settings;
 const filt=useMemo(()=>data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]),[data.voyages,wd]);
 const a=useMemo(()=>agg(filt),[filt]);const gN=id=>data.chauffeurs.find(c=>c.id===id)?.nom||"—";const gVhN=id=>(data.vehicules||[]).find(v=>v.id===id)?.nom||"";
 const wkD=useMemo(()=>wd.map((d,i)=>{const v=data.voyages.find(x=>x.date===d);if(!v)return{id:d,j:JRS[i],td:d===today(),ch:"—",veh:"",voy:0,p:0,r:0};const da=agg([v]);return{id:d,j:JRS[i],td:d===today(),ch:gN(v.chofè),veh:gVhN(v.vehiculeId),voy:da.tv,p:da.tp,r:da.rev};}),[wd,data]);
-const empPay=useMemo(()=>{return data.chauffeurs.filter(c=>c.aktif).map(ch=>{let vy=0;filt.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);});});const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;return{id:ch.id,nom:ch.nom,role:ch.role,vy,tx,br:vy*tx};});},[data.chauffeurs,filt,st]);
+const empPay=useMemo(()=>{return data.chauffeurs.filter(c=>c.aktif).map(ch=>{let vy=0;filt.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{id:ch.id,nom:ch.nom,role:ch.role,vy,tx,br:vy*tx};});},[data.chauffeurs,filt,st]);
 const totEmpBr=empPay.reduce((s,e)=>s+e.br,0);
 const wkDeps=useMemo(()=>(data.depenses||[]).filter(d=>d.date>=wd[0]&&d.date<=wd[4]),[data.depenses,wd]);
 const totDeps=wkDeps.reduce((s,d)=>s+(d.montant||0),0);
@@ -115,11 +115,11 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setModal(false)}>Annuler</Bt><Bt onClick={saveDay} size="lg">Enregistrer</Bt></div>
 </Mo></div>;}
 
-function Chauf({data,sv,ms}){const[m,setM]=useState(false);const[eid,setEid]=useState(null);const e={nom:"",role:"Chauffeur",aktif:true,courriel:""};const[f,setF]=useState(e);
+function Chauf({data,sv,ms}){const st=data.settings||def.settings;const[m,setM]=useState(false);const[eid,setEid]=useState(null);const e={nom:"",role:"Chauffeur",aktif:true,courriel:"",tauxPersonnel:""};const[f,setF]=useState(e);
 const hs=()=>{if(!f.nom){ms("Nom!","error");return;}sv({...data,chauffeurs:eid?data.chauffeurs.map(c=>c.id===eid?{id:eid,...f}:c):[...data.chauffeurs,{id:gid(),...f}]});ms("OK!");setM(false);setEid(null);setF(e);};
 return<div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h1 style={{fontSize:22,fontWeight:800}}>Employés</h1><Bt onClick={()=>{setEid(null);setF(e);setM(true);}}>+</Bt></div>
-<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"courriel",label:"Email",render:r=><span style={{fontSize:10,color:r.courriel?C.cyan:C.dim}}>{r.courriel||"—"}</span>},{key:"aktif",label:"",render:r=><Bg text={r.aktif?"Actif":"Inactif"} color={r.aktif?C.green:C.red}/>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:3}}><button onClick={()=>{setEid(r.id);setF({nom:r.nom,role:r.role,aktif:r.aktif,courriel:r.courriel||""});setM(true);}} style={{background:"none",border:"none",cursor:"pointer",color:C.accent,fontSize:10}}>Edit</button><button onClick={()=>{sv({...data,chauffeurs:data.chauffeurs.filter(c=>c.id!==r.id)});ms("OK!");}} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>Del</button></div>}]} data={data.chauffeurs}/>
-<Mo open={m} onClose={()=>setM(false)} title={eid?"Modifier":"Nouveau"} width={400}><In label="Nom" value={f.nom} onChange={v=>setF({...f,nom:v})} style={{marginBottom:10}}/><In label="Rôle" value={f.role} onChange={v=>setF({...f,role:v})} options={["Chauffeur","Helper"]} style={{marginBottom:10}}/><In label="Courriel" value={f.courriel} onChange={v=>setF({...f,courriel:v})} placeholder="email@exemple.com" style={{marginBottom:10}}/><Ck label="Actif" checked={f.aktif} onChange={v=>setF({...f,aktif:v})}/><div style={{display:"flex",justifyContent:"flex-end",gap:8,marginTop:10}}><Bt variant="outline" color={C.muted} onClick={()=>setM(false)}>Annuler</Bt><Bt onClick={hs}>OK</Bt></div></Mo></div>;}
+<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"courriel",label:"Email",render:r=><span style={{fontSize:10,color:r.courriel?C.cyan:C.dim}}>{r.courriel||"—"}</span>},{key:"tauxPersonnel",label:"Taux ($)",render:r=>{const tx=r.tauxPersonnel||(r.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return<span style={{fontSize:11,fontWeight:700,color:r.tauxPersonnel?C.cyan:C.dim}}>${tx}{r.tauxPersonnel?"":" (déf)"}</span>;}},{key:"aktif",label:"",render:r=><Bg text={r.aktif?"Actif":"Inactif"} color={r.aktif?C.green:C.red}/>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:3}}><button onClick={()=>{setEid(r.id);setF({nom:r.nom,role:r.role,aktif:r.aktif,courriel:r.courriel||"",tauxPersonnel:r.tauxPersonnel||""});setM(true);}} style={{background:"none",border:"none",cursor:"pointer",color:C.accent,fontSize:10}}>Edit</button><button onClick={()=>{sv({...data,chauffeurs:data.chauffeurs.filter(c=>c.id!==r.id)});ms("OK!");}} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>Del</button></div>}]} data={data.chauffeurs}/>
+<Mo open={m} onClose={()=>setM(false)} title={eid?"Modifier":"Nouveau"} width={400}><In label="Nom" value={f.nom} onChange={v=>setF({...f,nom:v})} style={{marginBottom:10}}/><In label="Rôle" value={f.role} onChange={v=>setF({...f,role:v})} options={["Chauffeur","Helper"]} style={{marginBottom:10}}/><In label="Courriel" value={f.courriel} onChange={v=>setF({...f,courriel:v})} placeholder="email@exemple.com" style={{marginBottom:10}}/><In label={`Taux Personnel ($/voy) — Défaut: $${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} type="number" value={f.tauxPersonnel} onChange={v=>setF({...f,tauxPersonnel:v})} placeholder={`${f.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper}`} style={{marginBottom:10}}/><Ck label="Actif" checked={f.aktif} onChange={v=>setF({...f,aktif:v})}/><div style={{display:"flex",justifyContent:"flex-end",gap:8,marginTop:10}}><Bt variant="outline" color={C.muted} onClick={()=>setM(false)}>Annuler</Bt><Bt onClick={hs}>OK</Bt></div></Mo></div>;}
 
 function Clients({data,sv,ms}){const cls=data.clients||[];const[m,setM]=useState(false);const[eid,setEid]=useState(null);const ef={nom:"",adresse:"",ville:"",telephone:"",courriel:""};const[f,setF]=useState(ef);
 const hs=()=>{if(!f.nom){ms("Nom!","error");return;}sv({...data,clients:eid?cls.map(c=>c.id===eid?{id:eid,...f}:c):[...cls,{id:gid(),...f}]});ms("OK!");setM(false);setEid(null);setF(ef);};
@@ -225,7 +225,7 @@ return<div><div style={{display:"flex",justifyContent:"space-between",alignItems
 function Paie({data}){const[wk,setWk]=useState(gMon());const wd=useMemo(()=>gWk(wk),[wk]);const st=data.settings||def.settings;
 const eI=data.settings?.entreprise||def.settings.entreprise;
 const wv=useMemo(()=>data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]),[data.voyages,wd]);
-const ed=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{if(t.nbVoyages>0)voyDetails.push({date:v.date,zone:t.zone,nb:t.nbVoyages||0});});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;return{...ch,vy,tx,br:vy*tx,voyDetails};}).filter(c=>c.vy>0),[data.chauffeurs,wv,st]);
+const ed=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{if(t.nbVoyages>0)voyDetails.push({date:v.date,zone:t.zone,nb:t.nbVoyages||0});});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{...ch,vy,tx,br:vy*tx,voyDetails};}).filter(c=>c.vy>0),[data.chauffeurs,wv,st]);
 const tot=ed.reduce((s,e)=>s+e.br,0);
 const pdfAll=()=>{openPrint("Paie",`<h1>${eI.nom} \u2014 Paie</h1><p style="margin:8px 0 16px;color:#64748b">Semaine ${fD(wd[0])} au ${fD(wd[4])}</p><table><thead><tr><th>Employ\u00e9</th><th>R\u00f4le</th><th class="r">Voy.</th><th class="r">Taux</th><th class="r">Brut</th></tr></thead><tbody>${ed.map(e=>`<tr><td>${e.nom}</td><td>${e.role}</td><td class="r">${e.vy}</td><td class="r">${fM(e.tx)}</td><td class="r b">${fM(e.br)}</td></tr>`).join("")}</tbody></table><div class="ts"><div class="tr t"><span>TOTAL</span><span>${fM(tot)}</span></div></div>`);};
 const talonPdf=(e)=>{const jours={};e.voyDetails.forEach(d=>{const k=d.date;if(!jours[k])jours[k]={date:k,zones:{}};if(!jours[k].zones[d.zone])jours[k].zones[d.zone]=0;jours[k].zones[d.zone]+=d.nb;});
@@ -423,7 +423,7 @@ const tripCount=p.trips;
 const emps=data.chauffeurs?.filter(c=>c.aktif)||[];
 const weekVoys=p.voyages||[];
 let totalPay=0;
-emps.forEach(ch=>{let nv=0;weekVoys.forEach(v=>{if(v.chof\u00e8===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{nv+=(t.nbVoyages||0);});});const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;totalPay+=nv*tx;});
+emps.forEach(ch=>{let nv=0;weekVoys.forEach(v=>{if(v.chof\u00e8===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{nv+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);totalPay+=nv*tx;});
 const isPast=p.payDate<todayStr;
 const isNext=i===0;
 return<div key={p.weekMon} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,background:isNext?C.accent+"12":isPast?C.green+"08":"transparent",border:`1px solid ${isNext?C.accent+"30":isPast?C.green+"20":C.border}`,marginBottom:6}}>
@@ -737,7 +737,7 @@ const[wk,setWk]=useState(gMon());const wd=useMemo(()=>gWk(wk),[wk]);
 const st=data.settings||def.settings;const eI=st.entreprise||def.settings.entreprise;
 const cls=data.clients||[];const facs=data.factures||[];
 const wv=useMemo(()=>data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]),[data.voyages,wd]);
-const emps=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{if(t.nbVoyages>0)voyDetails.push({date:v.date,zone:t.zone,nb:t.nbVoyages||0});});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;return{...ch,vy,tx,br:vy*tx,voyDetails};}).filter(c=>c.vy>0),[data.chauffeurs,wv,st]);
+const emps=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{if(t.nbVoyages>0)voyDetails.push({date:v.date,zone:t.zone,nb:t.nbVoyages||0});});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{...ch,vy,tx,br:vy*tx,voyDetails};}).filter(c=>c.vy>0),[data.chauffeurs,wv,st]);
 const totPaie=emps.reduce((s,e)=>s+e.br,0);
 const calcF=(det,tps,tvq)=>{const s=det.reduce((s,d)=>{const q=parseFloat(d.quantite)||0;const p=parseFloat(d.prixUnitaire)||0;return s+q*p;},0);const tv=tps?Math.round(s*TPS_R*100)/100:0;const qv=tvq?Math.round(s*TVQ_R*100)/100:0;return{st:Math.round(s*100)/100,tv,qv,total:Math.round((s+tv+qv)*100)/100};};
 const clientFacts=useMemo(()=>{return cls.map(cl=>{const details=[];["06","13"].forEach(zone=>{const zd=calcZW(data.voyages,wk,zone);if(zd.tp>0){const rate=ZR[zone]||0;const zName=zone==="06"?"Montréal":"Laval";details.push({id:gid(),zone,description:`Nbre fiches ${zName}: ${zd.nf}`,quantite:zd.tp.toString(),unite:"kg",prixUnitaire:rate.toString(),dt:zd.dt.join("\n")});}});const c=calcF(details,true,true);return{cl,details,calc:c,hasData:details.length>0};}).filter(cf=>cf.hasData);},[cls,data.voyages,wk]);
@@ -834,7 +834,7 @@ const mv=data.voyages.filter(v=>v.date>=deb&&v.date<=fin);
 const ma=agg(mv,tare);
 const mDeps=(data.depenses||[]).filter(d=>d.date>=deb&&d.date<=fin).reduce((s,d)=>s+(d.montant||0),0);
 const mEnts=(data.entretiens||[]).filter(e=>e.date>=deb&&e.date<=fin).reduce((s,e)=>s+(e.cout||0),0);
-const empCost=data.chauffeurs.filter(c=>c.aktif).reduce((s,ch)=>{let vy=0;mv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);});});const tx=ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper;return s+vy*tx;},0);
+const empCost=data.chauffeurs.filter(c=>c.aktif).reduce((s,ch)=>{let vy=0;mv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return s+vy*tx;},0);
 const tps=Math.round(ma.rev*TPS_R*100)/100;
 const tvq=Math.round(ma.rev*TVQ_R*100)/100;
 const totalTax=tps+tvq;
@@ -909,9 +909,10 @@ return<div><h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>Sauvegarde &
 <div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:10}}>Paramètres</div>
 <div className="jw-grid3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:12}}>
 <In label="TARE (kg)" type="number" value={tare} onChange={setTare}/>
-<In label="Taux Chauffeur ($)" type="number" value={txC} onChange={setTxC}/>
-<In label="Taux Helper ($)" type="number" value={txH} onChange={setTxH}/>
+<In label="Taux Chauffeur Défaut ($)" type="number" value={txC} onChange={setTxC}/>
+<In label="Taux Helper Défaut ($)" type="number" value={txH} onChange={setTxH}/>
 </div>
+<div style={{fontSize:10,color:C.dim,marginBottom:10,fontStyle:"italic"}}>💡 Taux défaut yo itilize lè yon employè pa gen taux personnel. Ale nan paj "Employés" pou mete taux endividyèl.</div>
 <Bt onClick={saveSt} color={C.green} size="sm">Sauvegarder</Bt>
 </div>
 <div style={{display:"flex",gap:8}}><Bt onClick={()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.download=`jw_backup_${today()}.json`;a.click();ms("OK!");}}>JSON</Bt><Bt variant="outline" color={C.purple} onClick={()=>{const i=document.createElement("input");i.type="file";i.accept=".json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{sv({...def,...JSON.parse(ev.target.result)});ms("OK!");}catch{ms("Erreur!","error");}};r.readAsText(f);};i.click();}}>Importer</Bt></div></div>;}
@@ -942,7 +943,8 @@ let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.po
 return `Tu es l'assistant IA de J&W Transport. R\u00e9ponds toujours en fran\u00e7ais.
 Entreprise: ${ent.nom||"J&W Transport"}, ${ent.adresse||""}, ${ent.ville||""}
 TPS: ${s.tpsNum||"N/A"}, TVQ: ${s.tvqNum||"N/A"}, NEQ: ${ent.neq||"N/A"}
-Taux: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
+Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
+Employés et taux: ${emps.map(e=>`${e.nom}(${e.role})=${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}$/voy`).join(", ")}
 Stats: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${facs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu: ${totRev.toFixed(0)}$, Profit: ${(totRev-totDep).toFixed(0)}$
 Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, Backup(JSON).
 ${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
@@ -968,7 +970,7 @@ if(lo.match(/revni|revenu|revenue|lajan|konben mwen fe|konben m fe|gain|rantre/)
 if(lo.match(/depans|depens|expense|essence|assuranc|cout|kou|konben m depanse/)){const byCat={};deps.forEach(d=>{byCat[d.categorie||"Autre"]=(byCat[d.categorie||"Autre"]||0)+(d.montant||0);});return`💸 ${deps.length} d\u00e9penses = ${fN(totDep)} $\n${Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([c,m])=>`  ${c}: ${fN(m)} $`).join("\n")}\n➡️ "Comptabilit\u00e9"`;}
 if(lo.match(/fakti|factur|invoice/)){return`🧾 ${facs.length} factures = ${fN(totFac)} $\n${facs.map(f=>`  ${f.numero}: ${fN(f.total||0)} $ — ${f.statut}`).join("\n")}\n➡️ "Factures"`;}
 if(lo.match(/kalandriye|calendrier|calendar|dat paie|next payday|kile.*touche|kile.*peye|prochen paie|prochen peman|prochaine paie|dat peman|jou paie|jour de paie|kile.*paye|touche kob|quand.*pay/)){const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const upc=pds.filter(p=>p.payDate>=today()).slice(0,3);if(upc.length===0)return`📅 Aucune date de paie trouv\u00e9e. Allez \u00e0 "📅 Calendrier" pour configurer votre horaire de paie.`;const nx=upc[0];const du=Math.ceil((new Date(nx.payDate+"T12:00:00")-new Date(today()+"T12:00:00"))/86400000);let r=`📅 Prochaine Paie:\n💰 ${fD(nx.payDate)} (${JRSK[ps.payDay]||"Vendredi"})`;r+=du===0?" — AUJOURD'HUI! 🎉\n":` — dans ${du} jours\n`;r+=`   Pour la semaine: ${fDs(nx.weekMon)} → ${fDs(nx.weekFri)}\n`;if(upc.length>1){r+=`\n📆 Ensuite:\n`;upc.slice(1).forEach(p=>{r+=`   ${fD(p.payDate)} → sem. ${fDs(p.weekMon)}-${fDs(p.weekFri)}\n`;});}r+=`\n⚙️ D\u00e9lai: ${ps.payDelay} semaines | ${ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque semaine"}`;r+=`\n➡️ "📅 Calendrier"`;return r;}
-if(lo.match(/paie|pai|pay|salaire|saler|chofe|helper/))return`💵 Taux: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy\n${emps.map(e=>`  ${e.nom} (${e.role})`).join("\n")}\n➡️ "Paie" ou "🤖 Agent IA"`;
+if(lo.match(/paie|pai|pay|salaire|saler|chofe|helper/))return`💵 Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy\n${emps.map(e=>`  ${e.nom} (${e.role}) → $${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}/voy${e.tauxPersonnel?" (perso)":""}`).join("\n")}\n➡️ "Paie" ou "🤖 Agent IA"`;
 if(lo.match(/kliyan|client/))return`👤 Clients:\n${clis.map(c=>`  ${c.nom} — ${c.telephone||""} — ${c.courriel||""}`).join("\n")||"Aucun"}\n➡️ "Clients"`;
 if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 V\u00e9hicules:\n${vehs.map(v=>`  ${v.nom} | ${v.plaque||"—"} | ${v.annee||"—"}`).join("\n")||"Aucun"}\n🔧 ${ents.length} entretien(s) (${fN(ents.reduce((s,e)=>s+(e.cout||0),0))} $)\n➡️ "V\u00e9hicules"`;
 if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretiens:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Aucun"}\n➡️ "V\u00e9hicules"`;
@@ -1042,7 +1044,7 @@ return<>
 function App(){
 const[user,setUser]=useState(null);const[authMode,setAuthMode]=useState("login");
 const[aUser,setAUser]=useState("");const[aPass,setAPass]=useState("");const[aPass2,setAPass2]=useState("");const[aErr,setAErr]=useState("");
-const[pg,setPg]=useState("dashboard");const[data,setData]=useState(def);const[ld,setLd]=useState(true);const[toast,setToast]=useState(null);const[menuOpen,setMenuOpen]=useState(false);
+const[pg,setPg]=useState("dashboard");const[data,setData]=useState(def);const[ld,setLd]=useState(true);const[toast,setToast]=useState(null);const[menuOpen,setMenuOpen]=useState(false);const[saveStatus,setSaveStatus]=useState(null);
 
 // === API helpers (SQLite backend) ===
 const API_URL=process.env.REACT_APP_API_URL||'';
@@ -1075,7 +1077,7 @@ setAErr("");}catch(e){setAErr(e.message||"Nom d'utilisateur ou mot de passe inco
 
 const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser("");setAPass("");setAPass2("");setToken(null);};
 
-const sv=useCallback(nd=>{setData(nd);(async()=>{try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});}catch(e){console.error('Save error:',e);}})();},[]);
+const sv=useCallback(nd=>{setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
 const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
@@ -1111,6 +1113,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 <div style={{width:28,height:28,borderRadius:7,background:C.g4,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:10,color:"#fff"}}>{user.displayName.charAt(0).toUpperCase()}</div>
 <div style={{flex:1,minWidth:0}}><div style={{fontSize:11,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.displayName}</div></div>
 </div>
+{saveStatus&&<div style={{fontSize:9,padding:"4px 6px",borderRadius:5,marginBottom:6,background:saveStatus.ok?`${C.green||'#22c55e'}15`:`${C.red}15`,color:saveStatus.ok?(C.green||'#22c55e'):C.red,fontWeight:600,textAlign:"center"}}>{saveStatus.ok?`✓ Sovgade ${saveStatus.t}`:`✗ Erè sovgad ${saveStatus.t}`}</div>}
 <button onClick={doLogout} style={{width:"100%",padding:"6px",borderRadius:6,border:`1px solid ${C.red}30`,background:"transparent",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>Déconnexion</button>
 </div>
 </nav>
