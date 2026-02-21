@@ -13,9 +13,5688 @@
       "role": "Helper",
       "aktif": true,
       "courriel": "djephalexandre697@gmail.com"
+    },
+    {
+      "id": "c3",
+      "nom": "Ceres",
+      "role": "Chauffeur",
+      "aktif": true,
+      "courriel": ""
+    },
+    {
+      "id": "c4",
+      "nom": "Fanfan",
+      "role": "Helper",
+      "aktif": true,
+      "courriel": ""
+    },
+    {
+      "id": "c5",
+      "nom": "Ginior",
+      "role": "Helper",
+      "aktif": true,
+      "courriel": ""
     }
   ],
   "voyages": [
+    {
+      "id": "gz64u39xg",
+      "date": "2025-01-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "pqkuxcouj",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9930,
+          "dt": ""
+        },
+        {
+          "id": "kzcjzvhql",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "8465cxaj0",
+      "date": "2025-01-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "99ss2469r",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9930,
+          "dt": ""
+        },
+        {
+          "id": "2te3fx859",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "hlkpugwpa",
+      "date": "2025-01-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "vyyo5nk7b",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lm75nzkd4",
+      "date": "2025-01-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "5bpzsings",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "0fjma26cr",
+      "date": "2025-01-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "kcxis4fi6",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        },
+        {
+          "id": "ctqbznelv",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9868,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wz3c9yqxp",
+      "date": "2025-01-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "m2abzhd5q",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        },
+        {
+          "id": "6p0tg42gk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9868,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "02w94gqpt",
+      "date": "2025-01-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "9kz5d2ls9",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        },
+        {
+          "id": "6uxho2ynt",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9868,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "pknipd6ks",
+      "date": "2025-01-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "qqmieothd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        },
+        {
+          "id": "s3mm0qdvm",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9868,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "8gtvjuhb2",
+      "date": "2025-01-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "bx92vp1xb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9868,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "pgziy4wm3",
+      "date": "2025-01-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "q6sp2t3db",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9520,
+          "dt": ""
+        },
+        {
+          "id": "vdjmcvhon",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9385,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "y72deqzgl",
+      "date": "2025-01-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "20lk752f4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9520,
+          "dt": ""
+        },
+        {
+          "id": "d5s3pvtzs",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9385,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "j9gn6v4uh",
+      "date": "2025-01-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "0i65anm4w",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9520,
+          "dt": ""
+        },
+        {
+          "id": "52ks1lk7a",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9385,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "jwhsu79jh",
+      "date": "2025-01-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "uz4rpioqn",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9520,
+          "dt": ""
+        },
+        {
+          "id": "ruuglptv2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9385,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "w2ulepltw",
+      "date": "2025-01-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "zkhnh0a4k",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "osj3dyqgl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9855,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "68nad3t5j",
+      "date": "2025-01-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "br6x74xcs",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "jkjhamhw6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9855,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "jzq0uz09p",
+      "date": "2025-01-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "pyqcjrk9e",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ekxsqf5yj",
+      "date": "2025-01-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "zpsatufua",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "0xknqcb8d",
+      "date": "2025-01-31",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "trips": [
+        {
+          "id": "8wr8zl3aa",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "hsg06p4sa",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7irn7ixqn",
+      "date": "2025-02-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "dgqssng0v",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9704,
+          "dt": ""
+        },
+        {
+          "id": "ga1k2hxhk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 10020,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wlqwdvt6k",
+      "date": "2025-02-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "t7ncj4yni",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9704,
+          "dt": ""
+        },
+        {
+          "id": "9wtsxl12q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 10020,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "y2ul3bqlf",
+      "date": "2025-02-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "i962ml6ys",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9704,
+          "dt": ""
+        },
+        {
+          "id": "nr2yuyj4p",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 10020,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "q30ebzc0x",
+      "date": "2025-02-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4x223q3zu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9704,
+          "dt": ""
+        },
+        {
+          "id": "de4en6vhy",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 10020,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "cqxr5ysoe",
+      "date": "2025-02-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "hpl3we06s",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9704,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "e66gwty3x",
+      "date": "2025-02-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "nsjjjldhf",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9550,
+          "dt": ""
+        },
+        {
+          "id": "nd78dxaiz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9935,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "omm0zj49x",
+      "date": "2025-02-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "sgyalxdhn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9935,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "37sidb9a2",
+      "date": "2025-02-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5qql20mqs",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9935,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ijo1mqw31",
+      "date": "2025-02-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zk9vrklk3",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9935,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7gkyi1hrm",
+      "date": "2025-02-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "jaso7234g",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        },
+        {
+          "id": "7flblg0qr",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9800,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lht6wx5cq",
+      "date": "2025-02-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qlea01op7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9725,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wkkkq4be6",
+      "date": "2025-03-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "s2hftwild",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "erusv1owl",
+      "date": "2025-03-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "nc1479k04",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tiblbjsfy",
+      "date": "2025-03-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "r916tb3uj",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9473,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "mk0rizszb",
+      "date": "2025-03-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "o7kojvp3d",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9420,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "aw1fu8h3q",
+      "date": "2025-03-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0vwu969p2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9420,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "j0qon4nht",
+      "date": "2025-03-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "e7z9esmdu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9420,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zol5be5fs",
+      "date": "2025-03-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "8q4kqnzhh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "8no9hiiz1",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "fjtzb54jc",
+      "date": "2025-03-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "rpcc8xtkt",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "9rx741qc5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "mwsbukngm",
+      "date": "2025-03-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qdfcx08gj",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "7kzcsunhl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lode7k78x",
+      "date": "2025-03-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "2sx0tfhzo",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "4btiax5rz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "p7dpqvnnw",
+      "date": "2025-03-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "lk5urfqs1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "5qxc3qftk",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6jc4fkj7e",
+      "date": "2025-03-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4w73hw5uh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "5hvddkti6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "2vcmpqaei",
+      "date": "2025-03-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "l4pxw329g",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "q6kqlayzj",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6cdxm2djt",
+      "date": "2025-03-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9hvibbp5m",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "p6hkm99gy",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zz7fkc1ne",
+      "date": "2025-03-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "stusxenja",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "odvf2lcsc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8648,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ebjb2iibe",
+      "date": "2025-03-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4p2oty1ib",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        },
+        {
+          "id": "8qk56c6m0",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8878,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "xyqctbi37",
+      "date": "2025-03-31",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "3dtrqbc03",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        },
+        {
+          "id": "ecoj2i58v",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "1yu4n5385",
+      "date": "2025-04-01",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0w52am3p4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        },
+        {
+          "id": "gjnhl0wrz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ebgpx1uzb",
+      "date": "2025-04-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "c8bph04vv",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "q83x2l9aw",
+      "date": "2025-04-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ah7vopuo8",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "51nbfktj2",
+      "date": "2025-04-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "28ob4t1sc",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        },
+        {
+          "id": "qjpbsb19x",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8847,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "md38u2ij7",
+      "date": "2025-04-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "hvtiv59fe",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8850,
+          "dt": ""
+        },
+        {
+          "id": "xp4lsxmj7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "a6hl5cx5l",
+      "date": "2025-04-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9w9zmgc0k",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8850,
+          "dt": ""
+        },
+        {
+          "id": "8fgaqqa3u",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tk3klk11s",
+      "date": "2025-04-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "h3t45ifjd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8850,
+          "dt": ""
+        },
+        {
+          "id": "gcgltpiwn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "cv6cw8lzn",
+      "date": "2025-04-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "mv753ggao",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8850,
+          "dt": ""
+        },
+        {
+          "id": "ovz4812mv",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "x6ivh4b1v",
+      "date": "2025-04-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "o9x538t9r",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        },
+        {
+          "id": "91p9mpvho",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9142,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "vqsxjo0f0",
+      "date": "2025-04-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9vwnmik03",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8875,
+          "dt": ""
+        },
+        {
+          "id": "rmillga77",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "26hmu1nf4",
+      "date": "2025-04-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "d1ox99ald",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8875,
+          "dt": ""
+        },
+        {
+          "id": "ubctjsicr",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "jnzcolkla",
+      "date": "2025-04-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ijfvotdhx",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "i9x5jdhvk",
+      "date": "2025-04-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "54uw1p0s6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "18ia5n3ry",
+      "date": "2025-04-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "czxfdn7z5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        },
+        {
+          "id": "5sy8mcvuk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9622,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "hrubrrnq3",
+      "date": "2025-04-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "u0krau0c1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "q29g5w7re",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "qn6b7tnty",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "bb9f2zloi",
+      "date": "2025-04-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "kseyfyf94",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "r8x3vf7ki",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "g6dkwikwf",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ednrbzd9w",
+      "date": "2025-04-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "o8zrshmph",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "53avpga8j",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "12mdd6x4p",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "my87thhrv",
+      "date": "2025-04-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "xpgp2d3m4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "a1gvbw43f",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8761,
+          "dt": ""
+        },
+        {
+          "id": "lk34v8020",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4q0im2l9r",
+      "date": "2025-04-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0vtjcyhi4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        },
+        {
+          "id": "h5t5n7qt7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        },
+        {
+          "id": "5e11orw5v",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8736,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7pwcvdy05",
+      "date": "2025-04-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9hi68oa7p",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "8rg0d7j9b",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7c91cplt8",
+      "date": "2025-04-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0n091f3ce",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "9bh4gmo9d",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "qy5s6suoz",
+      "date": "2025-04-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "duv57zdbs",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "qruhnx203",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "2tx15xbm8",
+      "date": "2025-05-01",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "p2nbyssn1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "cccvef20f",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "n4t4lj7va",
+      "date": "2025-05-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "cfjmsc6bm",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "9etyebmd7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9072,
+          "dt": ""
+        },
+        {
+          "id": "u2jjqumzw",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        },
+        {
+          "id": "7zuupf97d",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9007,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "gs1ukuiit",
+      "date": "2025-05-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "u7b5er3bn",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8962,
+          "dt": ""
+        },
+        {
+          "id": "pwo39mbsa",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4hmdzm0t6",
+      "date": "2025-05-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "leziuac8d",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8962,
+          "dt": ""
+        },
+        {
+          "id": "72ag2qes7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wg0sasg7p",
+      "date": "2025-05-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "gvehj019l",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8962,
+          "dt": ""
+        },
+        {
+          "id": "aa8qtjenc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "km0fel4g9",
+      "date": "2025-05-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "64b24rqbc",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8962,
+          "dt": ""
+        },
+        {
+          "id": "bu22aseek",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "mycgkuj7u",
+      "date": "2025-05-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5lx94t9bl",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8962,
+          "dt": ""
+        },
+        {
+          "id": "gg7nszwqe",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        },
+        {
+          "id": "atnilbf9y",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        },
+        {
+          "id": "idub6g20h",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8947,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6t30e97hb",
+      "date": "2025-05-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "7d1puexj5",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8844,
+          "dt": ""
+        },
+        {
+          "id": "rmba2wumg",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "sbu7eh9ml",
+      "date": "2025-05-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "m906xo32l",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8844,
+          "dt": ""
+        },
+        {
+          "id": "15b8ptqom",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zp6ef107c",
+      "date": "2025-05-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "nxjt8ik1u",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8844,
+          "dt": ""
+        },
+        {
+          "id": "h18hszfnp",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "0idtxm30m",
+      "date": "2025-05-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4j25h7b0m",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8844,
+          "dt": ""
+        },
+        {
+          "id": "fefk60n71",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tyj9z3gnp",
+      "date": "2025-05-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ton3m0r6n",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8844,
+          "dt": ""
+        },
+        {
+          "id": "oxtr96myw",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        },
+        {
+          "id": "cso5mbqxc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8867,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "nedpj3y9h",
+      "date": "2025-05-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "i2j54254x",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "uflul9fra",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8983,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "l0t9rxigf",
+      "date": "2025-05-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "rk5k7ikyg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "stnihza5m",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8983,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "bxn45k5nv",
+      "date": "2025-05-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4fga4q7qe",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "wkp11ppcy",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8983,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "c7uggkcls",
+      "date": "2025-05-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "swjfa9wgs",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "0o9msnaws",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8983,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6erxc9e9w",
+      "date": "2025-05-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5bn4f7tt5",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "2getids4t",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "7s3m17oyb",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zpcr3qndn",
+      "date": "2025-05-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "m9ggted31",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "6vkq6vi5a",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ilmuzpz1m",
+      "date": "2025-05-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4jmnd7brl",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "g4f3jvs4m",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6zdagq0zn",
+      "date": "2025-05-28",
+      "chofè": "c1",
+      "helpers": [
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "ngn7i4wax",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9073,
+          "dt": ""
+        },
+        {
+          "id": "ov2ovc7b5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "exqmfell9",
+      "date": "2025-05-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qv9pj8kwn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "rhwju9un5",
+      "date": "2025-05-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "n17qgdqhb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        },
+        {
+          "id": "81diryll2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9048,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5pukbixpi",
+      "date": "2025-06-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "wo9bl3cf7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9050,
+          "dt": ""
+        },
+        {
+          "id": "vdz943utz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "eeaezatug",
+      "date": "2025-06-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ek37l6v9e",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9050,
+          "dt": ""
+        },
+        {
+          "id": "wp33wtcwn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wkmh8ar5w",
+      "date": "2025-06-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "vq9mkku2t",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9050,
+          "dt": ""
+        },
+        {
+          "id": "up7reby4c",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "55p8x3p28",
+      "date": "2025-06-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "r7dvlccar",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9050,
+          "dt": ""
+        },
+        {
+          "id": "q7e9b78d1",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "sikx3beg6",
+      "date": "2025-06-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "xmliur339",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        },
+        {
+          "id": "nw0vsrqq5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9058,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "eensp4zce",
+      "date": "2025-06-09",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "bg8rtsk9x",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        },
+        {
+          "id": "axyz8w7nb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        },
+        {
+          "id": "vydz5kkl6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "0cfuh3jtj",
+      "date": "2025-06-10",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "1xsmq82pg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        },
+        {
+          "id": "ublpko3sh",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        },
+        {
+          "id": "mrjq9435j",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "z6rz9qu1b",
+      "date": "2025-06-11",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "3ot52r24y",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        },
+        {
+          "id": "ogyo9rlq4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        },
+        {
+          "id": "q8gzdexkw",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "gxjcnlup4",
+      "date": "2025-06-12",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "dd4ihz9eu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        },
+        {
+          "id": "8ieut8kus",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        },
+        {
+          "id": "5maxke7ry",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9113,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "iwx2uo36b",
+      "date": "2025-06-13",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "buh5lo732",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8990,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "kbjqu4hd8",
+      "date": "2025-06-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "eavnr8xzv",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8980,
+          "dt": ""
+        },
+        {
+          "id": "op3avc6l2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        },
+        {
+          "id": "p00k9wpj5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "igefngxvo",
+      "date": "2025-06-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zbr0xaj4k",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8980,
+          "dt": ""
+        },
+        {
+          "id": "0ew5nh5l9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        },
+        {
+          "id": "wbjf00ke7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "myb81bkxp",
+      "date": "2025-06-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ydlwk8bi4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8980,
+          "dt": ""
+        },
+        {
+          "id": "cx73mkhuq",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        },
+        {
+          "id": "27540byrg",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "dawml7iv0",
+      "date": "2025-06-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "opc1rnomc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        },
+        {
+          "id": "8c1ntv70q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "vnzv3rmv2",
+      "date": "2025-06-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "1v4ksx89f",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9087,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "8nwabpir7",
+      "date": "2025-06-23",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "1eipfb861",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8228,
+          "dt": ""
+        },
+        {
+          "id": "4ng9q62jj",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9942,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "vvkq0k35f",
+      "date": "2025-06-24",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "k4fug7963",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8228,
+          "dt": ""
+        },
+        {
+          "id": "plxptok4v",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9942,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5owk2uva3",
+      "date": "2025-06-25",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "p7clohl44",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8228,
+          "dt": ""
+        },
+        {
+          "id": "ad9pfr9t7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9942,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4j5xhaw2x",
+      "date": "2025-06-26",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "js90pa8wd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8228,
+          "dt": ""
+        },
+        {
+          "id": "hx76z487w",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9942,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "9nej32zfh",
+      "date": "2025-06-27",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "7167ye0px",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8228,
+          "dt": ""
+        },
+        {
+          "id": "3bzylysc3",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9942,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "f8qexpcge",
+      "date": "2025-06-30",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "n8k8thowh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9023,
+          "dt": ""
+        },
+        {
+          "id": "wki4higte",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8846,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6yj6ajr57",
+      "date": "2025-07-01",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "hqm79y1vd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9023,
+          "dt": ""
+        },
+        {
+          "id": "5ddvx28yi",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8846,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "cgvkp2zkp",
+      "date": "2025-07-02",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "z56tr01un",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9023,
+          "dt": ""
+        },
+        {
+          "id": "f6uev7tox",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8846,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "r3qqvihix",
+      "date": "2025-07-03",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "m4bnji2be",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8846,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tsdtdji9p",
+      "date": "2025-07-04",
+      "chofè": "c1",
+      "helpers": [
+        "c3",
+        "c4"
+      ],
+      "trips": [
+        {
+          "id": "593nwqzsp",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8846,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6hx03r3w2",
+      "date": "2025-07-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "h70py62oh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9130,
+          "dt": ""
+        },
+        {
+          "id": "ruefq3va4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        },
+        {
+          "id": "01za1hcgh",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ormcgvn1u",
+      "date": "2025-07-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "n8nbuznto",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9130,
+          "dt": ""
+        },
+        {
+          "id": "tcf9vkrsc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        },
+        {
+          "id": "oh6q0zlux",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zwu4bvct5",
+      "date": "2025-07-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "w6w96qnl1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9130,
+          "dt": ""
+        },
+        {
+          "id": "d166eor0r",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        },
+        {
+          "id": "ejxt8bob2",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "a04rtw7ud",
+      "date": "2025-07-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5zg1nus5h",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9130,
+          "dt": ""
+        },
+        {
+          "id": "i76pdbzvg",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        },
+        {
+          "id": "tty9bpre9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8963,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "dpqb1g880",
+      "date": "2025-08-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0uk5l4b5m",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8555,
+          "dt": ""
+        },
+        {
+          "id": "2lnay9waj",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "r3qa0nve0",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "xhlr1ba0u",
+      "date": "2025-08-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "k3a8hdiic",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8555,
+          "dt": ""
+        },
+        {
+          "id": "hxnjhf0oa",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "aogf46mxd",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "irc8yv7on",
+      "date": "2025-08-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zc1u9m7px",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8555,
+          "dt": ""
+        },
+        {
+          "id": "s3kjem4v9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "a1rn3plmp",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "eeemomtyu",
+      "date": "2025-08-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "dfudrrvew",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8555,
+          "dt": ""
+        },
+        {
+          "id": "6vpr2prfl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "rsasasn9f",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "3u4w2gcfu",
+      "date": "2025-08-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "851xhgro1",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "2fm7c06pw",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        },
+        {
+          "id": "slh87267x",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8759,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "0suqou76p",
+      "date": "2025-08-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "k8e8laezy",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8752,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "xp8mqoknl",
+      "date": "2025-08-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "gwjsq2fwx",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8752,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "gf6ms3tp3",
+      "date": "2025-08-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qlrhtnmjf",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8752,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "8gtnwv863",
+      "date": "2025-08-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zz49cq6p7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8752,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4bwptt1v0",
+      "date": "2025-08-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "jhag5ijfo",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8752,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "kq4qoy1up",
+      "date": "2025-08-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "hxk27pogq",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8874,
+          "dt": ""
+        },
+        {
+          "id": "ofc5idowc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9246,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "r9agr7lfw",
+      "date": "2025-08-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9jxr1h5eb",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8874,
+          "dt": ""
+        },
+        {
+          "id": "dtyc0gk17",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9246,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ugej7k00e",
+      "date": "2025-08-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4md3oj8tn",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8874,
+          "dt": ""
+        },
+        {
+          "id": "64hc8qbkn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9246,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "hiwx06caf",
+      "date": "2025-08-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "mxjvlfuyp",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8874,
+          "dt": ""
+        },
+        {
+          "id": "85pwzmww5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9246,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "oyh7fz7ts",
+      "date": "2025-08-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ddse2b280",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8874,
+          "dt": ""
+        },
+        {
+          "id": "hulks17e6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9246,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "d8cds3wyk",
+      "date": "2025-08-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ypcb1k33r",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8868,
+          "dt": ""
+        },
+        {
+          "id": "tet50c8np",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8834,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "fl7y2t31c",
+      "date": "2025-08-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "8ag6e6j3l",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8868,
+          "dt": ""
+        },
+        {
+          "id": "yfcxx3tjy",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8834,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "kh7pznycl",
+      "date": "2025-08-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "96balluhc",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8868,
+          "dt": ""
+        },
+        {
+          "id": "85vbkplc6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8834,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ziuq1ix6w",
+      "date": "2025-08-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "j135nampu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8868,
+          "dt": ""
+        },
+        {
+          "id": "zi94n57u5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8834,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "jndj2ilcq",
+      "date": "2025-08-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4zgeqrile",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8868,
+          "dt": ""
+        },
+        {
+          "id": "sqj7tmemu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8834,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "qdm7thack",
+      "date": "2025-09-01",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "njjqv015y",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8890,
+          "dt": ""
+        },
+        {
+          "id": "p279aq167",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lxqbdf05e",
+      "date": "2025-09-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ah5ajf8cm",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8890,
+          "dt": ""
+        },
+        {
+          "id": "tejqqhv5a",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "1e3x3z025",
+      "date": "2025-09-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "r4zl7702h",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zocqszm2l",
+      "date": "2025-09-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "td7bkbdtn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "n1o3oz5aa",
+      "date": "2025-09-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "anjsbpyba",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        },
+        {
+          "id": "d7xigoh4o",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8275,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wj06ivghk",
+      "date": "2025-09-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "fjyo11lw4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8793,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "oq1ulp3z2",
+      "date": "2025-09-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "q9odk9pzw",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8793,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "nil0k6xe9",
+      "date": "2025-09-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "eash67tyd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8793,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wsn1rioiy",
+      "date": "2025-09-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qzuyajsko",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8793,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "2m9knch3z",
+      "date": "2025-09-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "3kqsunrwg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8565,
+          "dt": ""
+        },
+        {
+          "id": "9czebfq4i",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "i2yw2aoq7",
+      "date": "2025-09-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4kw2ba3zt",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8565,
+          "dt": ""
+        },
+        {
+          "id": "8re5ffg74",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7fh0ftblv",
+      "date": "2025-09-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "2wxyxk3n7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8565,
+          "dt": ""
+        },
+        {
+          "id": "gk0fs8a94",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "kt9cehyo0",
+      "date": "2025-09-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "2ozw1pixe",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8565,
+          "dt": ""
+        },
+        {
+          "id": "goyt43m26",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "pba6xeo6q",
+      "date": "2025-09-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qjc6io68y",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        },
+        {
+          "id": "ll5n6f65j",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8803,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "wotj5buxt",
+      "date": "2025-09-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zbylmntg5",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8988,
+          "dt": ""
+        },
+        {
+          "id": "utjar87uz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lw3sw0h66",
+      "date": "2025-09-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "8b2ayg2ai",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8988,
+          "dt": ""
+        },
+        {
+          "id": "u569u10ec",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "fmzef5mns",
+      "date": "2025-09-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qnuq16k7z",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8988,
+          "dt": ""
+        },
+        {
+          "id": "n5ubjwhjz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "q8qrmzra8",
+      "date": "2025-09-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "gd0rxthft",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8988,
+          "dt": ""
+        },
+        {
+          "id": "noucyqyno",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "t91k15t1h",
+      "date": "2025-09-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "medj7odrq",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        },
+        {
+          "id": "l9deb0m5v",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8863,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "b95t69spn",
+      "date": "2025-09-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5k7binun3",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8750,
+          "dt": ""
+        },
+        {
+          "id": "rx02vmo84",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tgu39zstr",
+      "date": "2025-09-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "pc91w2qod",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8750,
+          "dt": ""
+        },
+        {
+          "id": "hf70ihco7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "v93ddy2jr",
+      "date": "2025-10-01",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "2c9nitwt3",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 8750,
+          "dt": ""
+        },
+        {
+          "id": "sab0ajf6x",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "pt2thbft4",
+      "date": "2025-10-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "g8n62gtsb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6ptwdcd4k",
+      "date": "2025-10-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5rv40ywva",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        },
+        {
+          "id": "e1avm1r2c",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        },
+        {
+          "id": "5zi12uaam",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8693,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "9epxjykps",
+      "date": "2025-10-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "fg9vej46l",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9065,
+          "dt": ""
+        },
+        {
+          "id": "043w222uz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "osg6e7mzh",
+      "date": "2025-10-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "239uhmi5w",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9065,
+          "dt": ""
+        },
+        {
+          "id": "vdblodwzg",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "lf410p1us",
+      "date": "2025-10-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "bggajioeu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9065,
+          "dt": ""
+        },
+        {
+          "id": "lnf3zsnd4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5k8vg3duv",
+      "date": "2025-10-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qdw5filjs",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9065,
+          "dt": ""
+        },
+        {
+          "id": "5q5zrnmm6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "3hlunwnu1",
+      "date": "2025-10-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qt07bc69k",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        },
+        {
+          "id": "ijseqwora",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        },
+        {
+          "id": "u81eeg8d8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9316,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "cqp19nuwk",
+      "date": "2025-10-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "y9238sgrm",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        },
+        {
+          "id": "b7xa5mtth",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "g37wh20ry",
+      "date": "2025-10-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5a7igz48n",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        },
+        {
+          "id": "cffluus8o",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ksqez2yi4",
+      "date": "2025-10-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "cv6g4pe1x",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        },
+        {
+          "id": "ff0ljc91y",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5f3dxt8ln",
+      "date": "2025-10-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "2r6h5r7dc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        },
+        {
+          "id": "wltfoly90",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9079,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "3epq0de6h",
+      "date": "2025-10-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "kgvrzh9fw",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": ""
+        },
+        {
+          "id": "qzxdwfjrj",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        },
+        {
+          "id": "jk7qp7nr4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "jd026d63z",
+      "date": "2025-10-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ii1rqw0sc",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": ""
+        },
+        {
+          "id": "028kg4lgn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        },
+        {
+          "id": "7muxwtrvy",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5ec4re77a",
+      "date": "2025-10-22",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "his1s3kek",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": ""
+        },
+        {
+          "id": "s25asth25",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        },
+        {
+          "id": "l8fpmu437",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "mw0k4zhcv",
+      "date": "2025-10-23",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "roace4i7d",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": ""
+        },
+        {
+          "id": "yt7jgv0jf",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        },
+        {
+          "id": "39z9a5g7t",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "vj8zllrmt",
+      "date": "2025-10-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ms8863ym0",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9040,
+          "dt": ""
+        },
+        {
+          "id": "mgqjh81kz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9057,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "7swlmgko0",
+      "date": "2025-10-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "bhqj097sg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "hhkbm2nom",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "dhm1x7zc8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4tzx9d30f",
+      "date": "2025-10-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ecxdth24r",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "5negm279p",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "l7d376vlz",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "u2k1zaznb",
+      "date": "2025-10-29",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "9tzif57ay",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "04dqvw46w",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "7emdf0btu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "r5npe8som",
+      "date": "2025-10-30",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "5bf0ycabf",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "x7pw8ll7w",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "p3ceqoile",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "rtz4cfne0",
+      "date": "2025-10-31",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "0yyv7fd4u",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "kpy5n2ccu",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9095,
+          "dt": ""
+        },
+        {
+          "id": "2afjzxewr",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "h0w9a6m22",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        },
+        {
+          "id": "3l9hfpb5q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9059,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "xo6jnkwj6",
+      "date": "2025-11-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "yimk7qfrd",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9080,
+          "dt": ""
+        },
+        {
+          "id": "abuygbo4k",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "h1py8wijr",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "1fgmjcncz",
+      "date": "2025-11-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "he4m7r19l",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "w1f29zl3w",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "5w4ecn417",
+      "date": "2025-11-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "xgod42zpf",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "nycjkve34",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "eam4vrl33",
+      "date": "2025-11-06",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "6772e0wbu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "24il964r7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "45oxxxssi",
+      "date": "2025-11-07",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "hfjrx4k0y",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "q75x6fdqg",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        },
+        {
+          "id": "20jdldey5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9081,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "us5t3v0rz",
+      "date": "2025-11-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "3rb4lbz54",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9220,
+          "dt": ""
+        },
+        {
+          "id": "mrjjvo5i5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8966,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "tbfsw0y5l",
+      "date": "2025-11-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "mgrh65j9r",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9220,
+          "dt": ""
+        },
+        {
+          "id": "tdep5sjl7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8966,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "4v1161pz6",
+      "date": "2025-11-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "fb5xc5oci",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8966,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "a6b3b5f3f",
+      "date": "2025-11-13",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "8yp7l7mhi",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8966,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "2brdu8eq6",
+      "date": "2025-11-14",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "05if4rpgk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8966,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "vgyrod8ak",
+      "date": "2025-11-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "acz79ehk1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9903,
+          "dt": ""
+        },
+        {
+          "id": "kryn2qf49",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "d4rsdbejv",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "ga9fax0bu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "utn9txi8b",
+      "date": "2025-11-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "cxdqgdrm3",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9903,
+          "dt": ""
+        },
+        {
+          "id": "j279udo1j",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "0q3hbdjre",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "zf7iax3yo",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "f06uq53yu",
+      "date": "2025-11-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "6aedjl35w",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9903,
+          "dt": ""
+        },
+        {
+          "id": "9uvthddd0",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "md2p6xzve",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "ehtrpu6ns",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "brwd0ndgn",
+      "date": "2025-11-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "j63g1c5de",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "k7z56soou",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "5z9pi1c5q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "zit40ks25",
+      "date": "2025-11-21",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "fl0wa910f",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "u6u3udeiu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "qzuhs5vom",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "qk2ka747n",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        },
+        {
+          "id": "z5l6541k4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9608,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "2upgqr2wq",
+      "date": "2025-11-24",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "yddri6rmf",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "xsl544a39",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "umwqsa25y",
+      "date": "2025-11-25",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qx1aje7zg",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "b287haq06",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "kcl119cr9",
+      "date": "2025-11-26",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "obyinqtj4",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "s1ffun9pn",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "phle3hlb0",
+      "date": "2025-11-27",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "kqv6o313k",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "8br9lvk6z",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6vgc1tsam",
+      "date": "2025-11-28",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "k0wmkhrjw",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "gq129ipf6",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "b13bl0vkn",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9341,
+          "dt": ""
+        },
+        {
+          "id": "b3u356bm9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        },
+        {
+          "id": "syhwt43ny",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9487,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "eg8yz5b09",
+      "date": "2025-12-01",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "qdd6dc0w1",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9145,
+          "dt": ""
+        },
+        {
+          "id": "tni42ieho",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "l5srcbpf6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "djco06azk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "1t6q5cx8c",
+      "date": "2025-12-02",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "pom4o8gp2",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9145,
+          "dt": ""
+        },
+        {
+          "id": "6p1cxjies",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "rnoavnz7e",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "lknzd46xl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "1y6apihlg",
+      "date": "2025-12-03",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "3f6rz89x5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "exp69otar",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "t4eu1i1qo",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "79voyv0no",
+      "date": "2025-12-04",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "obcn0f0p8",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "ym6ng9ewc",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "4fnd0mowv",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "8j1bz87y3",
+      "date": "2025-12-05",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "ds1ec1xgu",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "hliz7o1xm",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        },
+        {
+          "id": "md0b5icyd",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9358,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ziv48wret",
+      "date": "2025-12-08",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "dp2d2vy8x",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "sfn67h83q",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        },
+        {
+          "id": "b4bgxobq4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "pq0b06jvw",
+      "date": "2025-12-09",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "cde6814bw",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "dpncje2kw",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        },
+        {
+          "id": "zrf27na5h",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "uauxtekfa",
+      "date": "2025-12-10",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "gjlm1xh2b",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "f45ic2lsd",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        },
+        {
+          "id": "v85ajqkwl",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "sndnvfq3s",
+      "date": "2025-12-11",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "peo45atpq",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "iyu73qqbo",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        },
+        {
+          "id": "6a9lyqoih",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ucw9yf9h0",
+      "date": "2025-12-12",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "j6qhcs0l7",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "zmxuuxukr",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9383,
+          "dt": ""
+        },
+        {
+          "id": "w7xj0m5k7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        },
+        {
+          "id": "0a6gi08sk",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9241,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "gf9rrqdev",
+      "date": "2025-12-15",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "77pxtk5nv",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "c6f6lc7ll",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "cc1tx5rn6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "933wrefah",
+      "date": "2025-12-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "6la9219n2",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "brhvfzylb",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "0y9erzop3",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "of89xsw14",
+      "date": "2025-12-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "jy3ltr0pk",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "wk2ovzb8l",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "zotxe54zh",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "6d837515h",
+      "date": "2025-12-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "zkoycz4ub",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "3ra1stqdf",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "lzltt49z5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        }
+      ]
+    },
+    {
+      "id": "ecc44d0xj",
+      "date": "2025-12-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2",
+        "c5"
+      ],
+      "trips": [
+        {
+          "id": "4ylks0flx",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "pf3idbev0",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "e1hthjhuh",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9517,
+          "dt": ""
+        },
+        {
+          "id": "f6qmj5yt5",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "ut32598p4",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        },
+        {
+          "id": "d7m67fmj6",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9538,
+          "dt": ""
+        }
+      ]
+    },
     {
       "id": "e6ax27dqb",
       "date": "2026-01-06",
@@ -886,6 +6565,272 @@
     }
   ],
   "depenses": [
+    {
+      "id": "aay5pqm95",
+      "date": "2025-01-06",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 220
+    },
+    {
+      "id": "gow20bm09",
+      "date": "2025-01-13",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "5xp46npak",
+      "date": "2025-01-20",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "5thqpozz2",
+      "date": "2025-01-27",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "l7xez0dtq",
+      "date": "2025-02-03",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "py9ruu948",
+      "date": "2025-02-10",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "nzqgg6ums",
+      "date": "2025-02-24",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 180
+    },
+    {
+      "id": "0edgf9333",
+      "date": "2025-03-03",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "p8okv9sdm",
+      "date": "2025-03-10",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "c9yrm43re",
+      "date": "2025-03-17",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "ka42bfdd5",
+      "date": "2025-03-24",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "ixnzv26hc",
+      "date": "2025-03-31",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "k5vby1h16",
+      "date": "2025-04-07",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "et1lub3vl",
+      "date": "2025-04-14",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "tkxkhdyuw",
+      "date": "2025-04-21",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "gbmcwjr0y",
+      "date": "2025-04-28",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "2u1ihw9t6",
+      "date": "2025-05-05",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "6kr8118gl",
+      "date": "2025-05-12",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "yyukztchg",
+      "date": "2025-05-19",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 100
+    },
+    {
+      "id": "66qhz772j",
+      "date": "2025-05-26",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "071t9ptz8",
+      "date": "2025-06-02",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 337
+    },
+    {
+      "id": "wfg21qp9q",
+      "date": "2025-06-09",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "55zq0tilf",
+      "date": "2025-06-16",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "grhr31i9m",
+      "date": "2025-06-23",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 485
+    },
+    {
+      "id": "hfy7qa5oi",
+      "date": "2025-06-30",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 100
+    },
+    {
+      "id": "9uu9qomnt",
+      "date": "2025-07-14",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "v59grge7k",
+      "date": "2025-08-04",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "sfpm92gbu",
+      "date": "2025-08-11",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "hvby233po",
+      "date": "2025-08-18",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "0lv43jcrj",
+      "date": "2025-08-25",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "xs4y66gs4",
+      "date": "2025-09-01",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "bb9ynmf00",
+      "date": "2025-09-08",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "fp6l3tx17",
+      "date": "2025-09-15",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "war4eeuck",
+      "date": "2025-09-22",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "llh6vjofr",
+      "date": "2025-09-29",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "n3v0ivzxk",
+      "date": "2025-10-06",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 200
+    },
+    {
+      "id": "5010ry1ei",
+      "date": "2025-10-13",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 177
+    },
+    {
+      "id": "xut324q0m",
+      "date": "2025-10-27",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 327
+    },
     {
       "id": "k03y0dcxc",
       "date": "2026-02-24",
