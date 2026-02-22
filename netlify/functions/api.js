@@ -5,7 +5,7 @@ const https = require('https');
 const JWT_SECRET = process.env.JWT_SECRET || 'jw-transport-2026-netlify-fallback';
 const JWT_EXPIRES = '7d';
 
-// JSONBlob.com — permanent cloud storage (no API key needed, survives deploys)
+// JSONBlob.com — permanent cloud storage (no API key, survives all deploys)
 const USERS_BLOB = '019c878a-30b7-738c-af6d-57ddbc887dd0';
 const DATA_BLOB = '019c878a-31be-7177-9215-3bd514cbd96a';
 
