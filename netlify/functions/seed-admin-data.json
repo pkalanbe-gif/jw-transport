@@ -31,9 +31,12 @@
     {
       "id": "c5",
       "nom": "Ginior",
-      "role": "Helper",
+      "role": "Chauffeur",
       "aktif": true,
-      "courriel": ""
+      "courriel": "",
+      "tauxPersonnel": "",
+      "sin": "",
+      "adresse": ""
     }
   ],
   "voyages": [
@@ -5768,9 +5771,8 @@
       "id": "31kwyzdsn",
       "date": "2026-01-08",
       "chofè": "c1",
-      "helpers": [
-        "c2"
-      ],
+      "helpers": [],
+      "vehiculeId": "",
       "trips": [
         {
           "id": "3bfyftwt0",
@@ -6562,275 +6564,141 @@
           "dt": "80083367"
         }
       ]
+    },
+    {
+      "id": "3vmcl9e0x",
+      "date": "2026-02-16",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "vehiculeId": "c9789kzkw",
+      "trips": [
+        {
+          "id": "hys24ch50",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9250,
+          "dt": "80083385"
+        },
+        {
+          "id": "3ibvte4wv",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9090,
+          "dt": "80083394"
+        }
+      ]
+    },
+    {
+      "id": "btec8iuqy",
+      "date": "2026-02-17",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "vehiculeId": "c9789kzkw",
+      "trips": [
+        {
+          "id": "rj3frnb85",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9400,
+          "dt": "80083426"
+        },
+        {
+          "id": "t0ag8lb3f",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9190,
+          "dt": "80083430"
+        }
+      ]
+    },
+    {
+      "id": "gi4wfe3d8",
+      "date": "2026-02-18",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "vehiculeId": "c9789kzkw",
+      "trips": [
+        {
+          "id": "i5961x46i",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9780,
+          "dt": "80083465"
+        },
+        {
+          "id": "9zu3yjhxx",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8930,
+          "dt": "80083470"
+        }
+      ]
+    },
+    {
+      "id": "xsz31iwps",
+      "date": "2026-02-19",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "vehiculeId": "c9789kzkw",
+      "trips": [
+        {
+          "id": "t2xalfa1b",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8880,
+          "dt": "80083307"
+        },
+        {
+          "id": "e8753z082",
+          "zone": "06",
+          "nbVoyages": 1,
+          "poidsChaj": 9320,
+          "dt": "80083520"
+        },
+        {
+          "id": "43mcadsb9",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8800,
+          "dt": "80083528"
+        }
+      ]
+    },
+    {
+      "id": "c8bkptq8r",
+      "date": "2026-02-20",
+      "chofè": "c1",
+      "helpers": [
+        "c2"
+      ],
+      "vehiculeId": "c9789kzkw",
+      "trips": [
+        {
+          "id": "zp4yyqaf7",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 9190,
+          "dt": "80083559"
+        },
+        {
+          "id": "rkurr24oe",
+          "zone": "13",
+          "nbVoyages": 1,
+          "poidsChaj": 8570,
+          "dt": "135-02-0279\n\n135-01-9041"
+        }
+      ]
     }
   ],
   "depenses": [
-    {
-      "id": "aay5pqm95",
-      "date": "2025-01-06",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 220
-    },
-    {
-      "id": "gow20bm09",
-      "date": "2025-01-13",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "5xp46npak",
-      "date": "2025-01-20",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 250
-    },
-    {
-      "id": "5thqpozz2",
-      "date": "2025-01-27",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 350
-    },
-    {
-      "id": "l7xez0dtq",
-      "date": "2025-02-03",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 350
-    },
-    {
-      "id": "py9ruu948",
-      "date": "2025-02-10",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "nzqgg6ums",
-      "date": "2025-02-24",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 180
-    },
-    {
-      "id": "0edgf9333",
-      "date": "2025-03-03",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 250
-    },
-    {
-      "id": "p8okv9sdm",
-      "date": "2025-03-10",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 250
-    },
-    {
-      "id": "c9yrm43re",
-      "date": "2025-03-17",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "ka42bfdd5",
-      "date": "2025-03-24",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "ixnzv26hc",
-      "date": "2025-03-31",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "k5vby1h16",
-      "date": "2025-04-07",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 400
-    },
-    {
-      "id": "et1lub3vl",
-      "date": "2025-04-14",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 400
-    },
-    {
-      "id": "tkxkhdyuw",
-      "date": "2025-04-21",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 400
-    },
-    {
-      "id": "gbmcwjr0y",
-      "date": "2025-04-28",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "2u1ihw9t6",
-      "date": "2025-05-05",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 400
-    },
-    {
-      "id": "6kr8118gl",
-      "date": "2025-05-12",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 250
-    },
-    {
-      "id": "yyukztchg",
-      "date": "2025-05-19",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 100
-    },
-    {
-      "id": "66qhz772j",
-      "date": "2025-05-26",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "071t9ptz8",
-      "date": "2025-06-02",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 337
-    },
-    {
-      "id": "wfg21qp9q",
-      "date": "2025-06-09",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 350
-    },
-    {
-      "id": "55zq0tilf",
-      "date": "2025-06-16",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "grhr31i9m",
-      "date": "2025-06-23",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 485
-    },
-    {
-      "id": "hfy7qa5oi",
-      "date": "2025-06-30",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 100
-    },
-    {
-      "id": "9uu9qomnt",
-      "date": "2025-07-14",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 350
-    },
-    {
-      "id": "v59grge7k",
-      "date": "2025-08-04",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "sfpm92gbu",
-      "date": "2025-08-11",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "hvby233po",
-      "date": "2025-08-18",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "0lv43jcrj",
-      "date": "2025-08-25",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "xs4y66gs4",
-      "date": "2025-09-01",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 300
-    },
-    {
-      "id": "bb9ynmf00",
-      "date": "2025-09-08",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "fp6l3tx17",
-      "date": "2025-09-15",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "war4eeuck",
-      "date": "2025-09-22",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 150
-    },
-    {
-      "id": "llh6vjofr",
-      "date": "2025-09-29",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 350
-    },
-    {
-      "id": "n3v0ivzxk",
-      "date": "2025-10-06",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 200
-    },
-    {
-      "id": "5010ry1ei",
-      "date": "2025-10-13",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 177
-    },
-    {
-      "id": "xut324q0m",
-      "date": "2025-10-27",
-      "categorie": "Essence",
-      "description": "Diesel",
-      "montant": 327
-    },
     {
       "id": "k03y0dcxc",
       "date": "2026-02-24",
@@ -6998,6 +6866,272 @@
       "categorie": "Autre",
       "description": "Nourriture Dominos Pizza",
       "montant": 45.37
+    },
+    {
+      "id": "xut324q0m",
+      "date": "2025-10-27",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 327
+    },
+    {
+      "id": "5010ry1ei",
+      "date": "2025-10-13",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 177
+    },
+    {
+      "id": "n3v0ivzxk",
+      "date": "2025-10-06",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 200
+    },
+    {
+      "id": "llh6vjofr",
+      "date": "2025-09-29",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "war4eeuck",
+      "date": "2025-09-22",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "fp6l3tx17",
+      "date": "2025-09-15",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "bb9ynmf00",
+      "date": "2025-09-08",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "xs4y66gs4",
+      "date": "2025-09-01",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "0lv43jcrj",
+      "date": "2025-08-25",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "hvby233po",
+      "date": "2025-08-18",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "sfpm92gbu",
+      "date": "2025-08-11",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "v59grge7k",
+      "date": "2025-08-04",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "9uu9qomnt",
+      "date": "2025-07-14",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "hfy7qa5oi",
+      "date": "2025-06-30",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 100
+    },
+    {
+      "id": "grhr31i9m",
+      "date": "2025-06-23",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 485
+    },
+    {
+      "id": "55zq0tilf",
+      "date": "2025-06-16",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "wfg21qp9q",
+      "date": "2025-06-09",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "071t9ptz8",
+      "date": "2025-06-02",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 337
+    },
+    {
+      "id": "66qhz772j",
+      "date": "2025-05-26",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "yyukztchg",
+      "date": "2025-05-19",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 100
+    },
+    {
+      "id": "6kr8118gl",
+      "date": "2025-05-12",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "2u1ihw9t6",
+      "date": "2025-05-05",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "gbmcwjr0y",
+      "date": "2025-04-28",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 150
+    },
+    {
+      "id": "tkxkhdyuw",
+      "date": "2025-04-21",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "et1lub3vl",
+      "date": "2025-04-14",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "k5vby1h16",
+      "date": "2025-04-07",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 400
+    },
+    {
+      "id": "ixnzv26hc",
+      "date": "2025-03-31",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "ka42bfdd5",
+      "date": "2025-03-24",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "c9yrm43re",
+      "date": "2025-03-17",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "p8okv9sdm",
+      "date": "2025-03-10",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "0edgf9333",
+      "date": "2025-03-03",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "nzqgg6ums",
+      "date": "2025-02-24",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 180
+    },
+    {
+      "id": "py9ruu948",
+      "date": "2025-02-10",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "l7xez0dtq",
+      "date": "2025-02-03",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "5thqpozz2",
+      "date": "2025-01-27",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 350
+    },
+    {
+      "id": "5xp46npak",
+      "date": "2025-01-20",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 250
+    },
+    {
+      "id": "gow20bm09",
+      "date": "2025-01-13",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 300
+    },
+    {
+      "id": "aay5pqm95",
+      "date": "2025-01-06",
+      "categorie": "Essence",
+      "description": "Diesel",
+      "montant": 220
     }
   ],
   "factures": [
@@ -7029,7 +7163,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-031",
       "sousTotal": 2343.8,
       "tps": 117.19,
@@ -7064,7 +7198,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-032",
       "sousTotal": 3519.8,
       "tps": 175.99,
@@ -7099,7 +7233,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-033",
       "sousTotal": 3040.6,
       "tps": 152.03,
@@ -7134,7 +7268,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-034",
       "sousTotal": 3365.4,
       "tps": 168.27,
@@ -7169,7 +7303,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-035",
       "sousTotal": 3734.1,
       "tps": 186.71,
@@ -7204,7 +7338,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-036",
       "sousTotal": 1898.6,
       "tps": 94.93,
@@ -7239,7 +7373,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-037",
       "sousTotal": 1259,
       "tps": 62.95,
@@ -7265,7 +7399,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-038",
       "sousTotal": 1286.1,
       "tps": 64.3,
@@ -7291,7 +7425,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-039",
       "sousTotal": 989.1,
       "tps": 49.46,
@@ -7326,7 +7460,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-040",
       "sousTotal": 3353.4,
       "tps": 167.67,
@@ -7361,7 +7495,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-041",
       "sousTotal": 2833,
       "tps": 141.65,
@@ -7396,7 +7530,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-042",
       "sousTotal": 704,
       "tps": 35.2,
@@ -7431,7 +7565,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-043",
       "sousTotal": 3351.7,
       "tps": 167.59,
@@ -7466,7 +7600,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-044",
       "sousTotal": 2812.6,
       "tps": 140.63,
@@ -7501,7 +7635,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-045",
       "sousTotal": 4889.5,
       "tps": 244.48,
@@ -7536,7 +7670,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-046",
       "sousTotal": 4159.9,
       "tps": 208,
@@ -7571,7 +7705,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-047",
       "sousTotal": 3989.6,
       "tps": 199.48,
@@ -7606,7 +7740,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-048",
       "sousTotal": 3606.1,
       "tps": 180.31,
@@ -7641,7 +7775,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-049",
       "sousTotal": 3944.9,
       "tps": 197.25,
@@ -7676,7 +7810,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-050",
       "sousTotal": 3000.2,
       "tps": 150.01,
@@ -7711,7 +7845,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-051",
       "sousTotal": 3388.7,
       "tps": 169.44,
@@ -7746,7 +7880,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-053",
       "sousTotal": 4391.4,
       "tps": 219.57,
@@ -7851,7 +7985,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-059",
       "sousTotal": 2612.2,
       "tps": 130.61,
@@ -7886,7 +8020,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-063",
       "sousTotal": 3972.6,
       "tps": 198.63,
@@ -7921,7 +8055,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-065",
       "sousTotal": 4502,
       "tps": 225.1,
@@ -7947,7 +8081,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-066",
       "sousTotal": 1818.9,
       "tps": 90.95,
@@ -7982,7 +8116,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-067",
       "sousTotal": 3461.4,
       "tps": 173.07,
@@ -8017,7 +8151,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-068",
       "sousTotal": 3314.5,
       "tps": 165.73,
@@ -8052,7 +8186,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-069",
       "sousTotal": 2249.7,
       "tps": 112.49,
@@ -8087,7 +8221,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-070",
       "sousTotal": 3179.1,
       "tps": 158.96,
@@ -8122,7 +8256,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Envoyée",
+      "statut": "Payée",
       "numero": "FAC-071",
       "sousTotal": 3107,
       "tps": 155.35,
@@ -8157,7 +8291,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-072",
       "sousTotal": 3284.3,
       "tps": 164.22,
@@ -8201,7 +8335,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-074",
       "sousTotal": 3092.4,
       "tps": 154.62,
@@ -8236,7 +8370,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-076",
       "sousTotal": 3824.6,
       "tps": 191.23,
@@ -8262,7 +8396,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-077",
       "sousTotal": 2446.5,
       "tps": 122.33,
@@ -8297,7 +8431,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-078",
       "sousTotal": 4686.9,
       "tps": 234.35,
@@ -8332,12 +8466,12 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-079",
       "sousTotal": 5716.7,
-      "tps": 285.83,
+      "tps": 285.84,
       "tvq": 570.24,
-      "total": 6572.77
+      "total": 6572.78
     },
     {
       "id": "vzewxfd8q",
@@ -8367,7 +8501,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-081",
       "sousTotal": 3758.9,
       "tps": 187.95,
@@ -8402,7 +8536,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-082",
       "sousTotal": 2301.4,
       "tps": 115.07,
@@ -8437,7 +8571,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-083",
       "sousTotal": 7230.4,
       "tps": 361.52,
@@ -8472,7 +8606,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-084",
       "sousTotal": 4924,
       "tps": 246.2,
@@ -8507,7 +8641,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-085",
       "sousTotal": 5678.7,
       "tps": 283.94,
@@ -8542,7 +8676,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-086",
       "sousTotal": 5695.3,
       "tps": 284.77,
@@ -8577,7 +8711,7 @@
       ],
       "avecTPS": true,
       "avecTVQ": true,
-      "statut": "Nouvelle",
+      "statut": "Payée",
       "numero": "FAC-087",
       "sousTotal": 6746.2,
       "tps": 337.31,
@@ -8653,6 +8787,41 @@
       "tps": 181.62,
       "tvq": 362.32,
       "total": 4176.24
+    },
+    {
+      "id": "lm0pi70oo",
+      "clientId": "2fmamuwhq",
+      "date": "2026-02-21",
+      "dateLimite": "",
+      "periode": "5 janv. 2026 au 9 janv. 2026",
+      "details": [
+        {
+          "id": "txoahufb3",
+          "zone": "06",
+          "description": "Nbre fiches Montréal: 6",
+          "quantite": "28250",
+          "unite": "kg",
+          "prixUnitaire": "0.09",
+          "dt": "80082006\n80082014\n80082026\n80082091\n80082111\n80082128"
+        },
+        {
+          "id": "6c4m7on6p",
+          "zone": "13",
+          "description": "Nbre fiches Laval: 8",
+          "quantite": "38940",
+          "unite": "kg",
+          "prixUnitaire": "0.07",
+          "dt": "80081991\n80082057\n80082065\n80082162\n80082166\n80082171\n80082159\n80082154"
+        }
+      ],
+      "avecTPS": true,
+      "avecTVQ": true,
+      "statut": "Envoyée",
+      "numero": "FAC-049",
+      "sousTotal": 5268.3,
+      "tps": 263.42,
+      "tvq": 525.51,
+      "total": 6057.23
     }
   ],
   "clients": [

@@ -119,9 +119,15 @@ async function handleLogin(body) {
       const hash = await bcrypt.hash('admin', 10);
       user = { username: 'admin', displayName: 'admin', passwordHash: hash, createdAt: new Date().toISOString() };
       await store.setJSON('admin', user);
+      // Only seed data if NO data exists yet (never overwrite existing data)
       const ds = dataStore();
-      await ds.setJSON('admin', SEED_DATA || DEFAULT_DATA);
-      console.log('Admin user auto-seeded');
+      const existingData = await ds.get('admin', { type: 'json' }).catch(() => null);
+      if (!existingData || !existingData.factures || existingData.factures.length === 0) {
+        await ds.setJSON('admin', SEED_DATA || DEFAULT_DATA);
+        console.log('Admin user auto-seeded WITH data (first time)');
+      } else {
+        console.log('Admin user re-seeded BUT data preserved (already has', existingData.factures.length, 'factures)');
+      }
     }
 
     if (!user) {
