@@ -8,12 +8,7 @@ const JWT_EXPIRES = '7d';
 // ==================== Firebase Firestore (permanent storage) ====================
 
 if (!admin.apps.length) {
-  let serviceAccount;
-  if (process.env.FIREBASE_KEY) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
-  } else {
-    serviceAccount = require('./firebase-key.json');
-  }
+  const serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
