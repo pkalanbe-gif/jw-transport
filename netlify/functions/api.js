@@ -1,13 +1,24 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const https = require('https');
+const admin = require('firebase-admin');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'jw-transport-2026-netlify-fallback';
 const JWT_EXPIRES = '7d';
 
-// JSONBlob.com — permanent cloud storage (no API key, survives all deploys)
-const USERS_BLOB = '019c878a-30b7-738c-af6d-57ddbc887dd0';
-const DATA_BLOB = '019c878a-31be-7177-9215-3bd514cbd96a';
+// ==================== Firebase Firestore (permanent storage) ====================
+
+if (!admin.apps.length) {
+  let serviceAccount;
+  if (process.env.FIREBASE_KEY) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
+  } else {
+    serviceAccount = require('./firebase-key.json');
+  }
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+const db = admin.firestore();
 
 const CORS_HEADERS = {
   'Content-Type': 'application/json',
@@ -27,64 +38,26 @@ const DEFAULT_DATA = {
   }
 };
 
-// ==================== JSONBlob helpers ====================
-
-function jsonblobGet(blobId) {
-  return new Promise((resolve, reject) => {
-    const opts = { method: 'GET', hostname: 'jsonblob.com', path: '/api/jsonBlob/' + blobId, headers: { 'Accept': 'application/json' } };
-    const req = https.request(opts, (res) => {
-      let d = '';
-      res.on('data', c => d += c);
-      res.on('end', () => {
-        try { resolve(JSON.parse(d)); }
-        catch(e) { resolve(null); }
-      });
-    });
-    req.on('error', () => resolve(null));
-    req.end();
-  });
-}
-
-function jsonblobPut(blobId, data) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify(data);
-    const opts = {
-      method: 'PUT', hostname: 'jsonblob.com', path: '/api/jsonBlob/' + blobId,
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-    };
-    const req = https.request(opts, (res) => {
-      let d = '';
-      res.on('data', c => d += c);
-      res.on('end', () => resolve(res.statusCode === 200));
-    });
-    req.on('error', () => resolve(false));
-    req.write(body);
-    req.end();
-  });
-}
-
-// ==================== Store wrappers (same interface as before) ====================
+// ==================== Firestore Store wrappers ====================
 
 async function getUser(username) {
-  const all = await jsonblobGet(USERS_BLOB);
-  return all && all[username] ? all[username] : null;
+  const doc = await db.collection('users').doc(username).get();
+  return doc.exists ? doc.data() : null;
 }
 
 async function setUser(username, userData) {
-  const all = await jsonblobGet(USERS_BLOB) || {};
-  all[username] = userData;
-  return jsonblobPut(USERS_BLOB, all);
+  await db.collection('users').doc(username).set(userData);
+  return true;
 }
 
 async function getUserData(username) {
-  const all = await jsonblobGet(DATA_BLOB);
-  return all && all[username] ? all[username] : null;
+  const doc = await db.collection('user_data').doc(username).get();
+  return doc.exists ? doc.data() : null;
 }
 
 async function setUserData(username, data) {
-  const all = await jsonblobGet(DATA_BLOB) || {};
-  all[username] = data;
-  return jsonblobPut(DATA_BLOB, all);
+  await db.collection('user_data').doc(username).set(data);
+  return true;
 }
 
 // ==================== Helpers ====================
@@ -226,7 +199,7 @@ exports.handler = async (event, context) => {
 
   // Health check
   if (method === 'GET' && path === '/health') {
-    return res(200, { status: 'OK', message: 'JW Transport API (JSONBlob)', timestamp: new Date().toISOString() });
+    return res(200, { status: 'OK', message: 'JW Transport API (Firebase Firestore)', timestamp: new Date().toISOString() });
   }
 
   // Auth routes

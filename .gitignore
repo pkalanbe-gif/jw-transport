@@ -33,3 +33,4 @@ vercel.log
 
 # Local Netlify folder
 .netlify
+netlify/functions/firebase-key.json
