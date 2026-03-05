@@ -1393,19 +1393,24 @@ const removeKey=()=>{localStorage.removeItem("jw-api-key");setApiKey("");setAiMo
 
 const buildContext=()=>{
 const s=data.settings||{};const ent=s.entreprise||{};
-const voys=data.voyages||[];const deps=data.depenses||[];const facs=data.factures||[];
+const yr=new Date().getFullYear();const yrStr=String(yr);
+const allVoys=data.voyages||[];const allDeps=data.depenses||[];const facs=data.factures||[];
 const emps=data.chauffeurs||[];const vehs=data.vehicules||[];const ents=data.entretiens||[];
+const voys=allVoys.filter(v=>v.date&&v.date.startsWith(yrStr));
+const deps=allDeps.filter(d=>d.date&&d.date.startsWith(yrStr));
+const yrFacs=facs.filter(f=>f.date&&f.date.startsWith(yrStr));
 const totTrips=voys.reduce((a,v)=>(v.trips||[]).reduce((b,t)=>b+(t.nbVoyages||0),a),0);
 const totDep=deps.reduce((a,d)=>a+(d.montant||0),0);
-const totFac=facs.reduce((a,f)=>a+(f.total||0),0);
+const totFac=yrFacs.reduce((a,f)=>a+(f.total||0),0);
 const tare=s.tare||DEF_TARE;
 let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);totRev+=pN*(ZR[t.zone]||0)*(t.nbVoyages||1);}));
-return `Tu es l'assistant IA de J&W Transport. R\u00e9ponds toujours en fran\u00e7ais.
+return `Tu es l'assistant IA de J&W Transport. R\u00e9ponds toujours en fran\u00e7ais. Ann\u00e9e en cours: ${yr}.
 Entreprise: ${ent.nom||"J&W Transport"}, ${ent.adresse||""}, ${ent.ville||""}
 TPS: ${s.tpsNum||"N/A"}, TVQ: ${s.tvqNum||"N/A"}, NEQ: ${ent.neq||"N/A"}
 Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
 Employés et taux: ${emps.map(e=>`${e.nom}(${e.role})=${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}$/voy`).join(", ")}
-Stats: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${facs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu: ${totRev.toFixed(0)}$, Profit: ${(totRev-totDep).toFixed(0)}$
+Stats ${yr}: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${yrFacs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu ${yr}: ${totRev.toFixed(0)}$, Profit ${yr}: ${(totRev-totDep).toFixed(0)}$
+IMPORTANT: Utilise UNIQUEMENT les chiffres ci-dessus pour ${yr}. Ne jamais inventer ou estimer des chiffres.
 Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, 📋 Fiscal(T4A fédéral Case 048 + RL-1 Québec Case W pour travailleur autonome), Backup(JSON).
 ${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
 Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de d\u00e9lai.
@@ -1416,9 +1421,13 @@ Nouveau: Page "Agent Comptable" avec analyse TPS/TVQ, déductions, échéances f
 const analyze=(q)=>{
 const lo=q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const s=data.settings||{};const ent=s.entreprise||{};
-const voys=data.voyages||[];const deps=data.depenses||[];const facs=data.factures||[];
+const yr=new Date().getFullYear();const yrStr=String(yr);
+const allVoys=data.voyages||[];const allDeps=data.depenses||[];const allFacs=data.factures||[];
 const clis=data.clients||[];const vehs=data.vehicules||[];const emps=data.chauffeurs||[];
 const ents=data.entretiens||[];
+const voys=allVoys.filter(v=>v.date&&v.date.startsWith(yrStr));
+const deps=allDeps.filter(d=>d.date&&d.date.startsWith(yrStr));
+const facs=allFacs.filter(f=>f.date&&f.date.startsWith(yrStr));
 const totTrips=voys.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0);
 const totDep=deps.reduce((s,d)=>s+(d.montant||0),0);
 const totFac=facs.reduce((s,f)=>s+(f.total||0),0);
