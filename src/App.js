@@ -1204,7 +1204,7 @@ return<div>
 
 {/* Tabs */}
 <div style={{display:"flex",gap:4,marginBottom:16,flexWrap:"wrap"}}>
-{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"6px 12px",borderRadius:8,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,background:tab===t.id?C.accent:"transparent",color:tab===t.id?"#fff":C.muted}}>{t.label}</button>)}
+{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"9px 14px",borderRadius:8,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,background:tab===t.id?C.accent:"transparent",color:tab===t.id?"#fff":C.muted}}>{t.label}</button>)}
 </div>
 
 {/* Add transaction modal */}
@@ -1841,7 +1841,7 @@ return<div style={{padding:"clamp(8px,2vw,20px)",maxWidth:1100,margin:"0 auto"}}
 </div></div>
 
 <div style={{display:"flex",gap:6,marginBottom:16,overflowX:"auto",paddingBottom:4}}>
-{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"8px 14px",borderRadius:8,border:tab===t.id?"none":`1px solid ${C.border}`,background:tab===t.id?C.accent:"transparent",color:tab===t.id?"#fff":C.muted,fontWeight:700,fontSize:11,cursor:"pointer",whiteSpace:"nowrap"}}>{t.label}</button>)}
+{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"10px 16px",borderRadius:8,border:tab===t.id?"none":`1px solid ${C.border}`,background:tab===t.id?C.accent:"transparent",color:tab===t.id?"#fff":C.muted,fontWeight:700,fontSize:13,cursor:"pointer",whiteSpace:"nowrap"}}>{t.label}</button>)}
 </div>
 
 {tab==="apercu"&&<div>
@@ -2265,9 +2265,9 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
-<nav className="jw-sidebar" style={{width:185,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
+<nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
 <div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.2</div></div></div></div>
-<div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:5,padding:"8px 10px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:11,fontWeight:a?700:500,marginBottom:1,textAlign:"left"}}>{it.label}</button>;})}</div>
+<div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
 <div style={{width:28,height:28,borderRadius:7,background:C.g4,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:10,color:"#fff"}}>{user.displayName.charAt(0).toUpperCase()}</div>
@@ -2286,7 +2286,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </div>
 </div>
 {menuOpen&&<div className="jw-mobile-menu" style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:8,marginBottom:12,display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>
-{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{padding:"10px 8px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:11,fontWeight:a?700:500,textAlign:"left"}}>{it.label}</button>;})}
+{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{padding:"13px 10px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,textAlign:"left"}}>{it.label}</button>;})}
 <button onClick={doLogout} style={{padding:"10px 8px",borderRadius:7,border:`1px solid ${C.red}30`,cursor:"pointer",background:"transparent",color:C.red,fontSize:11,fontWeight:700,textAlign:"left",gridColumn:"1/3"}}>Déconnexion ({user.displayName})</button>
 </div>}
 {pg==="dashboard"&&<Dash data={data} go={goPage}/>}
