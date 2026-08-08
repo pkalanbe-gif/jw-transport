@@ -467,7 +467,7 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <input type="number" value={locPay} onChange={e=>setLocPay(e.target.value)} placeholder="0" style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:4,padding:"3px 6px",fontSize:13,width:80,outline:"none",fontWeight:600}}/>
 <span style={{fontSize:10,color:C.dim}}>$</span>
 </div>
-{actLoc?<span style={{fontSize:10,color:C.orange,fontStyle:"italic"}}>✨ Kamyon sa a nan lokasyon: {fM(actLoc.montant)}/{actLoc.frequence==="hebdomadaire"?"sem.":"mois"} — {actLoc.locataire}</span>:<span style={{fontSize:10,color:C.dim,fontStyle:"italic"}}>Antre montan location pou jou sa a — li ap ka ajoute nan facture a (bouton "+ 🔑 Loc")</span>}
+{actLoc?<span style={{fontSize:10,color:C.orange,fontStyle:"italic"}}>✨ Kamyon sa a nan lokasyon: {fM(actLoc.montant)}/{actLoc.frequence==="hebdomadaire"?"sem.":actLoc.frequence==="2semaines"?"2 sem.":"mois"} — {actLoc.locataire}</span>:<span style={{fontSize:10,color:C.dim,fontStyle:"italic"}}>Antre montan location pou jou sa a — li ap ka ajoute nan facture a (bouton "+ 🔑 Loc")</span>}
 </div>
 </div>;})()}
 {trips.map((t,idx)=>{const tc=cTrip(t);return<div key={t.id} style={{background:C.bg,borderRadius:10,padding:10,marginBottom:8,border:`1px solid ${C.border}`}}>
@@ -974,7 +974,10 @@ const allPays=useMemo(()=>{const r=[];locs.forEach(l=>{(l.paiementsRecus||[]).fo
 const mPays=useMemo(()=>allPays.filter(p=>p.date&&p.date.startsWith(month)),[allPays,month]);
 const totM=mPays.reduce((s,p)=>s+(parseFloat(p.montant)||0),0);
 const totY=allPays.filter(p=>p.date&&p.date.startsWith(curYear)).reduce((s,p)=>s+(parseFloat(p.montant)||0),0);
-const recuCeMois=l=>(l.paiementsRecus||[]).some(p=>p.date&&p.date.startsWith(curMonth));
+const expPerMonth=f=>f==="hebdomadaire"?4:f==="2semaines"?2:1;
+const freqLbl=f=>f==="hebdomadaire"?"semaine":f==="2semaines"?"2 semaines":"mois";
+const nCeMois=l=>(l.paiementsRecus||[]).filter(p=>p.date&&p.date.startsWith(curMonth)).length;
+const recuCeMois=l=>nCeMois(l)>=expPerMonth(l.frequence);
 const[y,m]=month.split("-").map(Number);
 const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"numeric"});
 const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
@@ -1009,7 +1012,7 @@ return<div>
 </div>
 {locs.length===0&&<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:30,textAlign:"center",color:C.dim,fontSize:12,marginBottom:20}}>Aucune location. Cliquez "+ Location" pour enregistrer un camion que vous louez à quelqu'un.</div>}
 {locs.length>0&&<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:20}}>
-{locs.map(l=>{const done=l.statut==="Terminé";const ok=recuCeMois(l);
+{locs.map(l=>{const done=l.statut==="Terminé";const ok=recuCeMois(l);const n=nCeMois(l);const exp=expPerMonth(l.frequence);
 return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.border:ok?C.green+"40":C.orange+"40"}`,borderRadius:14,padding:"14px 16px",flex:"1 1 300px",minWidth:280,opacity:done?0.6:1}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8,gap:8,flexWrap:"wrap"}}>
 <div>
@@ -1018,10 +1021,10 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
 <Bg text={done?"Terminé":"Actif"} color={done?C.dim:C.green}/>
-{!done&&<Bg text={ok?"✅ Reçu ce mois":"⏳ En attente"} color={ok?C.green:C.orange}/>}
+{!done&&<Bg text={ok?(exp>1?`✅ ${n}/${exp} reçu ce mois`:"✅ Reçu ce mois"):`⏳ ${n}/${exp} ce mois`} color={ok?C.green:C.orange}/>}
 </div>
 </div>
-<div style={{fontSize:12,color:C.text,marginBottom:4}}><b style={{color:C.cyan,fontSize:15}}>{fM(l.montant)}</b> / {l.frequence==="hebdomadaire"?"semaine":"mois"}</div>
+<div style={{fontSize:12,color:C.text,marginBottom:4}}><b style={{color:C.cyan,fontSize:15}}>{fM(l.montant)}</b> / {freqLbl(l.frequence)}</div>
 <div style={{fontSize:10,color:C.muted,marginBottom:10}}>Depuis: {fD(l.debut)}{l.fin?` → ${fD(l.fin)}`:""}{l.note?` • ${l.note}`:""}</div>
 <div style={{fontSize:10,color:C.dim,marginBottom:10}}>Total reçu: <b style={{color:C.green}}>{fM((l.paiementsRecus||[]).reduce((s,p)=>s+(parseFloat(p.montant)||0),0))}</b> ({(l.paiementsRecus||[]).length} paiements)</div>
 <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
@@ -1060,7 +1063,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 <div style={{display:"flex",gap:10}}>
 <In label="Montant ($)" type="number" value={fc.montant} onChange={v=>setFc({...fc,montant:v})} placeholder="1500.00"/>
-<In label="Fréquence" value={fc.frequence} onChange={v=>setFc({...fc,frequence:v})} options={[{value:"mensuel",label:"Par mois"},{value:"hebdomadaire",label:"Par semaine"}]}/>
+<In label="Fréquence" value={fc.frequence} onChange={v=>setFc({...fc,frequence:v})} options={[{value:"mensuel",label:"Par mois"},{value:"2semaines",label:"Aux 2 semaines"},{value:"hebdomadaire",label:"Par semaine"}]}/>
 </div>
 <div style={{display:"flex",gap:10}}>
 <In label="Début" type="date" value={fc.debut} onChange={v=>setFc({...fc,debut:v})}/>
