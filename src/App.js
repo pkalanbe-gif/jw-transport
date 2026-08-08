@@ -14,7 +14,7 @@ const DCATS=["Essence","Diesel","Entretien","Assurance","Péage","Réparation","
 const DCOLORS={"Essence":"#f59e0b","Diesel":"#f97316","Entretien":"#3b82f6","Assurance":"#8b5cf6","Péage":"#06b6d4","Réparation":"#ef4444","Fournitures":"#22c55e","Immatriculation":"#a855f7","Permis/SAAQ":"#7c3aed","Stationnement":"#64748b","Lavage camion":"#0ea5e9","Téléphone":"#14b8a6","Internet":"#0d9488","Loyer/Bureau":"#6366f1","Comptabilité":"#8b5cf6","Frais bancaire":"#9ca3af","Intérêts emprunt":"#ef4444","Amortissement":"#64748b","Publicité":"#ec4899","Nourriture/Repas":"#f43f5e","Formation":"#10b981","Équipement":"#3b82f6","Location équip.":"#0284c7","Sous-traitance":"#f59e0b","Salaires":"#22c55e","CNESST":"#a855f7","Déneigement":"#7dd3fc","Uniforme/Vêtement":"#d946ef","Outil":"#78716c","Logiciel/App":"#6366f1","Autre":"#ec4899"};
 const TAX_INFO={"Essence":"✅ 100% déductible","Diesel":"✅ 100% déductible","Entretien":"✅ 100% déductible","Assurance":"✅ 100% déductible (véhicule commercial)","Péage":"✅ 100% déductible","Réparation":"✅ 100% déductible","Fournitures":"✅ 100% déductible","Immatriculation":"✅ 100% déductible","Permis/SAAQ":"✅ 100% déductible","Stationnement":"✅ 100% déductible (travail)","Lavage camion":"✅ 100% déductible","Téléphone":"✅ % usage commercial","Internet":"✅ % usage commercial","Loyer/Bureau":"✅ % usage commercial","Comptabilité":"✅ 100% déductible","Frais bancaire":"✅ 100% déductible","Intérêts emprunt":"✅ 100% déductible (véhicule commercial)","Amortissement":"✅ DPA selon catégorie","Publicité":"✅ 100% déductible","Nourriture/Repas":"⚠️ 50% déductible (longue distance)","Formation":"✅ 100% déductible","Équipement":"✅ DPA ou 100% si <1500$","Location équip.":"✅ 100% déductible","Sous-traitance":"✅ 100% déductible","Salaires":"✅ 100% déductible","CNESST":"✅ 100% déductible","Déneigement":"✅ 100% déductible","Uniforme/Vêtement":"✅ 100% déductible (logo/sécurité)","Outil":"✅ 100% déductible","Logiciel/App":"✅ 100% déductible","Autre":"⚠️ Selon nature"};
 const C={bg:"#0a0e1a",card:"#111827",card2:"#1a2236",border:"#1e293b",accent:"#6366f1",accentL:"#818cf8",green:"#22c55e",red:"#ef4444",orange:"#f59e0b",purple:"#a855f7",cyan:"#06b6d4",text:"#f1f5f9",muted:"#94a3b8",dim:"#475569",g1:"linear-gradient(135deg,#6366f1,#8b5cf6)",g2:"linear-gradient(135deg,#22c55e,#06b6d4)",g3:"linear-gradient(135deg,#f59e0b,#ef4444)",g4:"linear-gradient(135deg,#3b82f6,#6366f1)"};
-const def={chauffeurs:[],voyages:[],depenses:[],factures:[],clients:[],vehicules:[],entretiens:[],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,tpsNum:"",tvqNum:"",entreprise:{nom:"J&W Transport",adresse:"",ville:"",telephone:"",courriel:"",neq:""},payrollSchedule:{frequency:"weekly",payDelay:2,payDay:5}}};
+const def={chauffeurs:[],voyages:[],depenses:[],factures:[],clients:[],vehicules:[],entretiens:[],paiements:[],locations:[],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,bonusLavalPerEmp:15,tpsNum:"",tvqNum:"",entreprise:{nom:"J&W Transport",adresse:"",ville:"",telephone:"",courriel:"",neq:""},payrollSchedule:{frequency:"weekly",payDelay:2,payDay:5}}};
 const ADMIN_DATA={chauffeurs:[{id:"c1",nom:"Brain Jean Ginior",role:"Chauffeur",aktif:true,courriel:"bainjunior2020@gmail.com"},{id:"c2",nom:"Djeph Alexandre",role:"Helper",aktif:true,courriel:"djephalexandre697@gmail.com"}],voyages:[{"id":"e6ax27dqb","date":"2026-01-06","chofè":"c1","helpers":["c2"],"trips":[{"id":"48azewten","zone":"13","nbVoyages":1,"poidsChaj":8820,"dt":"80081991"},{"id":"fkgveot0a","zone":"06","nbVoyages":1,"poidsChaj":9630,"dt":"80082006"},{"id":"6v047lbsr","zone":"06","nbVoyages":1,"poidsChaj":8890,"dt":"80082014"},{"id":"6cmhk1pjl","zone":"06","nbVoyages":1,"poidsChaj":9640,"dt":"80082026"}]},{"id":"j6aq7pvqk","date":"2026-01-07","chofè":"c1","helpers":["c2"],"trips":[{"id":"v2clkt6sd","zone":"13","nbVoyages":1,"poidsChaj":9660,"dt":"80082057"},{"id":"3eizy45fm","zone":"13","nbVoyages":1,"poidsChaj":9400,"dt":"80082065"},{"id":"lutlwglcu","zone":"06","nbVoyages":1,"poidsChaj":9090,"dt":"80082091"}]},{"id":"31kwyzdsn","date":"2026-01-08","chofè":"c1","helpers":["c2"],"trips":[{"id":"3bfyftwt0","zone":"13","nbVoyages":1,"poidsChaj":9010,"dt":"80082162"},{"id":"pd347ofos","zone":"06","nbVoyages":1,"poidsChaj":9320,"dt":"80082111"},{"id":"mvhckk16c","zone":"06","nbVoyages":1,"poidsChaj":9040,"dt":"80082128"}]},{"id":"fqe3xs2r7","date":"2026-01-09","chofè":"c1","helpers":["c2"],"trips":[{"id":"bhcovuifh","zone":"13","nbVoyages":1,"poidsChaj":9950,"dt":"80082166"},{"id":"a6fbg1yez","zone":"13","nbVoyages":1,"poidsChaj":9490,"dt":"80082171"},{"id":"d7azls8kt","zone":"13","nbVoyages":1,"poidsChaj":9740,"dt":"80082159"},{"id":"ay93r96f2","zone":"13","nbVoyages":1,"poidsChaj":9350,"dt":"80082154"}]},{"id":"2grd5mlgh","date":"2026-02-09","chofè":"c1","helpers":["c2"],"trips":[{"id":"0smpl48de","zone":"06","nbVoyages":1,"poidsChaj":9580,"dt":"80083154"},{"id":"0z96khprn","zone":"13","nbVoyages":1,"poidsChaj":9590,"dt":"80083161"}]},{"id":"nc78r3k2h","date":"2026-02-10","chofè":"c1","helpers":["c2"],"trips":[{"id":"ynzde93gx","zone":"13","nbVoyages":1,"poidsChaj":8610,"dt":"80083211"},{"id":"nncuxyz5n","zone":"13","nbVoyages":1,"poidsChaj":9240,"dt":"80083221"}]},{"id":"ky8w36qbn","date":"2026-02-11","chofè":"c1","helpers":["c2"],"trips":[{"id":"s19lb1bc4","zone":"13","nbVoyages":1,"poidsChaj":9400,"dt":"80083254"},{"id":"g05k7v0xz","zone":"13","nbVoyages":1,"poidsChaj":9110,"dt":"80083260"}]},{"id":"5zv224wvo","date":"2026-01-12","chofè":"c1","helpers":["c2"],"trips":[{"id":"jxeadfp0r","zone":"13","nbVoyages":1,"poidsChaj":10660,"dt":"80082208"},{"id":"y2jqwidh3","zone":"06","nbVoyages":1,"poidsChaj":8990,"dt":"80082996"}]},{"id":"0xn57vlt9","date":"2026-01-13","chofè":"c1","helpers":["c2"],"trips":[{"id":"alc6036bp","zone":"13","nbVoyages":1,"poidsChaj":8930,"dt":"80082245"},{"id":"jt0e6r5v8","zone":"13","nbVoyages":1,"poidsChaj":8750,"dt":"80082259"},{"id":"0k0iqhk43","zone":"06","nbVoyages":1,"poidsChaj":8640,"dt":"80082268"},{"id":"xuzor6rw6","zone":"13","nbVoyages":1,"poidsChaj":8670,"dt":"80082280"},{"id":"76m2x6h8h","zone":"13","nbVoyages":1,"poidsChaj":9040,"dt":"80082301"}]},{"id":"kb2iadjwt","date":"2026-01-14","chofè":"c1","helpers":["c2"],"trips":[{"id":"q8wkfa7jz","zone":"13","nbVoyages":1,"poidsChaj":8790,"dt":"80062315"},{"id":"4tjvg802n","zone":"13","nbVoyages":1,"poidsChaj":8770,"dt":"80082322"},{"id":"pl7hm7cya","zone":"06","nbVoyages":1,"poidsChaj":9070,"dt":"80082334"},{"id":"x4rsrmuw8","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082345"}]},{"id":"n6umuepb9","date":"2026-01-15","chofè":"c1","helpers":["c2"],"trips":[{"id":"vhm1zinw7","zone":"13","nbVoyages":1,"poidsChaj":9360,"dt":"80082369"},{"id":"yzph4o7ea","zone":"06","nbVoyages":1,"poidsChaj":9010,"dt":"80082387"},{"id":"xwrkty7j9","zone":"13","nbVoyages":1,"poidsChaj":8660,"dt":"80082395"}]},{"id":"1v5y77icz","date":"2026-01-19","chofè":"c1","helpers":["c2"],"trips":[{"id":"nyuvxi73x","zone":"13","nbVoyages":1,"poidsChaj":9320,"dt":"80082468"},{"id":"g2lqhq615","zone":"13","nbVoyages":1,"poidsChaj":9230,"dt":"80082482"},{"id":"81hj9s1zl","zone":"13","nbVoyages":1,"poidsChaj":9780,"dt":"80082461"}]},{"id":"yz0r60sfq","date":"2026-01-20","chofè":"c1","helpers":["c2"],"trips":[{"id":"b7hgtoyfe","zone":"13","nbVoyages":1,"poidsChaj":9500,"dt":"80082501"},{"id":"kabomeh29","zone":"13","nbVoyages":1,"poidsChaj":9110,"dt":"80082510"},{"id":"8sei2kjgh","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80082521"}]},{"id":"0l6bu7a9y","date":"2026-01-21","chofè":"c1","helpers":["c2"],"trips":[{"id":"rqyo7tg2w","zone":"13","nbVoyages":1,"poidsChaj":9660,"dt":"80082547"},{"id":"9wc95hqk9","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082557"},{"id":"q51fd029k","zone":"06","nbVoyages":1,"poidsChaj":9270,"dt":"80082565"},{"id":"uj2tv7ydd","zone":"06","nbVoyages":1,"poidsChaj":8860,"dt":"80082591"}]},{"id":"20947r23w","date":"2026-01-22","chofè":"c1","helpers":["c2"],"trips":[{"id":"vny9uga7m","zone":"13","nbVoyages":1,"poidsChaj":9330,"dt":"80082604"},{"id":"odh17nv7p","zone":"13","nbVoyages":1,"poidsChaj":8990,"dt":"80082615"},{"id":"yaxm07ew8","zone":"13","nbVoyages":1,"poidsChaj":8620,"dt":"80082634"},{"id":"hfrrex50t","zone":"13","nbVoyages":1,"poidsChaj":9450,"dt":"80082638"}]},{"id":"kcvwaej8n","date":"2026-01-23","chofè":"c1","helpers":["c2"],"trips":[{"id":"umi0wukhb","zone":"13","nbVoyages":1,"poidsChaj":9480,"dt":"80082668"},{"id":"m80c878rb","zone":"06","nbVoyages":1,"poidsChaj":9710,"dt":"80082678"},{"id":"r1k14dr21","zone":"13","nbVoyages":1,"poidsChaj":9230,"dt":"80082685"}]},{"id":"jmupwgxvw","date":"2026-01-26","chofè":"c1","helpers":["c2"],"trips":[{"id":"a8lhzeem6","zone":"13","nbVoyages":1,"poidsChaj":9370,"dt":"80082706"},{"id":"mydlmxe2i","zone":"13","nbVoyages":1,"poidsChaj":9490,"dt":"80082712"}]},{"id":"ri3serni0","date":"2026-01-27","chofè":"c1","helpers":["c2"],"trips":[{"id":"0rs6fjwz4","zone":"13","nbVoyages":1,"poidsChaj":9470,"dt":"80082751"},{"id":"s7sn3um7q","zone":"13","nbVoyages":1,"poidsChaj":8860,"dt":"80082767"}]},{"id":"c1ldyqgj8","date":"2026-01-28","chofè":"c1","helpers":["c2"],"trips":[{"id":"ps1n3i701","zone":"13","nbVoyages":1,"poidsChaj":9260,"dt":"80082796"},{"id":"garz8tzsk","zone":"06","nbVoyages":1,"poidsChaj":9210,"dt":"80082811"},{"id":"z7qvgs6g7","zone":"13","nbVoyages":1,"poidsChaj":9180,"dt":"80082831"}]},{"id":"s5jadpp51","date":"2026-01-29","chofè":"c1","helpers":["c2"],"trips":[{"id":"65onpfsh9","zone":"13","nbVoyages":1,"poidsChaj":9120,"dt":"80082847"},{"id":"6pxip2by2","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082862"},{"id":"uvasz9crv","zone":"13","nbVoyages":1,"poidsChaj":9380,"dt":"80082878"}]},{"id":"9kuf4c38b","date":"2026-01-30","chofè":"c1","helpers":["c2"],"trips":[{"id":"yv3z7zhc9","zone":"13","nbVoyages":1,"poidsChaj":9300,"dt":"80082892"},{"id":"6jb29vfev","zone":"06","nbVoyages":1,"poidsChaj":9600,"dt":"80082894"},{"id":"euzqw0siw","zone":"06","nbVoyages":1,"poidsChaj":9490,"dt":"80082905"},{"id":"6se8ry425","zone":"06","nbVoyages":1,"poidsChaj":9330,"dt":"80082909"}]},{"id":"tzw0vkpa9","date":"2026-02-02","chofè":"c1","helpers":["c2"],"trips":[{"id":"v8dlg5xdr","zone":"13","nbVoyages":1,"poidsChaj":9200,"dt":"80082929"},{"id":"r1irm9igd","zone":"13","nbVoyages":1,"poidsChaj":9470,"dt":"80082933"},{"id":"1mhd15yjo","zone":"13","nbVoyages":1,"poidsChaj":9450,"dt":"80082937"},{"id":"g2to0wd4n","zone":"06","nbVoyages":1,"poidsChaj":9030,"dt":"80082949"}]},{"id":"ogih8nmid","date":"2026-02-03","chofè":"c1","helpers":["c2"],"trips":[{"id":"4zzpy6g69","zone":"13","nbVoyages":1,"poidsChaj":9150,"dt":"80082972"},{"id":"alsit5aza","zone":"13","nbVoyages":1,"poidsChaj":9150,"dt":"80082980"},{"id":"tpoip4qmj","zone":"06","nbVoyages":1,"poidsChaj":9350,"dt":"80082966"}]},{"id":"qf0rlcg62","date":"2026-02-04","chofè":"c1","helpers":["c2"],"trips":[{"id":"hvjk7gjl7","zone":"13","nbVoyages":1,"poidsChaj":9360,"dt":"80083024"},{"id":"wq41sd7tg","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80083042"}]},{"id":"vbzmmjmcl","date":"2026-02-05","chofè":"c1","helpers":["c2"],"trips":[{"id":"lzb6iuwqt","zone":"13","nbVoyages":1,"poidsChaj":9200,"dt":"80083076"},{"id":"dp2rd849p","zone":"13","nbVoyages":1,"poidsChaj":8920,"dt":"80083084"},{"id":"53otd2nmi","zone":"06","nbVoyages":1,"poidsChaj":9040,"dt":"80083092"}]},{"id":"chp6jhbq4","date":"2026-02-06","chofè":"c1","helpers":["c2"],"trips":[{"id":"nogv3x2if","zone":"13","nbVoyages":1,"poidsChaj":9370,"dt":"80083124"},{"id":"uh444dt80","zone":"06","nbVoyages":1,"poidsChaj":9510,"dt":"80083135"},{"id":"0amzvypmk","zone":"06","nbVoyages":1,"poidsChaj":9750,"dt":"80083142"}]},{"id":"pn0s92c8o","date":"2026-02-12","chofè":"c1","helpers":["c2"],"trips":[{"id":"pob90gd31","zone":"13","nbVoyages":1,"poidsChaj":9160,"dt":"80083300"},{"id":"1z0sz4zgl","zone":"13","nbVoyages":1,"poidsChaj":9440,"dt":"80083291"}]},{"id":"vibc49g36","date":"2026-02-13","chofè":"c1","helpers":["c2"],"trips":[{"id":"4uauylgde","zone":"06","nbVoyages":1,"poidsChaj":9340,"dt":"80083359"},{"id":"ltqzp7b33","zone":"06","nbVoyages":1,"poidsChaj":9740,"dt":"80083367"}]}],depenses:[{"id":"k03y0dcxc","date":"2026-02-24","categorie":"Assurance","description":"Auto","montant":189},{"id":"gvpq9s5s0","date":"2026-02-12","categorie":"Assurance","description":"Camion","montant":671},{"id":"lezu8n584","date":"2026-02-12","categorie":"Autre","description":"Nourriture","montant":41.45},{"id":"h9yqtmwy1","date":"2026-02-12","categorie":"Autre","description":"Nourriture","montant":16.54},{"id":"5nmmu963s","date":"2026-02-11","categorie":"Essence","description":"Diesel","montant":608},{"id":"djfr7ftm2","date":"2026-02-10","categorie":"Autre","description":"Nourriture","montant":15.78},{"id":"dtlpv3f97","date":"2026-02-10","categorie":"Autre","description":"Nourriture","montant":40.33},{"id":"hvqd26y7x","date":"2026-02-09","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"tgijw2slm","date":"2026-02-06","categorie":"Autre","description":"Nourriture","montant":28.75},{"id":"hhhni6sts","date":"2026-02-04","categorie":"Essence","description":"Diesel","montant":453},{"id":"b476bkrne","date":"2026-02-03","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"huolgz1qs","date":"2026-02-03","categorie":"Autre","description":"Nourriture","montant":12.57},{"id":"m3vd5rrp4","date":"2026-02-03","categorie":"Autre","description":"Nourriture","montant":12.75},{"id":"77qe32cdt","date":"2026-01-29","categorie":"Essence","description":"Ordinaire","montant":70},{"id":"2r9gh2cof","date":"2026-01-29","categorie":"Essence","description":"Ordinaire","montant":54.09},{"id":"emavd14nn","date":"2026-01-28","categorie":"Essence","description":"Diesel","montant":403},{"id":"ou2zd2lbp","date":"2026-01-26","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"0nthh7x1f","date":"2026-01-24","categorie":"Essence","description":"Ordinaire","montant":50},{"id":"y3zqoqnmd","date":"2026-01-23","categorie":"Assurance","description":"Auto","montant":189},{"id":"1wuvaqzlb","date":"2026-01-21","categorie":"Essence","description":"Diesel","montant":700},{"id":"vx4189ok0","date":"2026-01-14","categorie":"Essence","description":"Diesel","montant":205},{"id":"pe9p0ook1","date":"2026-01-12","categorie":"Assurance","description":"Camion","montant":671},{"id":"kl73u3dnt","date":"2026-01-07","categorie":"Essence","description":"Diesel","montant":227},{"id":"1ck4nzn1k","date":"2026-01-06","categorie":"Autre","description":"Nourriture Dominos Pizza","montant":45.37}],factures:[{"id":"boipjj630","clientId":"2fmamuwhq","date":"2026-02-02","dateLimite":"2026-02-13","periode":"02-02-2026 au 06-02-2026","details":[{"id":"fnc661uad","zone":"06","description":"Nbre de fiches livrés a Montréal : 6","quantite":"28830","unite":"kg","prixUnitaire":"0.09","dt":"\nLundi : 80082949\nMardi : 80082966\nMercredi : 80083042\nJeudi : 80083092\nVendredi : 80083135 ; 80083142"},{"id":"pzwsds13w","zone":"13","description":"Nbre de fiches livrés a Laval : 9","quantite":"42230","unite":"kg","prixUnitaire":"0.07","dt":"\nLundi : 80082929 ; 80082933 ; 80082937\nMardi : 80082972 ; 80082980\nMercredi : 80083024\nJeudi : 80083076 ; 80083084\nVendredi : 80083124"}],"avecTPS":true,"avecTVQ":true,"statut":"Envoyée","numero":"FAC-001","sousTotal":5550.8,"tps":277.54,"tvq":553.69,"total":6382.03},{"id":"acmmq6ynh","clientId":"2fmamuwhq","date":"2026-02-13","dateLimite":"","periode":"9 févr. 2026 au 13 févr. 2026","details":[{"id":"trmo0q6ru","zone":"06","description":"Nbre fiches Montréal: 3","quantite":"14980","unite":"kg","prixUnitaire":"0.09","dt":"80083154\n80083359\n80083367"},{"id":"kuqg5kwbh","zone":"13","description":"Nbre fiches Laval: 7","quantite":"32630","unite":"kg","prixUnitaire":"0.07","dt":"80083161\n80083211\n80083221\n80083254\n80083260\n80083300\n80083291"}],"avecTPS":true,"avecTVQ":true,"statut":"Envoyée","numero":"FAC-002","sousTotal":3632.3,"tps":181.62,"tvq":362.32,"total":4176.24}],clients:[{"id":"2fmamuwhq","nom":"TRANSPORT PRIOLEX INC.","adresse":"8631 Rue Basswood #3","ville":"Montréal, QC, H8Y 1S7","telephone":"(438) 227-9752","courriel":"salespriolex@gmail.com"}],vehicules:[{"id":"e0jmtma1p","nom":"HINO 195_2018","plaque":"L860450","annee":"2018","km":"269315","statut":"Actif"},{"id":"c9789kzkw","nom":"HINO 195_2013","plaque":"L998841","annee":"2013","km":"","statut":"Actif"},{"id":"zkf6xh3kt","nom":"Toyota Matrix _2009","plaque":"ARD 30N","annee":"2009","km":"174000","statut":"Actif"}],entretiens:[{"id":"e2koveyyf","vehiculeId":"e0jmtma1p","date":"2026-01-31","type":"Huile","description":"Pan a huile - Gasket pan a huile - Filtre a huile - Litres huile a moteur - Main d'œuvre - Changement de courroie alternateur.","cout":1676.71,"km":"750000"},{"id":"j16f1efi9","vehiculeId":"e0jmtma1p","date":"2026-01-23","type":"Filtre","description":"x2 Filtre a fuel - filtre a air - injecteur cleaner","cout":530.08,"km":""},{"id":"20eslpr8v","vehiculeId":"e0jmtma1p","date":"2026-01-19","type":"Réparation","description":"Mirroir cote gauche","cout":294.32,"km":""},{"id":"2ahtn3yuj","vehiculeId":"e0jmtma1p","date":"2026-01-15","type":"Autre","description":"Terminal Cable de Batterie - Main d'œuvre - Suspension a Air ne fonctionne pas Réparer filage corroder","cout":174.08,"km":""}],settings:{tauxChauffeur:80,tauxHelper:65,tare:DEF_TARE,tpsNum:"745940213 RT0001",tvqNum:"4028093794 TQ0001",entreprise:{nom:"Jean Junior claudy Desroches (2278727070)",adresse:"11528 Ovide-Clermont",ville:"Montréal, QC, H1G 3Y8",telephone:"+1 (514) 706-1362",courriel:"jwtransportmtl@gmail.com",neq:"2278727070"}}};
 const PRELOAD_USERS={"admin":{username:"admin",displayName:"admin",hash:"kz4vem",created:"2026-02-14"}};
 const gMon=(d=new Date())=>{const dt=new Date(d);const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return toL(dt);};
@@ -22,10 +22,16 @@ const gWk=m=>JRS.map((_,i)=>{const d=new Date(m+"T12:00:00");d.setDate(d.getDate
 const getPayDate=(weekMon,settings)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const fri=new Date(weekMon+"T12:00:00");fri.setDate(fri.getDate()+4);const pd=new Date(fri);pd.setDate(pd.getDate()+ps.payDelay*7);const cur=pd.getDay();const tgt=ps.payDay===7?0:ps.payDay;pd.setDate(pd.getDate()+(tgt-cur));return toL(pd);};
 const getPayPeriods=(fromDate,count,settings,voyages)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const step=ps.frequency==="biweekly"?14:7;const periods=[];const c=new Date(gMon(new Date(fromDate+"T12:00:00"))+"T12:00:00");c.setDate(c.getDate()-10*7);for(let i=0;i<count;i++){const wm=toL(c);const wd=gWk(wm);const pd=getPayDate(wm,settings);const wv=(voyages||[]).filter(v=>v.date>=wd[0]&&v.date<=wd[4]);const tv=wv.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0);periods.push({weekMon:wm,weekFri:wd[4],payDate:pd,trips:tv,voyages:wv});c.setDate(c.getDate()+step);}return periods;};
 const JRSK=["","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
-const cTrip=(t,tare=DEF_TARE)=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);const r=ZR[t.zone]||0;const rv=pN*r*(t.nbVoyages||1);return{pN,rv:Math.round(rv*100)/100};};
-function agg(voys,tare=DEF_TARE){let tv=0,tp=0,rM=0,rL=0,nM=0,nL=0,pM=0,pL=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const c=cTrip(t,tare);tv+=(t.nbVoyages||0);tp+=c.pN*(t.nbVoyages||1);if(t.zone==="06"){rM+=c.rv;nM+=t.nbVoyages;pM+=c.pN*(t.nbVoyages||1);}if(t.zone==="13"){rL+=c.rv;nL+=t.nbVoyages;pL+=c.pN*(t.nbVoyages||1);}}));const rev=rM+rL;return{tv,tp,rM,rL,rev,ttc:Math.round(rev*(1+TPS_R+TVQ_R)*100)/100,nM,nL,pM,pL};}
-function calcFiscal(data,year){const st=data.settings||def.settings;const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));return(data.chauffeurs||[]).filter(c=>c.aktif).map(ch=>{let totalVoy=0,brut=0;const defTx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);voys.forEach(v=>{if(v.chofè===ch.id||(v.helpers||[]).includes(ch.id))(v.trips||[]).forEach(t=>{const nb=t.nbVoyages||0;totalVoy+=nb;const isDriver=v.chofè===ch.id;const tripTx=isDriver?(parseFloat(t.tauxChofe)||defTx):(parseFloat(t.tauxHelper)||defTx);brut+=nb*tripTx;});});return{...ch,totalVoy,tx:defTx,brut};});}
-function calcZW(voyages,ws,zone,tare=DEF_TARE){const wd=gWk(ws);let tp=0,nv=0,nf=0,dt=[];voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{if(t.zone===zone){const pN=Math.max(0,(t.poidsChaj||0)-tare);tp+=pN*(t.nbVoyages||1);nv+=(t.nbVoyages||1);nf++;if(t.dt)dt.push(t.dt);}});});return{tp,nv,nf,dt};}
+const sumBonuses=t=>{if(t.bonuses&&typeof t.bonuses==="object")return Object.values(t.bonuses).reduce((s,v)=>s+(parseFloat(v)||0),0);return parseFloat(t.bonus)||0;};
+const empBonus=(t,empId)=>{if(t.bonuses&&typeof t.bonuses==="object")return parseFloat(t.bonuses[empId])||0;return parseFloat(t.bonus)||0;};
+const cTrip=(t,tare=DEF_TARE)=>{const usedTare=t.tare||tare;const pN=Math.max(0,(t.poidsChaj||0)-usedTare);const r=ZR[t.zone]||0;const bonus=sumBonuses(t);const rv=pN*r*(t.nbVoyages||1)+bonus;return{pN,rv:Math.round(rv*100)/100,bonus};};
+function agg(voys,tare=DEF_TARE){let tv=0,tp=0,rM=0,rL=0,nM=0,nL=0,pM=0,pL=0,bn=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const c=cTrip(t,tare);tv+=(t.nbVoyages||0);tp+=c.pN*(t.nbVoyages||1);bn+=c.bonus||0;if(t.zone==="06"){rM+=c.rv;nM+=t.nbVoyages;pM+=c.pN*(t.nbVoyages||1);}if(t.zone==="13"){rL+=c.rv;nL+=t.nbVoyages;pL+=c.pN*(t.nbVoyages||1);}}));const rev=rM+rL;return{tv,tp,rM,rL,rev,bonus:Math.round(bn*100)/100,ttc:Math.round(rev*(1+TPS_R+TVQ_R)*100)/100,nM,nL,pM,pL};}
+function calcFiscal(data,year){const st=data.settings||def.settings;const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));return(data.chauffeurs||[]).filter(c=>c.aktif).map(ch=>{let totalVoy=0,brut=0,bonus=0;const defTx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);voys.forEach(v=>{if(v.chofè===ch.id||(v.helpers||[]).includes(ch.id))(v.trips||[]).forEach(t=>{const nb=t.nbVoyages||0;totalVoy+=nb;const isDriver=v.chofè===ch.id;const tripTx=isDriver?(parseFloat(t.tauxChofe)||defTx):(parseFloat(t.tauxHelper)||defTx);const tBonus=empBonus(t,ch.id);brut+=nb*tripTx+tBonus;bonus+=tBonus;});});return{...ch,totalVoy,tx:defTx,brut:Math.round(brut*100)/100,bonus:Math.round(bonus*100)/100};});}
+function calcZW(voyages,ws,zone,tare=DEF_TARE){const wd=gWk(ws);let tp=0,nv=0,nf=0,dt=[];voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{if(t.zone===zone){const usedTare=t.tare||tare;const pN=Math.max(0,(t.poidsChaj||0)-usedTare);tp+=pN*(t.nbVoyages||1);nv+=(t.nbVoyages||1);nf++;if(t.dt)dt.push(t.dt);}});});return{tp,nv,nf,dt};}
+// Total bonuses across all trips in week ws (regardless of zone).
+function calcWeekBonus(voyages,ws){const wd=gWk(ws);let bonus=0;voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{(v.trips||[]).forEach(t=>{bonus+=sumBonuses(t);});});return Math.round(bonus*100)/100;}
+// Total truck-rental (location) payments recorded on voyage days in week ws.
+function calcWeekLocation(voyages,ws){const wd=gWk(ws);let t=0;voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]).forEach(v=>{t+=parseFloat(v.locationPay)||0;});return Math.round(t*100)/100;}
 function calcTaxSummary(data,year){
 const facs=(data.factures||[]).filter(f=>f.date&&f.date.startsWith(String(year)));
 const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
@@ -90,7 +96,7 @@ const wd=useMemo(()=>gWk(wk),[wk]);const st=data.settings||def.settings;
 const filt=useMemo(()=>data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]),[data.voyages,wd]);
 const a=useMemo(()=>agg(filt),[filt]);const gN=id=>data.chauffeurs.find(c=>c.id===id)?.nom||"—";const gVhN=id=>(data.vehicules||[]).find(v=>v.id===id)?.nom||"";
 const wkD=useMemo(()=>wd.map((d,i)=>{const v=data.voyages.find(x=>x.date===d);if(!v)return{id:d,j:JRS[i],td:d===today(),ch:"—",veh:"",voy:0,p:0,r:0};const da=agg([v]);return{id:d,j:JRS[i],td:d===today(),ch:gN(v.chofè),veh:gVhN(v.vehiculeId),voy:da.tv,p:da.tp,r:da.rev};}),[wd,data]);
-const empPay=useMemo(()=>{return data.chauffeurs.filter(c=>c.aktif).map(ch=>{let vy=0;filt.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{id:ch.id,nom:ch.nom,role:ch.role,vy,tx,br:vy*tx};});},[data.chauffeurs,filt,st]);
+const empPay=useMemo(()=>{return data.chauffeurs.filter(c=>c.aktif).map(ch=>{let vy=0,bn=0;filt.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{vy+=(t.nbVoyages||0);bn+=empBonus(t,ch.id);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);return{id:ch.id,nom:ch.nom,role:ch.role,vy,tx,bn:Math.round(bn*100)/100,br:Math.round((vy*tx+bn)*100)/100};});},[data.chauffeurs,filt,st]);
 const totEmpBr=empPay.reduce((s,e)=>s+e.br,0);
 const wkDeps=useMemo(()=>(data.depenses||[]).filter(d=>d.date>=wd[0]&&d.date<=wd[4]),[data.depenses,wd]);
 const totDeps=wkDeps.reduce((s,d)=>s+(d.montant||0),0);
@@ -108,20 +114,313 @@ return<div>
 <div className="jw-grid2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginTop:16}}>
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:16}}><div style={{fontSize:12,fontWeight:700,color:C.muted,marginBottom:10}}>Voyages (8 sem.)</div><div style={{display:"grid",gridTemplateColumns:`repeat(${chartData.length},1fr)`,gap:4,alignItems:"end"}}>{chartData.map((w,i)=><div key={i} style={{textAlign:"center"}}><Bar val={w.tv} max={maxVoy} color={C.accent}/><div style={{fontSize:8,color:C.dim,marginTop:3}}>{w.label}</div></div>)}</div></div>
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:16}}><div style={{fontSize:12,fontWeight:700,color:C.muted,marginBottom:10}}>Revenu HT (8 sem.)</div><div style={{display:"grid",gridTemplateColumns:`repeat(${chartData.length},1fr)`,gap:4,alignItems:"end"}}>{chartData.map((w,i)=><div key={i} style={{textAlign:"center"}}><Bar val={Math.round(w.rev)} max={maxRev} color={C.cyan}/><div style={{fontSize:8,color:C.dim,marginTop:3}}>{w.label}</div></div>)}</div></div></div>
-{empPay.filter(e=>e.vy>0).length>0?<div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Revenu Employés (semaine)</div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{empPay.map(e=><div key={e.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",minWidth:160,flex:"1 1 160px",opacity:e.vy>0?1:.5}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:12,fontWeight:700}}>{e.nom}</span><Bg text={e.role} color={e.role==="Chauffeur"?C.accent:C.purple}/></div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}}><span>{e.vy} voy {"×"} {fM(e.tx)}</span><span style={{fontWeight:800,color:e.br>0?C.green:C.dim,fontSize:14}}>{fM(e.br)}</span></div></div>)}</div><div style={{textAlign:"right",marginTop:6,fontSize:13,fontWeight:800,color:C.orange}}>Total: {fM(totEmpBr)}</div></div>:<div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Revenu Employés (semaine)</div><div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 20px",color:C.dim,fontSize:12,textAlign:"center"}}>Aucun voyage cette semaine</div></div>}
+{empPay.filter(e=>e.vy>0).length>0?<div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Revenu Employés (semaine)</div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{empPay.map(e=><div key={e.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",minWidth:160,flex:"1 1 160px",opacity:e.vy>0?1:.5}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}><span style={{fontSize:12,fontWeight:700}}>{e.nom}</span><Bg text={e.role} color={e.role==="Chauffeur"?C.accent:C.purple}/></div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}}><span>{e.vy} voy {"×"} {fM(e.tx)}{e.bn>0?` + Bonus ${fM(e.bn)}`:""}</span><span style={{fontWeight:800,color:e.br>0?C.green:C.dim,fontSize:14}}>{fM(e.br)}</span></div></div>)}</div><div style={{textAlign:"right",marginTop:6,fontSize:13,fontWeight:800,color:C.orange}}>Total: {fM(totEmpBr)}</div></div>:<div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Revenu Employés (semaine)</div><div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 20px",color:C.dim,fontSize:12,textAlign:"center"}}>Aucun voyage cette semaine</div></div>}
 {wkDeps.length>0&&<div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Dépenses (semaine)</div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{wkDeps.map(d=><div key={d.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",minWidth:160,flex:"1 1 160px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:12,fontWeight:700}}>{d.description||d.categorie}</span><Bg text={d.categorie} color={DCOLORS[d.categorie]||C.muted}/></div><div style={{display:"flex",justifyContent:"space-between",fontSize:11}}><span style={{color:C.muted}}>{fDs(d.date)}</span><span style={{fontWeight:800,color:C.red}}>{fM(d.montant)}</span></div></div>)}</div><div style={{textAlign:"right",marginTop:6,fontSize:13,fontWeight:800,color:C.red}}>Total: {fM(totDeps)}</div></div>}
 <div style={{marginTop:16}}><div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:8}}>Entretiens (semaine)</div>{wkEnts.length>0?<><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{wkEnts.map(e=><div key={e.id} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",minWidth:160,flex:"1 1 160px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:12,fontWeight:700}}>{e.vNom}</span><Bg text={e.type} color={C.cyan}/></div><div style={{display:"flex",justifyContent:"space-between",fontSize:11}}><span style={{color:C.muted}}>{fDs(e.date)}{e.description?` — ${e.description}`:""}</span><span style={{fontWeight:800,color:C.red}}>{fM(e.cout)}</span></div></div>)}</div><div style={{textAlign:"right",marginTop:6,fontSize:13,fontWeight:800,color:C.red}}>Total: {fM(totEnt)}</div></>:<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 20px",color:C.dim,fontSize:12,textAlign:"center"}}>Aucun entretien cette semaine</div>}</div>
 <div style={{display:"flex",gap:8,marginTop:16}}><Bt onClick={()=>go("voyages")} size="lg">+ Voyage</Bt><Bt onClick={()=>go("factures")} variant="outline" color={C.purple}>Factures</Bt><Bt onClick={()=>go("clients")} variant="outline" color={C.cyan}>Clients</Bt></div>
 </div>;}
 
+// ───────────────────────── Fleet (GPS real-time) ─────────────────────────
+// Subscribes to the `fleet` Firestore collection populated by the J&W TRANSPORT
+// driver app (gps-kamyon). Renders a Google Map with one marker per truck and a
+// side list with status / last-update / current trip.
+const loadGoogleMaps = (apiKey) => new Promise((resolve, reject) => {
+  if (window.google?.maps) return resolve(window.google.maps);
+  if (window.__gmapsLoading) {
+    window.__gmapsLoading.then(resolve, reject); return;
+  }
+  if (!apiKey) return reject(new Error("Missing Google Maps key"));
+  window.__gmapsLoading = new Promise((res, rej) => {
+    const cb = `__gmapsCb_${Date.now()}`;
+    window[cb] = () => { res(window.google.maps); delete window[cb]; };
+    const s = document.createElement("script");
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=geometry&callback=${cb}`;
+    s.async = true; s.defer = true;
+    s.onerror = (err) => { rej(err); delete window[cb]; };
+    document.head.appendChild(s);
+  });
+  window.__gmapsLoading.then(resolve, reject);
+});
+
+const tsToDate = (ts) => {
+  if (!ts) return null;
+  if (ts.toDate) return ts.toDate();
+  if (ts.seconds) return new Date(ts.seconds * 1000);
+  return new Date(ts);
+};
+
+const STATUS_COLOR = { active: "#22c55e", idle: "#f59e0b", offline: "#64748b" };
+const STATUS_LABEL = { active: "🟢 En route", idle: "🟡 Inactif", offline: "⚫ Hors ligne" };
+
+// A driver is "really" online only if Firestore got an update recently.
+// The driver app pushes GPS every ~8s, so 90s without a ping = phone closed
+// or app backgrounded. We override the stored status to "offline" past that.
+const STALE_MS = 90 * 1000;
+const effectiveStatus = (d, now) => {
+  const dt = tsToDate(d.lastUpdate);
+  if (!dt) return "offline";
+  if (now - dt.getTime() > STALE_MS) return "offline";
+  return d.status || "offline";
+};
+
+function Flot({ data }) {
+  const [drivers, setDrivers] = useState([]);
+  const [fbReady, setFbReady] = useState(!!window.__fb?.ready);
+  const [mapsReady, setMapsReady] = useState(!!window.google?.maps);
+  const [mapsErr, setMapsErr] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+  const [gmapsKey, setGmapsKey] = useState(() => localStorage.getItem("jw-gmaps-key") || "");
+  const [tmpKey, setTmpKey] = useState("");
+  const [now, setNow] = useState(Date.now());
+  const mapRef = useRef(null);
+  const mapEl = useRef(null);
+  const markersRef = useRef({});
+  const infoRef = useRef(null);
+
+  // Tick clock for "ago" display
+  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 5000); return () => clearInterval(i); }, []);
+
+  // Wait for Firebase global if not ready yet
+  useEffect(() => {
+    if (window.__fb?.ready) { setFbReady(true); return; }
+    const onReady = () => setFbReady(true);
+    window.addEventListener("fb-ready", onReady);
+    return () => window.removeEventListener("fb-ready", onReady);
+  }, []);
+
+  // Subscribe to fleet collection
+  useEffect(() => {
+    if (!fbReady) return;
+    const fb = window.__fb;
+    const q = fb.collection(fb.db, "fleet");
+    const unsub = fb.onSnapshot(q, (snap) => {
+      const list = [];
+      snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+      setDrivers(list);
+    }, (err) => { console.error("Fleet snapshot error:", err); });
+    return () => unsub();
+  }, [fbReady]);
+
+  // Load Google Maps once we have a key
+  useEffect(() => {
+    if (!gmapsKey) return;
+    loadGoogleMaps(gmapsKey).then(() => setMapsReady(true)).catch((e) => setMapsErr(e?.message || String(e)));
+  }, [gmapsKey]);
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapsReady || !mapEl.current || mapRef.current) return;
+    const g = window.google.maps;
+    mapRef.current = new g.Map(mapEl.current, {
+      center: { lat: 45.5017, lng: -73.5673 },
+      zoom: 11,
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: true,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#1a2236" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#0a0e1a" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#94a3b8" }] },
+        { featureType: "road", elementType: "geometry", stylers: [{ color: "#334155" }] },
+        { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#cbd5e1" }] },
+        { featureType: "water", elementType: "geometry", stylers: [{ color: "#0f172a" }] }
+      ]
+    });
+    infoRef.current = new g.InfoWindow();
+  }, [mapsReady]);
+
+  // Sync markers with drivers list
+  useEffect(() => {
+    if (!mapsReady || !mapRef.current) return;
+    const g = window.google.maps;
+    const seen = new Set();
+    drivers.forEach((d) => {
+      if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
+      seen.add(d.id);
+      const status = effectiveStatus(d, now);
+      const color = STATUS_COLOR[status] || STATUS_COLOR.offline;
+      const icon = {
+        path: g.SymbolPath.FORWARD_CLOSED_ARROW,
+        scale: 6,
+        fillColor: color,
+        fillOpacity: status === "offline" ? 0.5 : 1,
+        strokeColor: "#0a0e1a",
+        strokeWeight: 2,
+        rotation: d.heading || 0
+      };
+      let mk = markersRef.current[d.id];
+      if (!mk) {
+        mk = new g.Marker({
+          position: { lat: d.lat, lng: d.lng },
+          map: mapRef.current,
+          icon,
+          title: d.driverName || d.id,
+          label: { text: (d.truckPlate || d.driverName || "?").slice(0, 8), color: "#fff", fontSize: "10px", fontWeight: "700" }
+        });
+        mk.addListener("click", () => {
+          setSelectedId(d.id);
+          const s = effectiveStatus(d, Date.now());
+          const html = `<div style="font-family:system-ui;color:#0a0e1a;min-width:180px">
+            <div style="font-weight:800;font-size:13px">${d.driverName || "—"}</div>
+            <div style="font-size:11px;color:#475569">${d.truckName || ""} ${d.truckPlate ? "• " + d.truckPlate : ""}</div>
+            <div style="font-size:11px;margin-top:4px">${STATUS_LABEL[s] || s || "—"}</div>
+            ${d.currentDestination ? `<div style="font-size:11px;margin-top:2px">→ ${d.currentDestination}</div>` : ""}
+            ${typeof d.speed === "number" && s !== "offline" ? `<div style="font-size:11px;margin-top:2px">${Math.round((d.speed || 0) * 3.6)} km/h</div>` : ""}
+          </div>`;
+          infoRef.current.setContent(html);
+          infoRef.current.open(mapRef.current, mk);
+        });
+        markersRef.current[d.id] = mk;
+      } else {
+        mk.setPosition({ lat: d.lat, lng: d.lng });
+        mk.setIcon(icon);
+      }
+    });
+    // Remove markers for drivers no longer in the list
+    Object.keys(markersRef.current).forEach((id) => {
+      if (!seen.has(id)) { markersRef.current[id].setMap(null); delete markersRef.current[id]; }
+    });
+    // Auto-fit bounds the first time we get drivers
+    if (mapRef.current && Object.keys(markersRef.current).length > 0 && !mapRef.current.__fitted) {
+      const bounds = new g.LatLngBounds();
+      Object.values(markersRef.current).forEach((m) => bounds.extend(m.getPosition()));
+      mapRef.current.fitBounds(bounds, 80);
+      mapRef.current.__fitted = true;
+    }
+  }, [drivers, mapsReady]);
+
+  const focusDriver = (d) => {
+    setSelectedId(d.id);
+    if (mapRef.current && typeof d.lat === "number") {
+      mapRef.current.panTo({ lat: d.lat, lng: d.lng });
+      mapRef.current.setZoom(14);
+      const mk = markersRef.current[d.id];
+      if (mk && infoRef.current) {
+        window.google.maps.event.trigger(mk, "click");
+      }
+    }
+  };
+
+  const ago = (ts) => {
+    const dt = tsToDate(ts); if (!dt) return "—";
+    const s = Math.floor((now - dt.getTime()) / 1000);
+    if (s < 5) return "à l'instant";
+    if (s < 60) return `${s}s`;
+    if (s < 3600) return `${Math.floor(s / 60)} min`;
+    if (s < 86400) return `${Math.floor(s / 3600)} h`;
+    return `${Math.floor(s / 86400)} j`;
+  };
+
+  // Sort: active first, then idle, then offline. Use the freshness-aware
+  // status so a driver who closed the app drops to "offline" automatically.
+  const sorted = useMemo(() => {
+    const order = { active: 0, idle: 1, offline: 2 };
+    return [...drivers].sort((a, b) => {
+      const sa = effectiveStatus(a, now);
+      const sb = effectiveStatus(b, now);
+      return (order[sa] ?? 9) - (order[sb] ?? 9);
+    });
+  }, [drivers, now]);
+
+  const counts = useMemo(() => {
+    const c = { active: 0, idle: 0, offline: 0 };
+    drivers.forEach((d) => {
+      const s = effectiveStatus(d, now);
+      c[s] = (c[s] || 0) + 1;
+    });
+    return c;
+  }, [drivers, now]);
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 800 }}>🚛 Flòt — Position en temps réel</h1>
+        <div style={{ fontSize: 11, color: C.muted }}>
+          {fbReady ? <span style={{ color: C.green }}>● Connecté Firestore</span> : <span style={{ color: C.orange }}>● Connexion Firestore…</span>}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+        <St title="En route" value={counts.active || 0} color={C.green} />
+        <St title="Inactif" value={counts.idle || 0} color={C.orange} />
+        <St title="Hors ligne" value={counts.offline || 0} color={C.dim} />
+        <St title="Total" value={drivers.length} grad={C.g1} />
+      </div>
+
+      {!gmapsKey && (
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16, marginBottom: 12 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>🗝️ Clé Google Maps</div>
+          <div style={{ fontSize: 11, color: C.muted, marginBottom: 8 }}>
+            Pour afficher la carte, entrez votre clé Google Maps JavaScript API.
+            Activez l'API <b>Maps JavaScript</b> sur <a href="https://console.cloud.google.com/" target="_blank" rel="noreferrer" style={{ color: C.accentL }}>Google Cloud Console</a>.
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <input type="password" value={tmpKey} onChange={(e) => setTmpKey(e.target.value)} placeholder="AIza..." style={{ flex: 1, background: C.bg, color: C.text, border: `1px solid ${C.border}`, borderRadius: 6, padding: "8px 12px", fontSize: 13, outline: "none" }} />
+            <Bt onClick={() => { if (tmpKey.trim()) { localStorage.setItem("jw-gmaps-key", tmpKey.trim()); setGmapsKey(tmpKey.trim()); } }}>Enregistrer</Bt>
+          </div>
+          {mapsErr && <div style={{ marginTop: 8, fontSize: 11, color: C.red }}>{mapsErr}</div>}
+        </div>
+      )}
+
+      <div className="jw-grid2c" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12 }}>
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", minHeight: 480 }}>
+          <div ref={mapEl} style={{ width: "100%", height: 520, background: C.card2 }}>
+            {!mapsReady && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: C.muted, fontSize: 13 }}>
+                {gmapsKey ? "Chargement de la carte…" : "Entrez votre clé Google Maps pour afficher la carte"}
+              </div>
+            )}
+          </div>
+        </div>
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 12, maxHeight: 520, overflowY: "auto" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.muted, marginBottom: 10 }}>CHAUFFEURS ({sorted.length})</div>
+          {sorted.length === 0 && <div style={{ fontSize: 12, color: C.dim, padding: 20, textAlign: "center" }}>Aucun chauffeur connecté.<br />Demandez-leur d'ouvrir l'app J&W TRANSPORT.</div>}
+          {sorted.map((d) => {
+            const status = effectiveStatus(d, now);
+            const color = STATUS_COLOR[status] || STATUS_COLOR.offline;
+            const sel = selectedId === d.id;
+            return (
+              <div key={d.id} onClick={() => focusDriver(d)} style={{ background: sel ? `${C.accent}18` : C.card2 + "60", border: `1px solid ${sel ? C.accent : C.border}`, borderRadius: 10, padding: "10px 12px", marginBottom: 6, cursor: "pointer", opacity: status === "offline" ? 0.6 : 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700 }}>{d.driverName || "—"}</div>
+                  <div style={{ width: 10, height: 10, borderRadius: 5, background: color, flexShrink: 0 }} />
+                </div>
+                <div style={{ fontSize: 10, color: C.muted, marginBottom: 4 }}>{d.truckName || ""}{d.truckPlate ? " • " + d.truckPlate : ""}</div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10 }}>
+                  <span style={{ color: color, fontWeight: 600 }}>{STATUS_LABEL[status] || status || "—"}</span>
+                  <span style={{ color: C.dim }}>{ago(d.lastUpdate)}</span>
+                </div>
+                {d.currentDestination && status !== "offline" && <div style={{ fontSize: 10, color: C.cyan, marginTop: 4 }}>→ {d.currentDestination}</div>}
+                {typeof d.speed === "number" && status === "active" && (
+                  <div style={{ fontSize: 10, color: C.muted, marginTop: 2 }}>{Math.round((d.speed || 0) * 3.6)} km/h</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {gmapsKey && (
+        <div style={{ marginTop: 8, fontSize: 10, color: C.dim, textAlign: "right" }}>
+          <button onClick={() => { localStorage.removeItem("jw-gmaps-key"); setGmapsKey(""); setTmpKey(""); window.location.reload(); }} style={{ background: "none", border: "none", color: C.dim, cursor: "pointer", fontSize: 10 }}>Réinitialiser la clé Maps</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Voy({data,sv,ms}){
 const[wk,setWk]=useState(gMon());const[modal,setModal]=useState(false);const[eDate,setEDate]=useState(null);
-const[trips,setTrips]=useState([]);const[ch,setCh]=useState("");const[hlp,setHlp]=useState([]);const[veh,setVeh]=useState("");
+const[trips,setTrips]=useState([]);const[ch,setCh]=useState("");const[hlp,setHlp]=useState([]);const[veh,setVeh]=useState("");const[locPay,setLocPay]=useState("");
 const wd=useMemo(()=>gWk(wk),[wk]);const gV=d=>data.voyages.find(v=>v.date===d);const gN=id=>data.chauffeurs.find(c=>c.id===id)?.nom||"—";const gVN=id=>(data.vehicules||[]).find(v=>v.id===id)?.nom||"";
-const openDay=d=>{const ex=gV(d);if(ex){setCh(ex.chofè||"");setHlp(ex.helpers||[]);setVeh(ex.vehiculeId||"");setTrips(ex.trips?ex.trips.map(t=>({...t})):[]);}else{setCh("");setHlp([]);setVeh("");setTrips([{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:""}]);}setEDate(d);setModal(true);};
-const addT=()=>setTrips(p=>[...p,{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:""}]);
-const upT=(id,f,v)=>setTrips(p=>p.map(t=>t.id===id?{...t,[f]:f==="zone"||f==="dt"||f==="tauxChofe"||f==="tauxHelper"?v:(parseFloat(v)||0)}:t));
-const saveDay=()=>{if(!ch){ms("Choisir chauffeur!","error");return;}const vy={id:gV(eDate)?.id||gid(),date:eDate,chofè:ch,helpers:hlp,vehiculeId:veh,trips};const ex=data.voyages.find(v=>v.date===eDate);sv({...data,voyages:ex?data.voyages.map(v=>v.date===eDate?vy:v):[...data.voyages,vy]});ms("OK!");setModal(false);};
+const openDay=d=>{const ex=gV(d);if(ex){setCh(ex.chofè||"");setHlp(ex.helpers||[]);setVeh(ex.vehiculeId||"");setLocPay(ex.locationPay?String(ex.locationPay):"");setTrips(ex.trips?ex.trips.map(t=>({...t})):[]);}else{setCh("");setHlp([]);setVeh("");setLocPay("");setTrips([{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:"",bonuses:{}}]);}setEDate(d);setModal(true);};
+const addT=()=>setTrips(p=>[...p,{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:"",bonuses:{}}]);
+const upT=(id,f,v)=>setTrips(p=>p.map(t=>{if(t.id!==id)return t;if(f.startsWith("bonus_")){const empId=f.slice(6);const bonuses={...(t.bonuses||{})};if(v===""||v==null)delete bonuses[empId];else bonuses[empId]=v;return{...t,bonuses};}const strFlds=["zone","dt","tauxChofe","tauxHelper","bonus"];const val=strFlds.includes(f)?v:f==="tare"?(v===""?"":parseFloat(v)||0):(parseFloat(v)||0);return{...t,[f]:val};}));
+// Auto-fill default Laval bonus per employee — applies the configured rate
+// (settings.bonusLavalPerEmp, default $15) to any Laval trip / employee where no
+// bonus has been explicitly set yet. Runs whenever ch/hlp/zones change.
+useEffect(()=>{const defBonus=parseFloat((data.settings||def.settings).bonusLavalPerEmp);if(!(defBonus>0))return;const emps=[ch,...(hlp||[])].filter(Boolean);if(!emps.length)return;setTrips(prev=>{let changed=false;const next=prev.map(t=>{if(t.zone!=="13")return t;const bonuses={...(t.bonuses||{})};let tripChanged=false;emps.forEach(empId=>{if(!(empId in bonuses)){bonuses[empId]=defBonus;tripChanged=true;}});if(tripChanged){changed=true;return{...t,bonuses};}return t;});return changed?next:prev;});},[ch,hlp,trips.map(t=>`${t.id}:${t.zone}`).join(","),data.settings]);// eslint-disable-line react-hooks/exhaustive-deps
+const saveDay=()=>{if(!ch){ms("Choisir chauffeur!","error");return;}const vy={id:gV(eDate)?.id||gid(),date:eDate,chofè:ch,helpers:hlp,vehiculeId:veh,locationPay:parseFloat(locPay)||0,trips};const ex=data.voyages.find(v=>v.date===eDate);sv({...data,voyages:ex?data.voyages.map(v=>v.date===eDate?vy:v):[...data.voyages,vy]});ms("OK!");setModal(false);};
 const wa=useMemo(()=>agg(data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4])),[data.voyages,wd]);
 const[showHist,setShowHist]=useState(false);
 const allVoys=useMemo(()=>[...data.voyages].sort((a,b)=>b.date.localeCompare(a.date)),[data.voyages]);
@@ -129,11 +428,11 @@ const openEdit=d=>{const mon=gMon(new Date(d+"T12:00:00"));setWk(mon);setTimeout
 return<div>
 <h1 style={{fontSize:22,fontWeight:800,marginBottom:12}}>Voyages</h1>
 <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 16px"}}><button onClick={()=>{const d=new Date(wk+"T12:00:00");d.setDate(d.getDate()-7);setWk(toL(d));}} style={{background:"none",border:"none",cursor:"pointer",color:C.muted}}>{"◀"}</button><div style={{flex:1,textAlign:"center",fontSize:14,fontWeight:700}}>{fDs(wd[0])} {"—"} {fDs(wd[4])}</div><button onClick={()=>{const d=new Date(wk+"T12:00:00");d.setDate(d.getDate()+7);setWk(toL(d));}} style={{background:"none",border:"none",cursor:"pointer",color:C.muted}}>{"▶"}</button></div>
-<div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}><St title="Voy." value={wa.tv} color={C.accent}/><St title="Poids Total" value={`${wa.tp.toLocaleString()} kg`} color={C.green}/><St title="MTL (06)" value={`${wa.pM.toLocaleString()} kg`} color={C.accent}/><St title="LAV (13)" value={`${wa.pL.toLocaleString()} kg`} color={C.cyan}/><St title="Rev" value={fM(wa.rev)} color={C.cyan}/></div>
+<div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}><St title="Voy." value={wa.tv} color={C.accent}/><St title="Poids Total" value={`${wa.tp.toLocaleString()} kg`} color={C.green}/><St title="MTL (06)" value={`${wa.pM.toLocaleString()} kg`} color={C.accent}/><St title="LAV (13)" value={`${wa.pL.toLocaleString()} kg`} color={C.cyan}/><St title="Rev" value={fM(wa.rev)} color={C.cyan}/>{wa.bonus>0&&<St title="Bonus" value={fM(wa.bonus)} color={C.orange}/>}{calcWeekLocation(data.voyages,wk)>0&&<St title="🔑 Location" value={fM(calcWeekLocation(data.voyages,wk))} color={C.purple}/>}</div>
 {wd.map((d,i)=>{const v=gV(d);const td=d===today();const ds=v?.trips?.length?agg([v]):null;const hasDT=v?.trips?.some(t=>t.dt);
 return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40":C.border}`,borderRadius:10,padding:"10px 14px",display:"flex",alignItems:"center",gap:10,cursor:"pointer",marginBottom:5}} onClick={()=>openDay(d)}>
 <div style={{minWidth:70}}><div style={{fontSize:12,fontWeight:700,color:td?C.accentL:C.text}}>{JRS[i]}</div><div style={{fontSize:10,color:C.dim}}>{fDs(d)}</div></div>
-{ds?<div style={{flex:1,display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}><span style={{fontSize:11}}>{gN(v.chofè)}</span>{v.vehiculeId&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:4,background:C.cyan+"20",color:C.cyan,fontWeight:700}}>🚛 {gVN(v.vehiculeId)}</span>}<b style={{color:C.accent}}>{ds.tv}v</b><span style={{color:C.green,fontWeight:700}}>{ds.tp.toLocaleString()}kg</span><span style={{color:C.cyan,fontWeight:700}}>{fM(ds.rev)}</span>{hasDT&&<Bg text="DT" color={C.orange}/>}</div>:<div style={{flex:1,color:C.dim,fontSize:12}}>{"—"}</div>}
+{ds?<div style={{flex:1,display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}><span style={{fontSize:11}}>{gN(v.chofè)}</span>{v.vehiculeId&&<span style={{fontSize:9,padding:"2px 6px",borderRadius:4,background:C.cyan+"20",color:C.cyan,fontWeight:700}}>🚛 {gVN(v.vehiculeId)}</span>}<b style={{color:C.accent}}>{ds.tv}v</b><span style={{color:C.green,fontWeight:700}}>{ds.tp.toLocaleString()}kg</span><span style={{color:C.cyan,fontWeight:700}}>{fM(ds.rev)}</span>{hasDT&&<Bg text="DT" color={C.orange}/>}{v.locationPay>0&&<Bg text={`🔑 ${fN(v.locationPay)} $`} color={C.purple}/>}</div>:<div style={{flex:1,color:C.dim,fontSize:12}}>{"—"}</div>}
 {v&&<button onClick={e=>{e.stopPropagation();sv({...data,voyages:data.voyages.filter(x=>x.date!==d)});ms("OK!");}} style={{background:"none",border:"none",cursor:"pointer",color:C.red}}>X</button>}
 </div>;})}
 <div style={{marginTop:16}}>
@@ -160,9 +459,21 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <In label="Chauffeur" value={ch} onChange={setCh} options={[{value:"",label:"— Choisir —"},...data.chauffeurs.filter(c=>c.aktif&&c.role==="Chauffeur").map(c=>({value:c.id,label:c.nom}))]}/>
 <In label="🚛 Camion" value={veh} onChange={setVeh} options={[{value:"",label:"— Choisir Camion —"},...(data.vehicules||[]).filter(v=>v.statut!=="Inactif").map(v=>({value:v.id,label:v.nom+(v.plaque?" — "+v.plaque:"")}))]}/>
 <div style={{flex:2}}><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Helpers</label><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{data.chauffeurs.filter(c=>c.aktif&&c.role==="Helper").map(h=><button key={h.id} onClick={()=>setHlp(p=>p.includes(h.id)?p.filter(x=>x!==h.id):[...p,h.id])} style={{padding:"4px 10px",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",border:`1.5px solid ${hlp.includes(h.id)?C.green:C.border}`,background:hlp.includes(h.id)?`${C.green}15`:"transparent",color:hlp.includes(h.id)?C.green:C.muted}}>{h.nom}</button>)}</div></div></div>
+{(()=>{const actLoc=(data.locations||[]).find(l=>l.vehiculeId===veh&&l.statut!=="Terminé");return<div style={{marginBottom:12,padding:"8px 10px",background:C.bg,borderRadius:8,border:`1px solid ${C.purple}30`}}>
+<div style={{fontSize:10,color:C.muted,marginBottom:6,fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>🔑 Paiement location camion</div>
+<div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+<div style={{display:"flex",alignItems:"center",gap:6,background:C.card,border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 8px"}}>
+<span style={{fontSize:10,color:C.purple,fontWeight:700}}>🚛 {veh?((data.vehicules||[]).find(v=>v.id===veh)?.nom||"Camion"):"Camion"}</span>
+<input type="number" value={locPay} onChange={e=>setLocPay(e.target.value)} placeholder="0" style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:4,padding:"3px 6px",fontSize:13,width:80,outline:"none",fontWeight:600}}/>
+<span style={{fontSize:10,color:C.dim}}>$</span>
+</div>
+{actLoc?<span style={{fontSize:10,color:C.orange,fontStyle:"italic"}}>✨ Kamyon sa a nan lokasyon: {fM(actLoc.montant)}/{actLoc.frequence==="hebdomadaire"?"sem.":"mois"} — {actLoc.locataire}</span>:<span style={{fontSize:10,color:C.dim,fontStyle:"italic"}}>Antre montan location pou jou sa a — li ap ka ajoute nan facture a (bouton "+ 🔑 Loc")</span>}
+</div>
+</div>;})()}
 {trips.map((t,idx)=>{const tc=cTrip(t);return<div key={t.id} style={{background:C.bg,borderRadius:10,padding:10,marginBottom:8,border:`1px solid ${C.border}`}}>
 <div style={{display:"flex",gap:8,alignItems:"center"}}><span style={{fontWeight:800,color:C.accent,width:20}}>{idx+1}</span><select value={t.zone} onChange={e=>upT(t.id,"zone",e.target.value)} style={{background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:5,padding:5,fontSize:12}}>{ZONES.map(z=><option key={z.v} value={z.v}>{z.l}</option>)}</select><In type="number" value={t.nbVoyages} onChange={v=>upT(t.id,"nbVoyages",v)} placeholder="Nb" style={{maxWidth:55}}/><In type="number" value={t.poidsChaj} onChange={v=>upT(t.id,"poidsChaj",v)} placeholder="Poids chargé" style={{maxWidth:110}}/><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>P.NET</div><div style={{fontSize:11,color:tc.pN>0?C.green:C.dim,fontWeight:700}}>{tc.pN>0?tc.pN.toLocaleString()+"kg":"—"}</div></div><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>REV</div><div style={{fontSize:11,color:tc.rv>0?C.cyan:C.dim,fontWeight:700}}>{tc.rv>0?fM(tc.rv):"—"}</div></div>{trips.length>1&&<button onClick={()=>setTrips(p=>p.filter(x=>x.id!==t.id))} style={{background:"none",border:"none",cursor:"pointer",color:C.red}}>X</button>}</div>
-<div style={{display:"flex",gap:8,alignItems:"center",marginLeft:28,marginTop:4}}><In type="number" value={t.tauxChofe||""} onChange={v=>upT(t.id,"tauxChofe",v)} placeholder={`Taux Chofè (${(data.settings||def.settings).tauxChauffeur}$)`} style={{maxWidth:150}}/><In type="number" value={t.tauxHelper||""} onChange={v=>upT(t.id,"tauxHelper",v)} placeholder={`Taux Helper (${(data.settings||def.settings).tauxHelper}$)`} style={{maxWidth:150}}/></div>
+<div style={{display:"flex",gap:8,alignItems:"center",marginLeft:28,marginTop:4,flexWrap:"wrap"}}><In type="number" value={t.tauxChofe||""} onChange={v=>upT(t.id,"tauxChofe",v)} placeholder={`Taux Chofè (${(data.settings||def.settings).tauxChauffeur}$)`} style={{maxWidth:150}}/><In type="number" value={t.tauxHelper||""} onChange={v=>upT(t.id,"tauxHelper",v)} placeholder={`Taux Helper (${(data.settings||def.settings).tauxHelper}$)`} style={{maxWidth:150}}/><In type="number" value={t.tare||""} onChange={v=>upT(t.id,"tare",v)} placeholder={`Poids vide (${(data.settings||def.settings).tare||DEF_TARE}kg)`} style={{maxWidth:170}}/></div>
+<div style={{marginLeft:28,marginTop:6,padding:"8px 10px",background:C.card,borderRadius:8,border:`1px solid ${C.border}`}}><div style={{fontSize:10,color:C.muted,marginBottom:6,fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>💰 Bonus pa anplwaye</div>{(ch||hlp.length>0)?<>{t.zone==="13"&&((data.settings||def.settings).bonusLavalPerEmp>0)&&<div style={{fontSize:10,color:C.orange,marginBottom:6,fontStyle:"italic"}}>✨ Bonus Laval otomatik: {fM((data.settings||def.settings).bonusLavalPerEmp)} pa anplwaye (modifyab pa anplwaye)</div>}<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{[ch,...hlp].filter(Boolean).map(empId=>{const emp=data.chauffeurs.find(c=>c.id===empId);if(!emp)return null;const cur=(t.bonuses||{})[empId];const isDr=ch===empId;return<div key={empId} style={{display:"flex",alignItems:"center",gap:6,background:C.bg,border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 8px"}}><span style={{fontSize:10,color:isDr?C.accent:C.purple,fontWeight:700}}>{isDr?"🚛 ":"👤 "}{emp.nom}</span><input type="number" value={cur==null?"":cur} onChange={e=>upT(t.id,"bonus_"+empId,e.target.value)} placeholder="0" style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:4,padding:"3px 6px",fontSize:13,width:70,outline:"none",fontWeight:600}}/><span style={{fontSize:10,color:C.dim}}>$</span></div>;})}</div></>:<div style={{fontSize:11,color:C.dim,fontStyle:"italic",padding:"4px 0"}}>👆 Chwazi yon Chauffeur ak/oswa Helper anwo a pou w ka antre bonus la</div>}</div>
 <div style={{marginLeft:28,marginTop:4}}><In value={t.dt||""} onChange={v=>upT(t.id,"dt",v)} placeholder={`DT — Notes zone ${ZM[t.zone]||""}...`} multiline/></div></div>;})}
 <Bt variant="outline" color={C.accent} onClick={addT} size="sm" style={{marginBottom:10}}>+ Trip</Bt>
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setModal(false)}>Annuler</Bt><Bt onClick={saveDay} size="lg">Enregistrer</Bt></div>
@@ -200,6 +511,10 @@ const[f,setF]=useState(ef);const gCl=id=>cls.find(c=>c.id===id);
 const FSTAT=["Nouvelle","Envoyée","Payée","Annulée"];const FCOL={"Nouvelle":C.accent,"Envoyée":C.orange,"Payée":C.green,"Annulée":C.red};
 const calcF=(det,tps,tvq)=>{let stTax=0,stNoTax=0;det.forEach(d=>{const q=parseFloat(d.quantite)||0;const p=parseFloat(d.prixUnitaire)||0;const lt=q*p;if(d.taxable===false)stNoTax+=lt;else stTax+=lt;});const st=Math.round((stTax+stNoTax)*100)/100;const tv=tps?Math.round(stTax*TPS_R*100)/100:0;const qv=tvq?Math.round(stTax*TVQ_R*100)/100:0;return{st,stTax:Math.round(stTax*100)/100,stNoTax:Math.round(stNoTax*100)/100,tv,qv,total:Math.round((st+tv+qv)*100)/100};};
 const addDZ=zone=>{const zd=calcZW(data.voyages,fWk,zone);const rate=ZR[zone]||0;const zName=zone==="06"?"Montréal":"Laval";const desc=`Nbre fiches ${zName}: ${zd.nf}`;const dtT=zd.dt.join("\n");setF(p=>({...p,details:[...p.details.filter(d=>d.quantite||d.description),{id:gid(),zone,description:desc,quantite:zd.tp.toString(),unite:"kg",prixUnitaire:rate.toString(),dt:dtT,taxable:true}]}));};
+// Add a single line covering all bonuses in the selected week.
+const addBonusLine=()=>{const totalBonus=calcWeekBonus(data.voyages,fWk);if(totalBonus<=0){ms("Pa gen bonus pou semèn sa a","error");return;}setF(p=>({...p,details:[...p.details.filter(d=>d.quantite||d.description),{id:gid(),zone:"",description:"Bonus voyages",quantite:"1",unite:"lot",prixUnitaire:totalBonus.toString(),dt:"",taxable:true}]}));};
+// Add a single line covering all truck-rental (location) payments in the selected week.
+const addLocationLine=()=>{const totalLoc=calcWeekLocation(data.voyages,fWk);if(totalLoc<=0){ms("Pa gen paiement location pou semèn sa a","error");return;}setF(p=>({...p,details:[...p.details.filter(d=>d.quantite||d.description),{id:gid(),zone:"",description:"Location camion",quantite:"1",unite:"lot",prixUnitaire:totalLoc.toString(),dt:"",taxable:true}]}));};
 const addD=()=>setF(p=>({...p,details:[...p.details,{id:gid(),zone:"06",description:"",quantite:"",unite:"kg",prixUnitaire:RM.toString(),dt:"",taxable:true}]}));
 const upD=(id,k,v)=>setF(p=>({...p,details:p.details.map(d=>{if(d.id!==id)return d;const u={...d,[k]:v};if(k==="zone")u.prixUnitaire=(ZR[v]||0).toString();return u;})}));
 const rmD=id=>setF(p=>({...p,details:p.details.filter(d=>d.id!==id)}));
@@ -208,13 +523,13 @@ const del=id=>{sv({...data,factures:facs.filter(x=>x.id!==id)});ms("OK!");};
 const[emailModal,setEmailModal]=useState(null);
 const genPdfBlob=(fc)=>{const cl=gCl(fc.clientId)||{};const c=calcF(fc.details,fc.avecTPS,fc.avecTVQ);const eI=data.settings?.entreprise||ent;const tN=data.settings?.tpsNum||"";const vN=data.settings?.tvqNum||"";
 let rH=fc.details.map(d=>{const q=parseFloat(d.quantite)||0;const p=parseFloat(d.prixUnitaire)||0;const t=q*p;const dtH=d.dt?`<br/><span style="color:#94a3b8;font-size:10px">DT:</span><br/>${d.dt.replace(/\n/g,"<br/>")}`:"";const taxLbl=d.taxable===false?`<span style="color:#f59e0b;font-size:9px;font-weight:700">Non-taxable</span>`:"";
-return`<tr><td><div style="font-size:11px;color:#475569">${d.description||"\u2014"} ${taxLbl}${dtH}</div></td><td class="r">${fN(q)} kg</td><td class="r">${fN(p)}</td><td class="r b">${fM(t)}</td></tr>`;}).join("");
+return`<tr><td><div style="font-size:11px;color:#475569">${d.description||"—"} ${taxLbl}${dtH}</div></td><td class="r">${fN(q)} kg</td><td class="r">${fN(p)}</td><td class="r b">${fM(t)}</td></tr>`;}).join("");
 let tH=`<div class="ts"><div class="tr"><span>Sous-total</span><span class="b">${fM(c.st)}</span></div>`;
 if(c.stNoTax>0)tH+=`<div class="tr"><span style="font-size:10px;color:#f59e0b">Non-taxable: ${fM(c.stNoTax)} | Taxable: ${fM(c.stTax)}</span></div>`;
 if(fc.avecTPS)tH+=`<div class="tr"><span>TPS ${tN} 5%${c.stNoTax>0?` (sur ${fM(c.stTax)})`:""}</span><span>${fM(c.tv)}</span></div>`;
 if(fc.avecTVQ)tH+=`<div class="tr"><span>TVQ ${vN} 9.975%${c.stNoTax>0?` (sur ${fM(c.stTax)})`:""}</span><span>${fM(c.qv)}</span></div>`;
 tH+=`<div class="tr t"><span>Total</span><span>${fM(c.total)}</span></div></div>`;
-return{html:`<div class="hdr"><div class="av">JW</div><div class="ci"><strong>${eI.nom}</strong><br/>${eI.adresse||""}<br/>${eI.ville||""}<br/>${eI.telephone||""}<br/>${eI.courriel||""}</div></div>${fc.periode?`<div class="per">Semaine du ${fc.periode}</div>`:""}<div style="display:flex;gap:30px;margin-bottom:16px"><div style="flex:1"><div class="mr"><span class="l">Facture</span><span class="v">${fc.numero}</span></div><div class="mr"><span class="l">Date</span><span class="v">${fc.date}</span></div><div class="mr"><span class="l">Total</span><span class="v">${fM(c.total)}</span></div><div class="mr"><span class="l">Statut</span><span class="bg">${fc.statut}</span></div></div><div class="cb"><strong>${cl.nom||"\u2014"}</strong><br/>${cl.adresse||""}<br/>${cl.ville||""}</div></div><table><thead><tr><th>Description</th><th class="r">Quantit\u00e9</th><th class="r">Prix unit.</th><th class="r">Total</th></tr></thead><tbody>${rH}</tbody></table>${tH}<div class="ft">${eI.nom} - ${eI.courriel||""} - ${eI.telephone||""}</div>`,cl,eI,c};};
+return{html:`<div class="hdr"><div class="av">JW</div><div class="ci"><strong>${eI.nom}</strong><br/>${eI.adresse||""}<br/>${eI.ville||""}<br/>${eI.telephone||""}<br/>${eI.courriel||""}</div></div>${fc.periode?`<div class="per">Semaine du ${fc.periode}</div>`:""}<div style="display:flex;gap:30px;margin-bottom:16px"><div style="flex:1"><div class="mr"><span class="l">Facture</span><span class="v">${fc.numero}</span></div><div class="mr"><span class="l">Date</span><span class="v">${fc.date}</span></div><div class="mr"><span class="l">Total</span><span class="v">${fM(c.total)}</span></div><div class="mr"><span class="l">Statut</span><span class="bg">${fc.statut}</span></div></div><div class="cb"><strong>${cl.nom||"—"}</strong><br/>${cl.adresse||""}<br/>${cl.ville||""}</div></div><table><thead><tr><th>Description</th><th class="r">Quantité</th><th class="r">Prix unit.</th><th class="r">Total</th></tr></thead><tbody>${rH}</tbody></table>${tH}<div class="ft">${eI.nom} - ${eI.courriel||""} - ${eI.telephone||""}</div>`,cl,eI,c};};
 const emailF=fc=>{const cl=gCl(fc.clientId)||{};if(!cl.courriel){ms("Client sans courriel!","error");return;}
 setEmailModal({fc,clNom:cl.nom,clEmail:cl.courriel});};
 const sendEmail=(provider)=>{if(!emailModal)return;const{fc,clNom,clEmail}=emailModal;
@@ -241,7 +556,7 @@ return<div>
 <div className="jw-grid2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}><In label="Client *" value={f.clientId} onChange={v=>setF({...f,clientId:v})} options={[{value:"",label:"— Choisir —"},...cls.map(c=>({value:c.id,label:c.nom}))]}/><In label="Statut" value={f.statut} onChange={v=>setF({...f,statut:v})} options={FSTAT.map(s=>({value:s,label:s}))}/></div>
 <div className="jw-grid3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:10}}><In label="Date" type="date" value={f.date} onChange={v=>setF({...f,date:v})}/><In label="Date limite" type="date" value={f.dateLimite} onChange={v=>setF({...f,dateLimite:v})}/><In label="Période" value={f.periode} onChange={v=>setF({...f,periode:v})} placeholder="26 au 30 Janvier 2026"/></div>
 <div style={{display:"flex",gap:16,marginBottom:10,padding:"8px 12px",background:C.card2,borderRadius:8,alignItems:"center",flexWrap:"wrap"}}><Ck label="TPS (5%)" checked={f.avecTPS} onChange={v=>setF({...f,avecTPS:v})}/><Ck label="TVQ (9.975%)" checked={f.avecTVQ} onChange={v=>setF({...f,avecTVQ:v})}/><div style={{marginLeft:"auto",display:"flex",gap:6,alignItems:"center"}}><span style={{fontSize:10,color:C.dim}}>Sem. voyages:</span><input type="date" value={fWk} onChange={e=>setFWk(e.target.value)} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:5,padding:"4px 8px",fontSize:11}}/></div></div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><span style={{fontSize:12,fontWeight:700,color:C.muted}}>DÉTAILS</span><div style={{display:"flex",gap:4}}><Bt size="sm" color={C.accent} onClick={()=>addDZ("06")}>+ MTL</Bt><Bt size="sm" color={C.cyan} onClick={()=>addDZ("13")}>+ LAV</Bt><Bt size="sm" variant="outline" color={C.muted} onClick={addD}>+ Vide</Bt></div></div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><span style={{fontSize:12,fontWeight:700,color:C.muted}}>DÉTAILS</span><div style={{display:"flex",gap:4,flexWrap:"wrap"}}><Bt size="sm" color={C.accent} onClick={()=>addDZ("06")}>+ MTL</Bt><Bt size="sm" color={C.cyan} onClick={()=>addDZ("13")}>+ LAV</Bt><Bt size="sm" color={C.orange} onClick={addBonusLine}>+ Bonus</Bt><Bt size="sm" color={C.purple} onClick={addLocationLine}>+ 🔑 Loc</Bt><Bt size="sm" variant="outline" color={C.muted} onClick={addD}>+ Vide</Bt></div></div>
 {f.details.map((d,idx)=>{const q=parseFloat(d.quantite)||0;const p=parseFloat(d.prixUnitaire)||0;const t=Math.round(q*p*100)/100;return<div key={d.id} style={{background:C.bg,borderRadius:10,padding:12,marginBottom:8,border:`1px solid ${C.border}`}}><div style={{display:"flex",gap:6,alignItems:"center",marginBottom:6}}><span style={{fontWeight:800,color:C.accent,width:18}}>{idx+1}</span><select value={d.zone||"06"} onChange={e=>upD(d.id,"zone",e.target.value)} style={{background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:5,padding:5,fontSize:11,minWidth:130}}>{ZONES.map(z=><option key={z.v} value={z.v}>{z.l} ({z.rate}$)</option>)}</select><In value={d.description} onChange={v=>upD(d.id,"description",v)} placeholder="Description" style={{flex:2}}/><In type="number" value={d.quantite} onChange={v=>upD(d.id,"quantite",v)} placeholder="Qté" style={{maxWidth:85}}/><span style={{fontSize:10,color:C.dim}}>kg</span><In type="number" value={d.prixUnitaire} onChange={v=>upD(d.id,"prixUnitaire",v)} placeholder="Prix" style={{maxWidth:70}}/><div style={{minWidth:80,textAlign:"right"}}><div style={{fontSize:8,color:C.dim}}>S-TOTAL</div><div style={{fontSize:13,fontWeight:800,color:t>0?C.green:C.dim}}>{t>0?fM(t):"—"}</div></div><div style={{minWidth:60,textAlign:"center"}}><Ck label="Tax" checked={d.taxable!==false} onChange={v=>upD(d.id,"taxable",v)}/></div>{f.details.length>1&&<button onClick={()=>rmD(d.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red}}>X</button>}</div><div style={{marginLeft:24}}><In value={d.dt||""} onChange={v=>upD(d.id,"dt",v)} placeholder="DT — numéros fiches, jours..." multiline/></div></div>;})}
 <div style={{background:C.card2,borderRadius:10,padding:14,marginBottom:14,marginTop:8}}><div style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{color:C.muted,fontSize:12}}>Sous-total</span><span style={{fontWeight:700,fontSize:14}}>{fM(c.st)}</span></div>{c.stNoTax>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><span style={{color:C.orange,fontSize:10}}>↳ Non-taxable: {fM(c.stNoTax)} | Taxable: {fM(c.stTax)}</span></div>}{f.avecTPS&&<div style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{color:C.muted,fontSize:12}}>TPS 5%{c.stNoTax>0?` (sur ${fM(c.stTax)})`:""}</span><span>{fM(c.tv)}</span></div>}{f.avecTVQ&&<div style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{color:C.muted,fontSize:12}}>TVQ 9.975%{c.stNoTax>0?` (sur ${fM(c.stTax)})`:""}</span><span>{fM(c.qv)}</span></div>}<div style={{display:"flex",justifyContent:"space-between",padding:"8px 0",marginTop:4}}><span style={{fontWeight:800,fontSize:14}}>TOTAL</span><span style={{fontWeight:900,fontSize:20,color:C.green}}>{fM(c.total)}</span></div></div>
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setM(false)}>Annuler</Bt>{eid&&<Bt onClick={()=>{hs();setTimeout(()=>{const fc=data.factures.find(x=>x.id===eid);if(fc)emailF(fc);},100);}} color={C.green} size="lg">Enregistrer & Email</Bt>}<Bt onClick={hs} color={C.purple} size="lg">Enregistrer</Bt></div>
@@ -279,11 +594,14 @@ return<div><div style={{display:"flex",justifyContent:"space-between",alignItems
 function Paie({data}){const[wk,setWk]=useState(gMon());const wd=useMemo(()=>gWk(wk),[wk]);const st=data.settings||def.settings;
 const eI=data.settings?.entreprise||def.settings.entreprise;
 const wv=useMemo(()=>data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4]),[data.voyages,wd]);
-const ed=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];let brut=0;const defTx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{if(t.nbVoyages>0){const nb=t.nbVoyages||0;const isDriver=v.chofè===ch.id;const tripTx=isDriver?(parseFloat(t.tauxChofe)||defTx):(parseFloat(t.tauxHelper)||defTx);voyDetails.push({date:v.date,zone:t.zone,nb,tx:tripTx});brut+=nb*tripTx;}});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);return{...ch,vy,tx:defTx,br:brut,voyDetails};}).filter(c=>c.vy>0),[data.chauffeurs,wv,st]);
+const ed=useMemo(()=>data.chauffeurs.filter(c=>c.aktif).map(ch=>{let voyDetails=[];let brut=0,bonus=0;const defTx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);wv.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{const nb=t.nbVoyages||0;const tBon=empBonus(t,ch.id);if(nb>0||tBon>0){const isDriver=v.chofè===ch.id;const tripTx=isDriver?(parseFloat(t.tauxChofe)||defTx):(parseFloat(t.tauxHelper)||defTx);voyDetails.push({date:v.date,zone:t.zone,nb,tx:tripTx,bonus:tBon});brut+=nb*tripTx+tBon;bonus+=tBon;}});});const vy=voyDetails.reduce((s,d)=>s+d.nb,0);return{...ch,vy,tx:defTx,br:Math.round(brut*100)/100,bonus:Math.round(bonus*100)/100,voyDetails};}).filter(c=>c.vy>0||c.bonus>0),[data.chauffeurs,wv,st]);
 const tot=ed.reduce((s,e)=>s+e.br,0);
-const pdfAll=()=>{openPrint("Paie",`<h1>${eI.nom} \u2014 Paie</h1><p style="margin:8px 0 16px;color:#64748b">Semaine ${fD(wd[0])} au ${fD(wd[4])}</p><table><thead><tr><th>Employ\u00e9</th><th>R\u00f4le</th><th class="r">Voy.</th><th class="r">Taux</th><th class="r">Brut</th></tr></thead><tbody>${ed.map(e=>`<tr><td>${e.nom}</td><td>${e.role}</td><td class="r">${e.vy}</td><td class="r">${fM(e.tx)}</td><td class="r b">${fM(e.br)}</td></tr>`).join("")}</tbody></table><div class="ts"><div class="tr t"><span>TOTAL</span><span>${fM(tot)}</span></div></div>`);};
-const talonPdf=(e)=>{const jours={};e.voyDetails.forEach(d=>{const k=d.date;if(!jours[k])jours[k]={date:k,zones:{}};if(!jours[k].zones[d.zone])jours[k].zones[d.zone]=0;jours[k].zones[d.zone]+=d.nb;});
-const jourRows=Object.values(jours).sort((a,b)=>a.date.localeCompare(b.date)).map(j=>{const zList=Object.entries(j.zones).map(([z,n])=>`${ZM[z]||z}: ${n}`).join(", ");const dayTotal=Object.values(j.zones).reduce((s,n)=>s+n,0);return`<tr><td>${fD(j.date)}</td><td>${zList}</td><td class="r b">${dayTotal}</td></tr>`;}).join("");
+const pdfAll=()=>{const anyBonus=ed.some(e=>(e.bonus||0)>0);const totBonus=ed.reduce((s,e)=>s+(e.bonus||0),0);openPrint("Paie",`<h1>${eI.nom} — Paie</h1><p style="margin:8px 0 16px;color:#64748b">Semaine ${fD(wd[0])} au ${fD(wd[4])}</p><table><thead><tr><th>Employé</th><th>Rôle</th><th class="r">Voy.</th><th class="r">Taux</th>${anyBonus?'<th class="r">Bonus</th>':''}<th class="r">Brut</th></tr></thead><tbody>${ed.map(e=>`<tr><td>${e.nom}</td><td>${e.role}</td><td class="r">${e.vy}</td><td class="r">${fM(e.tx)}</td>${anyBonus?`<td class="r" style="color:${(e.bonus||0)>0?'#f59e0b':'#94a3b8'}">${(e.bonus||0)>0?fM(e.bonus):'—'}</td>`:''}<td class="r b">${fM(e.br)}</td></tr>`).join("")}</tbody></table><div class="ts">${anyBonus?`<div class="tr"><span>Bonus total</span><span style="color:#f59e0b;font-weight:700">${fM(totBonus)}</span></div>`:''}<div class="tr t"><span>TOTAL</span><span>${fM(tot)}</span></div></div>`);};
+const talonPdf=(e)=>{const jours={};e.voyDetails.forEach(d=>{const k=d.date;if(!jours[k])jours[k]={date:k,zones:{},bonus:0};if(!jours[k].zones[d.zone])jours[k].zones[d.zone]=0;jours[k].zones[d.zone]+=d.nb;jours[k].bonus+=(d.bonus||0);});
+const hasBonus=(e.bonus||0)>0;
+const jourRows=Object.values(jours).sort((a,b)=>a.date.localeCompare(b.date)).map(j=>{const zList=Object.entries(j.zones).map(([z,n])=>`${ZM[z]||z}: ${n}`).join(", ");const dayTotal=Object.values(j.zones).reduce((s,n)=>s+n,0);const bCell=hasBonus?`<td class="r" style="color:${j.bonus>0?'#f59e0b':'#94a3b8'}">${j.bonus>0?fM(j.bonus):'—'}</td>`:'';return`<tr><td>${fD(j.date)}</td><td>${zList}</td><td class="r b">${dayTotal}</td>${bCell}</tr>`;}).join("");
+const tableHeaders=`<th>Date</th><th>Zones</th><th class="r">Voyages</th>${hasBonus?'<th class="r">Bonus</th>':''}`;
+const baseAmount=Math.round((e.br-(e.bonus||0))*100)/100;
 const w=window.open("","_blank");if(!w)return;
 w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Talon de paie - ${e.nom}</title>
 <style>
@@ -313,33 +631,34 @@ td{padding:6px 10px;font-size:11px;border:1px solid #e2e8f0}
 </style></head><body>
 <div class="stub">
 <div class="header">
-<div><h2>TALON DE PAIE</h2><div class="sub">P\u00e9riode : ${fD(wd[0])} au ${fD(wd[4])}</div></div>
+<div><h2>TALON DE PAIE</h2><div class="sub">Période : ${fD(wd[0])} au ${fD(wd[4])}</div></div>
 <div class="co-info"><strong>${eI.nom}</strong><br/>${eI.adresse||""}<br/>${eI.ville||""}<br/>${eI.telephone||""}<br/>${eI.courriel||""}</div>
 </div>
 <div class="section">
-<div class="section-title">Information de l'employ\u00e9</div>
+<div class="section-title">Information de l'employé</div>
 <div class="row"><span class="label">Nom complet</span><span class="val">${e.nom}</span></div>
-<div class="row"><span class="label">R\u00f4le</span><span class="val">${e.role}</span></div>
+<div class="row"><span class="label">Rôle</span><span class="val">${e.role}</span></div>
 <div class="row"><span class="label">Taux par voyage</span><span class="val">${fM(e.tx)}</span></div>
 </div>
 <div class="section">
-<div class="section-title">D\u00e9tail des voyages</div>
-<table><thead><tr><th>Date</th><th>Zones</th><th class="r">Voyages</th></tr></thead><tbody>${jourRows}</tbody></table>
+<div class="section-title">Détail des voyages</div>
+<table><thead><tr>${tableHeaders}</tr></thead><tbody>${jourRows}</tbody></table>
 <div class="row" style="margin-top:8px;padding-top:8px;border-top:2px solid #e2e8f0"><span class="label" style="font-weight:700">Total voyages</span><span class="val" style="font-size:14px">${e.vy}</span></div>
 </div>
 <div class="section">
-<div class="section-title">Calcul de la r\u00e9mun\u00e9ration</div>
+<div class="section-title">Calcul de la rémunération</div>
 <div class="row"><span class="label">Nombre de voyages</span><span class="val">${e.vy}</span></div>
 <div class="row"><span class="label">Taux par voyage</span><span class="val">${fM(e.tx)}</span></div>
-<div class="row"><span class="label">Calcul</span><span class="val">${e.vy} \u00d7 ${fM(e.tx)}</span></div>
+<div class="row"><span class="label">Voyages × Taux</span><span class="val">${fM(baseAmount)}</span></div>
+${hasBonus?`<div class="row" style="color:#f59e0b"><span class="label" style="color:#f59e0b">Bonus</span><span class="val" style="color:#f59e0b;font-weight:700">+ ${fM(e.bonus)}</span></div>`:''}
 </div>
 <div class="net-box">
-<span class="label">MONTANT NET \u00c0 PAYER</span>
+<span class="label">MONTANT NET À PAYER</span>
 <span class="amount">${fM(e.br)}</span>
 </div>
 <div class="footer">
-<span>${eI.nom} \u2022 ${eI.adresse||""} \u2022 ${eI.ville||""}</span>
-<span>Date d'\u00e9mission : ${fD(today())}</span>
+<span>${eI.nom} • ${eI.adresse||""} • ${eI.ville||""}</span>
+<span>Date d'émission : ${fD(today())}</span>
 </div>
 </div>
 <script>window.onload=function(){window.print()}<\\/script>
@@ -349,7 +668,7 @@ const talonEmail=(e)=>{setPaieEmail({emp:e,nom:e.nom,email:e.courriel||""});};
 const sendTalonEmail=(provider)=>{if(!paieEmail)return;const e=paieEmail.emp;
 talonPdf(e);
 setTimeout(()=>{const subject=encodeURIComponent(`Talon de paie - ${e.nom} - Semaine ${fD(wd[0])} au ${fD(wd[4])}`);
-const body=encodeURIComponent(`Bonjour ${e.nom},\n\nVeuillez trouver ci-joint votre talon de paie pour la semaine du ${fD(wd[0])} au ${fD(wd[4])}.\n\nDétails :\n- Voyages : ${e.vy}\n- Taux : ${fM(e.tx)}\n- Montant : ${fM(e.br)}\n\nCordialement,\n${eI.nom}\n${eI.telephone||""}`);
+const body=encodeURIComponent(`Bonjour ${e.nom},\n\nVeuillez trouver ci-joint votre talon de paie pour la semaine du ${fD(wd[0])} au ${fD(wd[4])}.\n\nDétails :\n- Voyages : ${e.vy}\n- Taux : ${fM(e.tx)}${(e.bonus||0)>0?`\n- Bonus : ${fM(e.bonus)}`:""}\n- Montant : ${fM(e.br)}\n\nCordialement,\n${eI.nom}\n${eI.telephone||""}`);
 let url;
 if(provider==="gmail"){url=`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(paieEmail.email)}&su=${subject}&body=${body}`;}
 else if(provider==="outlook"){url=`https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(paieEmail.email)}&subject=${subject}&body=${body}`;}
@@ -358,7 +677,7 @@ window.open(url,"_blank");setPaieEmail(null);},1000);};
 return<div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h1 style={{fontSize:22,fontWeight:800}}>Paie</h1><Bt variant="outline" color={C.red} onClick={pdfAll}>PDF Global</Bt></div>
 <In label="Semaine" type="date" value={wk} onChange={setWk} style={{maxWidth:180,marginBottom:12}}/>
 <div style={{display:"flex",gap:8,marginBottom:12}}><St title="Emp." value={ed.length} color={C.accent}/><St title="Voy." value={wv.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0)} color={C.green}/><St title="Total" value={fM(tot)} grad={C.g3}/></div>
-<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"vy",label:"V.",align:"center"},{key:"tx",label:"Taux",align:"right",render:r=>fM(r.tx)},{key:"br",label:"Brut",align:"right",render:r=><span style={{fontWeight:700,color:C.green}}>{fM(r.br)}</span>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:4}}><button onClick={()=>talonPdf(r)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:700}}>PDF</button><button onClick={()=>talonEmail(r)} style={{background:"none",border:"none",cursor:"pointer",color:C.green,fontSize:10,fontWeight:700}}>Email</button></div>}]} data={ed}/>
+<Tb columns={[{key:"nom",label:"Nom"},{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},{key:"vy",label:"V.",align:"center"},{key:"tx",label:"Taux",align:"right",render:r=>fM(r.tx)},{key:"bonus",label:"Bonus",align:"right",render:r=><span style={{fontWeight:700,color:(r.bonus||0)>0?C.orange:C.dim}}>{(r.bonus||0)>0?fM(r.bonus):"—"}</span>},{key:"br",label:"Brut",align:"right",render:r=><span style={{fontWeight:700,color:C.green}}>{fM(r.br)}</span>},{key:"a",label:"",render:r=><div style={{display:"flex",gap:4}}><button onClick={()=>talonPdf(r)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:700}}>PDF</button><button onClick={()=>talonEmail(r)} style={{background:"none",border:"none",cursor:"pointer",color:C.green,fontSize:10,fontWeight:700}}>Email</button></div>}]} data={ed}/>
 {paieEmail&&<Mo open={true} onClose={()=>setPaieEmail(null)} title="Envoyer talon de paie" width={450}>
 <div style={{textAlign:"center",marginBottom:12}}><div style={{fontSize:12,color:C.muted,marginBottom:4}}>{paieEmail.nom}</div><div style={{fontSize:16,fontWeight:700,color:C.accentL}}>{paieEmail.email||"Pas de courriel"}</div></div>
 {!paieEmail.email?<div style={{background:C.bg,borderRadius:8,padding:14,textAlign:"center",color:C.orange,fontSize:12}}>Cet employé n'a pas de courriel. Ajoutez-le dans l'onglet Chauffeurs.</div>:
@@ -419,21 +738,21 @@ const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d
 return<div>
 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12,marginBottom:20}}>
 <h1 style={{fontSize:22,fontWeight:900}}>Calendrier de Paie</h1>
-<Bt onClick={()=>setShowCfg(true)} variant="outline" size="sm">Param\u00e8tres</Bt>
+<Bt onClick={()=>setShowCfg(true)} variant="outline" size="sm">Paramètres</Bt>
 </div>
 
 <div className="jw-wrap" style={{display:"flex",gap:10,marginBottom:20,flexWrap:"wrap"}}>
 <St title="Prochaine Paie" value={nextPay?fDs(nextPay.payDate):"—"} color={C.accent}/>
 <St title="Dans" value={daysUntil!==null?(daysUntil===0?"Aujourd'hui!":daysUntil+" jours"):"—"} grad={daysUntil===0?C.g2:C.g1}/>
-<St title="D\u00e9lai" value={ps.payDelay+" sem."} color={C.orange}/>
-<St title="Fr\u00e9quence" value={ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque sem."} color={C.cyan}/>
+<St title="Délai" value={ps.payDelay+" sem."} color={C.orange}/>
+<St title="Fréquence" value={ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque sem."} color={C.cyan}/>
 </div>
 
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
-<button onClick={prevM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"\u25C0"}</button>
+<button onClick={prevM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"◀"}</button>
 <div style={{fontSize:16,fontWeight:800,color:C.text,textTransform:"capitalize"}}>{mName}</div>
-<button onClick={nextM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"\u25B6"}</button>
+<button onClick={nextM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"▶"}</button>
 </div>
 
 <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2}}>
@@ -462,9 +781,9 @@ return<div key={ds} title={isPay?(pInfo?`Paie pour sem. ${fDs(pInfo.weekMon)} - 
 </div>
 
 <div style={{display:"flex",gap:16,marginTop:12,flexWrap:"wrap"}}>
-<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.green}}/> D\u00e9j\u00e0 pay\u00e9</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.green}}/> Déjà payé</div>
 <div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.accent}}/> Prochaine paie</div>
-<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.purple}}/> \u00C0 venir</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:5,background:C.purple}}/> À venir</div>
 <div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:2,background:C.cyan+"40"}}/> Jour de travail</div>
 <div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:2,border:`2px solid ${C.accentL}`}}/> Aujourd'hui</div>
 </div>
@@ -477,34 +796,293 @@ const tripCount=p.trips;
 const emps=data.chauffeurs?.filter(c=>c.aktif)||[];
 const weekVoys=p.voyages||[];
 let totalPay=0;
-emps.forEach(ch=>{let nv=0;weekVoys.forEach(v=>{if(v.chof\u00e8===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{nv+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);totalPay+=nv*tx;});
+emps.forEach(ch=>{let nv=0;weekVoys.forEach(v=>{if(v.chofè===ch.id||v.helpers?.includes(ch.id))(v.trips||[]).forEach(t=>{nv+=(t.nbVoyages||0);});});const tx=parseFloat(ch.tauxPersonnel)||(ch.role==="Chauffeur"?st.tauxChauffeur:st.tauxHelper);totalPay+=nv*tx;});
 const isPast=p.payDate<todayStr;
 const isNext=i===0;
 return<div key={p.weekMon} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,background:isNext?C.accent+"12":isPast?C.green+"08":"transparent",border:`1px solid ${isNext?C.accent+"30":isPast?C.green+"20":C.border}`,marginBottom:6}}>
-<div style={{width:40,height:40,borderRadius:10,background:isPast?C.green+"20":isNext?C.accent+"25":C.card2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{isPast?"\u2705":isNext?"\uD83D\uDCB0":"\uD83D\uDCC5"}</div>
+<div style={{width:40,height:40,borderRadius:10,background:isPast?C.green+"20":isNext?C.accent+"25":C.card2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{isPast?"✅":isNext?"💰":"📅"}</div>
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontSize:13,fontWeight:700,color:isNext?C.accentL:isPast?C.green:C.text}}>{fD(p.payDate)}</div>
-<div style={{fontSize:10,color:C.muted}}>Pour sem. {fDs(p.weekMon)} \u2192 {fDs(p.weekFri)} {tripCount>0?`\u2022 ${tripCount} voyages`:""}</div>
+<div style={{fontSize:10,color:C.muted}}>Pour sem. {fDs(p.weekMon)} → {fDs(p.weekFri)} {tripCount>0?`• ${tripCount} voyages`:""}</div>
 </div>
 <div style={{textAlign:"right",flexShrink:0}}>
 {totalPay>0&&<div style={{fontSize:13,fontWeight:800,color:isNext?C.accentL:C.green}}>{fM(totalPay)}</div>}
-<div style={{fontSize:9,color:C.dim}}>{isPast?"Pay\u00e9":isNext?"Prochain":"\u00C0 venir"}</div>
+<div style={{fontSize:9,color:C.dim}}>{isPast?"Payé":isNext?"Prochain":"À venir"}</div>
 </div>
 </div>;})}
 </div>
 
-{showCfg&&<Mo open={true} onClose={()=>setShowCfg(false)} title="Param\u00e8tres du Calendrier de Paie" width={450}>
+{showCfg&&<Mo open={true} onClose={()=>setShowCfg(false)} title="Paramètres du Calendrier de Paie" width={450}>
 <div style={{display:"flex",flexDirection:"column",gap:14}}>
-<In label="Fr\u00e9quence" value={cfgFreq} onChange={setCfgFreq} options={[{v:"weekly",l:"Chaque semaine"},{v:"biweekly",l:"Aux 2 semaines"}]}/>
-<In label="D\u00e9lai de paiement (semaines)" type="number" value={cfgDelay} onChange={v=>setCfgDelay(parseInt(v)||0)}/>
+<In label="Fréquence" value={cfgFreq} onChange={setCfgFreq} options={[{v:"weekly",l:"Chaque semaine"},{v:"biweekly",l:"Aux 2 semaines"}]}/>
+<In label="Délai de paiement (semaines)" type="number" value={cfgDelay} onChange={v=>setCfgDelay(parseInt(v)||0)}/>
 <In label="Jour de paiement" value={cfgDay} onChange={v=>setCfgDay(parseInt(v)||5)} options={[{v:1,l:"Lundi"},{v:2,l:"Mardi"},{v:3,l:"Mercredi"},{v:4,l:"Jeudi"},{v:5,l:"Vendredi"}]}/>
 <div style={{background:C.card2,borderRadius:10,padding:14}}>
 <div style={{fontSize:11,color:C.muted,marginBottom:6}}>Explication</div>
-<div style={{fontSize:12,color:C.text,lineHeight:1.6}}>Si vous travaillez la semaine 1, avec un d\u00e9lai de {cfgDelay} semaine(s), vous serez pay\u00e9 le {JRSK[cfgDay]||"Vendredi"}, {cfgDelay} semaine(s) apr\u00e8s.</div>
+<div style={{fontSize:12,color:C.text,lineHeight:1.6}}>Si vous travaillez la semaine 1, avec un délai de {cfgDelay} semaine(s), vous serez payé le {JRSK[cfgDay]||"Vendredi"}, {cfgDelay} semaine(s) après.</div>
 </div>
 <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
 <Bt variant="outline" color={C.dim} onClick={()=>setShowCfg(false)}>Annuler</Bt>
 <Bt onClick={saveCfg}>Sauvegarder</Bt>
+</div>
+</div>
+</Mo>}
+</div>;}
+
+// ───────────────────────── Calendrier des Paiements (fakti pou peye) ─────────────────────────
+// Nouvo onglet apa — pa manyen KalandryePaie (kalandriye pè anplwaye) ki anwo a.
+function KalPeyman({data,sv,ms}){
+const[month,setMonth]=useState(today().substring(0,7));
+const[showAdd,setShowAdd]=useState(false);
+const[edit,setEdit]=useState(null);
+const emptyF={nom:"",montant:"",categorie:"Assurance",type:"mensuel",jour:"1",date:today(),note:""};
+const[f,setF]=useState(emptyF);
+const pays=data.paiements||[];
+const todayStr=today();
+const[y,m]=month.split("-").map(Number);
+const daysInMonth=new Date(y,m,0).getDate();
+const mKey=month;
+const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"numeric"});
+const occ=useMemo(()=>pays.map(p=>{
+if((p.type||"mensuel")==="unique"){if(!p.date||!p.date.startsWith(mKey))return null;return{...p,due:p.date,paid:!!p.paye};}
+const day=Math.min(Math.max(parseInt(p.jour)||1,1),daysInMonth);
+const due=`${mKey}-${String(day).padStart(2,"0")}`;
+return{...p,due,paid:!!(p.payeM&&p.payeM[mKey])};
+}).filter(Boolean).sort((a,b)=>a.due.localeCompare(b.due)),[pays,mKey,daysInMonth]);
+const tot=occ.reduce((s,o)=>s+(parseFloat(o.montant)||0),0);
+const totPaid=occ.filter(o=>o.paid).reduce((s,o)=>s+(parseFloat(o.montant)||0),0);
+const late=occ.filter(o=>!o.paid&&o.due<todayStr);
+const totLate=late.reduce((s,o)=>s+(parseFloat(o.montant)||0),0);
+const byDay=useMemo(()=>{const mp={};occ.forEach(o=>{(mp[o.due]=mp[o.due]||[]).push(o);});return mp;},[occ]);
+const firstDow=(new Date(y,m-1,1).getDay()+6)%7;
+const cells=[];for(let i=0;i<firstDow;i++)cells.push(null);for(let d=1;d<=daysInMonth;d++)cells.push(`${mKey}-${String(d).padStart(2,"0")}`);
+const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+const openAdd=()=>{setEdit(null);setF(emptyF);setShowAdd(true);};
+const openEdit=p=>{setEdit(p.id);setF({nom:p.nom,montant:String(p.montant),categorie:p.categorie||"Autre",type:p.type||"mensuel",jour:String(p.jour||1),date:p.date||today(),note:p.note||""});setShowAdd(true);};
+const save=()=>{if(!f.nom.trim()||!parseFloat(f.montant)){ms("Nom et montant requis!","error");return;}
+const rec={nom:f.nom.trim(),montant:Math.round(parseFloat(f.montant)*100)/100,categorie:f.categorie,type:f.type,jour:Math.min(Math.max(parseInt(f.jour)||1,1),31),date:f.date,note:f.note};
+const nl=edit?pays.map(p=>p.id===edit?{...p,...rec}:p):[...pays,{id:gid(),...rec,payeM:{},paye:false}];
+sv({...data,paiements:nl});ms(edit?"Paiement modifié!":"Paiement ajouté!");setShowAdd(false);};
+const del=id=>{if(!window.confirm("Supprimer ce paiement?"))return;sv({...data,paiements:pays.filter(p=>p.id!==id)});ms("Paiement supprimé!");};
+const togglePaid=o=>{const willPay=!o.paid;
+const nl=pays.map(p=>{if(p.id!==o.id)return p;
+if((p.type||"mensuel")==="unique")return{...p,paye:willPay};
+const pm={...(p.payeM||{})};if(willPay)pm[mKey]=todayStr;else delete pm[mKey];
+return{...p,payeM:pm};});
+let nd={...data,paiements:nl};
+if(willPay&&window.confirm(`Ajouter "${o.nom}" (${fM(o.montant)}) aux dépenses aussi?`))nd={...nd,depenses:[{id:gid(),date:o.due,categorie:o.categorie||"Autre",description:o.nom,montant:parseFloat(o.montant)||0},...(data.depenses||[])]};
+sv(nd);ms(willPay?"Marqué payé! ✅":"Marqué non payé");};
+return<div>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12,marginBottom:20}}>
+<h1 style={{fontSize:22,fontWeight:900}}>Bills à Payer — Calendrier</h1>
+<Bt onClick={openAdd}>+ Bill</Bt>
+</div>
+<div className="jw-wrap" style={{display:"flex",gap:10,marginBottom:20,flexWrap:"wrap"}}>
+<St title="Total du mois" value={fM(tot)} grad={C.g1}/>
+<St title="Payé" value={fM(totPaid)} color={C.green}/>
+<St title="Restant" value={fM(tot-totPaid)} color={C.orange}/>
+<St title="En retard" value={late.length?`${late.length} • ${fM(totLate)}`:"—"} color={late.length?C.red:C.dim}/>
+</div>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+<button onClick={prevM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"◀"}</button>
+<div style={{fontSize:16,fontWeight:800,color:C.text,textTransform:"capitalize"}}>{mName}</div>
+<button onClick={nextM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:20,fontWeight:700,padding:"4px 12px"}}>{"▶"}</button>
+</div>
+<div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2}}>
+{["LUN","MAR","MER","JEU","VEN","SAM","DIM"].map(d=><div key={d} style={{textAlign:"center",fontSize:9,fontWeight:700,color:C.muted,padding:"6px 0",textTransform:"uppercase"}}>{d}</div>)}
+{cells.map((ds,i)=>{
+if(!ds)return<div key={"e"+i} style={{minHeight:64}}/>;
+const dayNum=parseInt(ds.split("-")[2]);
+const bills=byDay[ds]||[];
+const isToday=ds===todayStr;
+return<div key={ds} onClick={()=>{setEdit(null);setF({...emptyF,type:"unique",date:ds});setShowAdd(true);}} style={{padding:"3px 2px",borderRadius:8,background:isToday?C.accent+"12":bills.length?C.card2+"70":"transparent",border:isToday?`2px solid ${C.accentL}`:`1px solid ${C.border}50`,minHeight:64,cursor:"pointer",display:"flex",flexDirection:"column",gap:2,overflow:"hidden"}}>
+<div style={{fontSize:11,fontWeight:isToday?900:bills.length?700:400,color:isToday?C.accentL:bills.length?C.text:C.dim,textAlign:"center"}}>{dayNum}</div>
+{bills.map(b=>{const isLate=!b.paid&&b.due<todayStr;const bg=b.paid?C.green:isLate?C.red:C.orange;
+return<div key={b.id+b.due} onClick={e=>{e.stopPropagation();togglePaid(b);}} title={`${b.nom}: ${fM(b.montant)}${b.paid?" ✓ payé":isLate?" — EN RETARD":""} (cliquez pour ${b.paid?"annuler":"marquer payé"})`} style={{background:bg,color:"#fff",fontSize:8,fontWeight:700,borderRadius:4,padding:"2px 3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",textAlign:"left",textDecoration:b.paid?"line-through":"none",opacity:b.paid?0.75:1,flexShrink:0}}>{Math.round(parseFloat(b.montant)||0)}$ {b.nom}</div>;})}
+</div>;})}
+</div>
+<div style={{display:"flex",gap:16,marginTop:12,flexWrap:"wrap"}}>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:3,background:C.green}}/> Payé</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:3,background:C.red}}/> En retard</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:3,background:C.orange}}/> À payer</div>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:10,color:C.muted}}><div style={{width:10,height:10,borderRadius:2,border:`2px solid ${C.accentL}`}}/> Aujourd'hui</div>
+</div>
+<div style={{fontSize:10,color:C.dim,marginTop:8}}>💡 Cliquez sur un jour pour ajouter un bill à cette date • Cliquez sur un bill pour le marquer payé</div>
+</div>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px"}}>
+<div style={{fontSize:13,fontWeight:800,color:C.text,marginBottom:12}}>Bills du mois ({occ.length})</div>
+{occ.length===0&&<div style={{padding:24,textAlign:"center",color:C.dim,fontSize:12}}>Aucun bill ce mois-ci. Cliquez "+ Bill" pour ajouter les factures de la compagnie à payer (assurance, prêt, téléphone...).</div>}
+{occ.map(o=>{const isLate=!o.paid&&o.due<todayStr;
+return<div key={o.id+o.due} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,background:o.paid?C.green+"08":isLate?C.red+"10":"transparent",border:`1px solid ${o.paid?C.green+"25":isLate?C.red+"35":C.border}`,marginBottom:6,flexWrap:"wrap"}}>
+<div style={{width:40,height:40,borderRadius:10,background:o.paid?C.green+"20":isLate?C.red+"20":C.card2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{o.paid?"✅":isLate?"🔴":"📅"}</div>
+<div style={{flex:1,minWidth:140}}>
+<div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+<span style={{fontSize:13,fontWeight:700,color:o.paid?C.green:isLate?C.red:C.text}}>{o.nom}</span>
+<Bg text={o.categorie||"Autre"} color={DCOLORS[o.categorie]||C.muted}/>
+<Bg text={(o.type||"mensuel")==="mensuel"?"🔁 Mensuel":"1× Unique"} color={(o.type||"mensuel")==="mensuel"?C.cyan:C.purple}/>
+</div>
+<div style={{fontSize:10,color:C.muted,marginTop:2}}>Échéance: {fD(o.due)}{isLate?" — EN RETARD":""}{o.note?` • ${o.note}`:""}</div>
+</div>
+<div style={{fontSize:14,fontWeight:800,color:o.paid?C.green:isLate?C.red:C.text,flexShrink:0}}>{fM(o.montant)}</div>
+<div style={{display:"flex",gap:6,flexShrink:0}}>
+<Bt size="sm" color={o.paid?C.dim:C.green} variant={o.paid?"outline":"solid"} onClick={()=>togglePaid(o)}>{o.paid?"Annuler":"Payer ✓"}</Bt>
+<Bt size="sm" variant="outline" color={C.accent} onClick={()=>openEdit(o)}>✏️</Bt>
+<Bt size="sm" variant="outline" color={C.red} onClick={()=>del(o.id)}>🗑</Bt>
+</div>
+</div>;})}
+{occ.length>0&&<div style={{textAlign:"right",marginTop:8,fontSize:13,fontWeight:800,color:C.orange}}>Restant à payer: {fM(tot-totPaid)}</div>}
+</div>
+{showAdd&&<Mo open={true} onClose={()=>setShowAdd(false)} title={edit?"Modifier le bill":"Nouveau bill à payer"} width={480}>
+<div style={{display:"flex",flexDirection:"column",gap:14}}>
+<In label="Nom (ex: Assurance camion, Prêt, Téléphone...)" value={f.nom} onChange={v=>setF({...f,nom:v})} placeholder="Assurance camion"/>
+<div style={{display:"flex",gap:10}}>
+<In label="Montant ($)" type="number" value={f.montant} onChange={v=>setF({...f,montant:v})} placeholder="671.00"/>
+<In label="Catégorie" value={f.categorie} onChange={v=>setF({...f,categorie:v})} options={DCATS}/>
+</div>
+<div style={{display:"flex",gap:10}}>
+<In label="Type" value={f.type} onChange={v=>setF({...f,type:v})} options={[{value:"mensuel",label:"🔁 Chaque mois"},{value:"unique",label:"1× Une seule fois"}]}/>
+{f.type==="mensuel"?<In label="Jour du mois (1-31)" type="number" value={f.jour} onChange={v=>setF({...f,jour:v})}/>:<In label="Date" type="date" value={f.date} onChange={v=>setF({...f,date:v})}/>}
+</div>
+<In label="Note (optionnel)" value={f.note} onChange={v=>setF({...f,note:v})} placeholder="No. de compte, référence..."/>
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowAdd(false)}>Annuler</Bt>
+<Bt onClick={save}>{edit?"Sauvegarder":"Ajouter"}</Bt>
+</div>
+</div>
+</Mo>}
+</div>;}
+
+// ───────────────────────── Location (kamyon ou lwe bay moun) ─────────────────────────
+function Lokasyon({data,sv,ms}){
+const vehs=data.vehicules||[];
+const locs=data.locations||[];
+const todayStr=today();
+const curMonth=todayStr.substring(0,7);
+const curYear=todayStr.substring(0,4);
+const[month,setMonth]=useState(curMonth);
+const[showC,setShowC]=useState(false);
+const[editC,setEditC]=useState(null);
+const emptyC={vehiculeId:"",locataire:"",telephone:"",montant:"",frequence:"mensuel",debut:today(),fin:"",note:""};
+const[fc,setFc]=useState(emptyC);
+const[showP,setShowP]=useState(null);
+const[fp,setFp]=useState({date:today(),montant:"",note:""});
+const gV=id=>vehs.find(v=>v.id===id)?.nom||"—";
+const active=locs.filter(l=>l.statut!=="Terminé");
+const allPays=useMemo(()=>{const r=[];locs.forEach(l=>{(l.paiementsRecus||[]).forEach(p=>r.push({...p,locId:l.id,locataire:l.locataire,veh:gV(l.vehiculeId)}));});return r.sort((a,b)=>b.date.localeCompare(a.date));},[locs,vehs]);
+const mPays=useMemo(()=>allPays.filter(p=>p.date&&p.date.startsWith(month)),[allPays,month]);
+const totM=mPays.reduce((s,p)=>s+(parseFloat(p.montant)||0),0);
+const totY=allPays.filter(p=>p.date&&p.date.startsWith(curYear)).reduce((s,p)=>s+(parseFloat(p.montant)||0),0);
+const recuCeMois=l=>(l.paiementsRecus||[]).some(p=>p.date&&p.date.startsWith(curMonth));
+const[y,m]=month.split("-").map(Number);
+const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"numeric"});
+const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
+const openAddC=()=>{setEditC(null);setFc({...emptyC,vehiculeId:vehs[0]?.id||""});setShowC(true);};
+const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",montant:String(l.montant||""),frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||""});setShowC(true);};
+const saveC=()=>{if(!fc.locataire.trim()||!parseFloat(fc.montant)){ms("Locataire et montant requis!","error");return;}
+if(!fc.vehiculeId){ms("Choisissez un camion!","error");return;}
+const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,montant:Math.round(parseFloat(fc.montant)*100)/100,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note};
+const nl=editC?locs.map(l=>l.id===editC?{...l,...rec}:l):[...locs,{id:gid(),...rec,statut:"Actif",paiementsRecus:[]}];
+sv({...data,locations:nl});ms(editC?"Location modifiée!":"Location ajoutée!");setShowC(false);};
+const delC=id=>{if(!window.confirm("Supprimer cette location et tout son historique de paiements?"))return;sv({...data,locations:locs.filter(l=>l.id!==id)});ms("Location supprimée!");};
+const toggleStatut=l=>{const nl=locs.map(x=>x.id===l.id?{...x,statut:x.statut==="Terminé"?"Actif":"Terminé"}:x);sv({...data,locations:nl});ms(l.statut==="Terminé"?"Location réactivée!":"Location terminée!");};
+const openAddP=l=>{setShowP(l.id);setFp({date:today(),montant:String(l.montant||""),note:""});};
+const saveP=()=>{if(!parseFloat(fp.montant)){ms("Montant requis!","error");return;}
+const nl=locs.map(l=>l.id===showP?{...l,paiementsRecus:[...(l.paiementsRecus||[]),{id:gid(),date:fp.date,montant:Math.round(parseFloat(fp.montant)*100)/100,note:fp.note}]}:l);
+sv({...data,locations:nl});ms("Paiement reçu enregistré! 💰");setShowP(null);};
+const delP=(locId,pid)=>{if(!window.confirm("Supprimer ce paiement?"))return;
+const nl=locs.map(l=>l.id===locId?{...l,paiementsRecus:(l.paiementsRecus||[]).filter(p=>p.id!==pid)}:l);
+sv({...data,locations:nl});ms("Paiement supprimé!");};
+const showPLoc=locs.find(l=>l.id===showP);
+return<div>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12,marginBottom:20}}>
+<h1 style={{fontSize:22,fontWeight:900}}>Location de Camions</h1>
+<Bt onClick={openAddC}>+ Location</Bt>
+</div>
+<div className="jw-wrap" style={{display:"flex",gap:10,marginBottom:20,flexWrap:"wrap"}}>
+<St title="Locations actives" value={active.length} grad={C.g1}/>
+<St title="Revenu ce mois" value={fM(allPays.filter(p=>p.date&&p.date.startsWith(curMonth)).reduce((s,p)=>s+(parseFloat(p.montant)||0),0))} color={C.green}/>
+<St title={`Revenu ${curYear}`} value={fM(totY)} grad={C.g2}/>
+<St title="En attente ce mois" value={active.filter(l=>!recuCeMois(l)).length||"—"} color={active.filter(l=>!recuCeMois(l)).length?C.orange:C.dim}/>
+</div>
+{locs.length===0&&<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:30,textAlign:"center",color:C.dim,fontSize:12,marginBottom:20}}>Aucune location. Cliquez "+ Location" pour enregistrer un camion que vous louez à quelqu'un.</div>}
+{locs.length>0&&<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:20}}>
+{locs.map(l=>{const done=l.statut==="Terminé";const ok=recuCeMois(l);
+return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.border:ok?C.green+"40":C.orange+"40"}`,borderRadius:14,padding:"14px 16px",flex:"1 1 300px",minWidth:280,opacity:done?0.6:1}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8,gap:8,flexWrap:"wrap"}}>
+<div>
+<div style={{fontSize:14,fontWeight:800,color:C.text}}>🚛 {gV(l.vehiculeId)}</div>
+<div style={{fontSize:12,color:C.muted,marginTop:2}}>👤 {l.locataire}{l.telephone?` • ${l.telephone}`:""}</div>
+</div>
+<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+<Bg text={done?"Terminé":"Actif"} color={done?C.dim:C.green}/>
+{!done&&<Bg text={ok?"✅ Reçu ce mois":"⏳ En attente"} color={ok?C.green:C.orange}/>}
+</div>
+</div>
+<div style={{fontSize:12,color:C.text,marginBottom:4}}><b style={{color:C.cyan,fontSize:15}}>{fM(l.montant)}</b> / {l.frequence==="hebdomadaire"?"semaine":"mois"}</div>
+<div style={{fontSize:10,color:C.muted,marginBottom:10}}>Depuis: {fD(l.debut)}{l.fin?` → ${fD(l.fin)}`:""}{l.note?` • ${l.note}`:""}</div>
+<div style={{fontSize:10,color:C.dim,marginBottom:10}}>Total reçu: <b style={{color:C.green}}>{fM((l.paiementsRecus||[]).reduce((s,p)=>s+(parseFloat(p.montant)||0),0))}</b> ({(l.paiementsRecus||[]).length} paiements)</div>
+<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+{!done&&<Bt size="sm" color={C.green} onClick={()=>openAddP(l)}>💰 Paiement reçu</Bt>}
+<Bt size="sm" variant="outline" color={C.accent} onClick={()=>openEditC(l)}>✏️</Bt>
+<Bt size="sm" variant="outline" color={done?C.green:C.orange} onClick={()=>toggleStatut(l)}>{done?"Réactiver":"Terminer"}</Bt>
+<Bt size="sm" variant="outline" color={C.red} onClick={()=>delC(l.id)}>🗑</Bt>
+</div>
+</div>;})}
+</div>}
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px"}}>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,flexWrap:"wrap",gap:8}}>
+<div style={{fontSize:13,fontWeight:800,color:C.text}}>Paiements reçus</div>
+<div style={{display:"flex",alignItems:"center",gap:8}}>
+<button onClick={prevM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:16,fontWeight:700,padding:"2px 8px"}}>{"◀"}</button>
+<span style={{fontSize:12,fontWeight:700,textTransform:"capitalize",minWidth:110,textAlign:"center"}}>{mName}</span>
+<button onClick={nextM} style={{background:"none",border:"none",cursor:"pointer",color:C.accentL,fontSize:16,fontWeight:700,padding:"2px 8px"}}>{"▶"}</button>
+</div>
+</div>
+<Tb columns={[
+{key:"date",label:"Date",render:r=>fD(r.date)},
+{key:"veh",label:"Camion"},
+{key:"locataire",label:"Locataire"},
+{key:"note",label:"Note",render:r=>r.note||<span style={{color:C.dim}}>{"—"}</span>},
+{key:"montant",label:"Montant",align:"right",render:r=><b style={{color:C.green}}>{fM(r.montant)}</b>},
+{key:"act",label:"",align:"right",render:r=><button onClick={()=>delP(r.locId,r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12}}>🗑</button>}
+]} data={mPays}/>
+{mPays.length>0&&<div style={{textAlign:"right",marginTop:8,fontSize:13,fontWeight:800,color:C.green}}>Total {mName}: {fM(totM)}</div>}
+</div>
+{showC&&<Mo open={true} onClose={()=>setShowC(false)} title={editC?"Modifier la location":"Nouvelle location"} width={480}>
+<div style={{display:"flex",flexDirection:"column",gap:14}}>
+<In label="Camion" value={fc.vehiculeId} onChange={v=>setFc({...fc,vehiculeId:v})} options={vehs.map(v=>({value:v.id,label:v.nom+(v.plaque?` (${v.plaque})`:"")}))}/>
+<div style={{display:"flex",gap:10}}>
+<In label="Locataire (nom)" value={fc.locataire} onChange={v=>setFc({...fc,locataire:v})} placeholder="Jean Pierre"/>
+<In label="Téléphone" value={fc.telephone} onChange={v=>setFc({...fc,telephone:v})} placeholder="(514) 555-0000"/>
+</div>
+<div style={{display:"flex",gap:10}}>
+<In label="Montant ($)" type="number" value={fc.montant} onChange={v=>setFc({...fc,montant:v})} placeholder="1500.00"/>
+<In label="Fréquence" value={fc.frequence} onChange={v=>setFc({...fc,frequence:v})} options={[{value:"mensuel",label:"Par mois"},{value:"hebdomadaire",label:"Par semaine"}]}/>
+</div>
+<div style={{display:"flex",gap:10}}>
+<In label="Début" type="date" value={fc.debut} onChange={v=>setFc({...fc,debut:v})}/>
+<In label="Fin (optionnel)" type="date" value={fc.fin} onChange={v=>setFc({...fc,fin:v})}/>
+</div>
+<In label="Note (optionnel)" value={fc.note} onChange={v=>setFc({...fc,note:v})} placeholder="Dépôt, conditions, assurance..."/>
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowC(false)}>Annuler</Bt>
+<Bt onClick={saveC}>{editC?"Sauvegarder":"Ajouter"}</Bt>
+</div>
+</div>
+</Mo>}
+{showP&&showPLoc&&<Mo open={true} onClose={()=>setShowP(null)} title={`Paiement reçu — ${gV(showPLoc.vehiculeId)} (${showPLoc.locataire})`} width={420}>
+<div style={{display:"flex",flexDirection:"column",gap:14}}>
+<div style={{display:"flex",gap:10}}>
+<In label="Date" type="date" value={fp.date} onChange={v=>setFp({...fp,date:v})}/>
+<In label="Montant ($)" type="number" value={fp.montant} onChange={v=>setFp({...fp,montant:v})}/>
+</div>
+<In label="Note (optionnel)" value={fp.note} onChange={v=>setFp({...fp,note:v})} placeholder="Cash, virement, chèque..."/>
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowP(null)}>Annuler</Bt>
+<Bt color={C.green} onClick={saveP}>💰 Enregistrer</Bt>
 </div>
 </div>
 </Mo>}
@@ -603,7 +1181,7 @@ const Sty={th:{padding:"8px 10px",textAlign:"left",fontSize:11,fontWeight:700,co
 
 return<div>
 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}}>
-<h2 style={{fontSize:18,fontWeight:800,color:C.text}}>📒 Livre de Comptabilit\u00e9</h2>
+<h2 style={{fontSize:18,fontWeight:800,color:C.text}}>📒 Livre de Comptabilité</h2>
 <div style={{display:"flex",gap:8,alignItems:"center"}}>
 <input type="month" value={periodM} onChange={e=>setPeriodM(e.target.value)} style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"6px 10px",fontSize:11}}/>
 <Bt onClick={()=>setShowAdd(true)} color={C.green} size="sm">+ Transaction</Bt>
@@ -614,7 +1192,7 @@ return<div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:16}}>
 {[
 {label:"Revenu Total",val:fN(calc.totalRevenu),color:C.green,icon:"💰"},
-{label:"D\u00e9penses Total",val:fN(calc.totalDepense),color:C.red,icon:"💸"},
+{label:"Dépenses Total",val:fN(calc.totalDepense),color:C.red,icon:"💸"},
 {label:"Profit Net",val:fN(calc.profit),color:calc.profit>=0?C.green:C.red,icon:"📈"},
 {label:"Compte Client",val:fN(calc.arTotal),color:C.orange,icon:"💳"},
 {label:"Taxes Kolekte",val:fN(calc.totalPassif),color:C.purple,icon:"🧾"},
@@ -637,7 +1215,7 @@ return<div>
 <div><label style={{fontSize:10,color:C.dim}}>Tip</label><select value={txForm.type} onChange={e=>setTxForm({...txForm,type:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="debit">Débit (sòti)</option><option value="credit">Crédit (antre)</option></select></div>
 <div><label style={{fontSize:10,color:C.dim}}>Kategori</label><select value={txForm.categorie} onChange={e=>setTxForm({...txForm,categorie:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="revenu">Revenu</option><option value="depense">Dépense</option><option value="actif">Actif</option><option value="passif">Passif</option></select></div>
 <div><label style={{fontSize:10,color:C.dim}}>Compte</label><select value={txForm.compte} onChange={e=>setTxForm({...txForm,compte:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}><option value="">-- Choisir --</option>{Object.values(COMPTES).flat().map(c=><option key={c} value={c}>{c}</option>)}</select></div>
-<div style={{gridColumn:"1/-1"}}><label style={{fontSize:10,color:C.dim}}>Description</label><input value={txForm.description} onChange={e=>setTxForm({...txForm,description:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}} placeholder="D\u00e9tails de la transaction"/></div>
+<div style={{gridColumn:"1/-1"}}><label style={{fontSize:10,color:C.dim}}>Description</label><input value={txForm.description} onChange={e=>setTxForm({...txForm,description:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}} placeholder="Détails de la transaction"/></div>
 <div><label style={{fontSize:10,color:C.dim}}>Montan ($)</label><input type="number" step="0.01" value={txForm.montant} onChange={e=>setTxForm({...txForm,montant:e.target.value})} style={{width:"100%",padding:"6px 8px",background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,fontSize:11}}/></div>
 </div>
 <div style={{display:"flex",gap:8,marginTop:12}}><Bt onClick={addTx} color={C.green} size="sm">Ajouter</Bt><Bt onClick={()=>setShowAdd(false)} variant="outline" size="sm">Annuler</Bt></div>
@@ -647,7 +1225,7 @@ return<div>
 {tab==="journal"&&<div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"auto"}}>
 <div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>📒 Journal — {periodM} ({filteredTx.length} transaction{filteredTx.length>1?"s":""})</div>
 <table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
-<th style={Sty.th}>Date</th><th style={Sty.th}>Compte</th><th style={Sty.th}>Description</th><th style={{...Sty.th,textAlign:"right"}}>D\u00e9bit</th><th style={{...Sty.th,textAlign:"right"}}>Cr\u00e9dit</th><th style={Sty.th}>Source</th>
+<th style={Sty.th}>Date</th><th style={Sty.th}>Compte</th><th style={Sty.th}>Description</th><th style={{...Sty.th,textAlign:"right"}}>Débit</th><th style={{...Sty.th,textAlign:"right"}}>Crédit</th><th style={Sty.th}>Source</th>
 </tr></thead><tbody>
 {filteredTx.map(t=><tr key={t.id} style={{background:t.source==="auto"?"transparent":C.accent+"11"}}>
 <td style={Sty.td}>{fD(t.date)}</td>
@@ -765,14 +1343,14 @@ return<div>
 <h3 style={{fontSize:14,fontWeight:800,color:C.text,marginBottom:4}}>📅 Rapò Mansyèl — {periodM}</h3>
 <div className="jw-grid3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginTop:12}}>
 <div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Revenu</div><div style={{fontSize:18,fontWeight:800,color:C.green}}>{fN(pCalc.rev)} $</div></div>
-<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>D\u00e9penses</div><div style={{fontSize:18,fontWeight:800,color:C.red}}>{fN(pCalc.dep)} $</div></div>
+<div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Dépenses</div><div style={{fontSize:18,fontWeight:800,color:C.red}}>{fN(pCalc.dep)} $</div></div>
 <div style={{background:C.bg,borderRadius:8,padding:12,textAlign:"center"}}><div style={{fontSize:10,color:C.dim}}>Profit</div><div style={{fontSize:18,fontWeight:800,color:pCalc.profit>=0?C.green:C.red}}>{fN(pCalc.profit)} $</div></div>
 </div>
 </div>
 <div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"auto"}}>
 <div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,fontSize:12,fontWeight:700,color:C.muted}}>Tous les Mois</div>
 <table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr>
-<th style={Sty.th}>Mois</th><th style={{...Sty.th,textAlign:"right"}}>Revenu</th><th style={{...Sty.th,textAlign:"right"}}>D\u00e9penses</th><th style={{...Sty.th,textAlign:"right"}}>Profit</th><th style={{...Sty.th,textAlign:"right"}}>Marge %</th>
+<th style={Sty.th}>Mois</th><th style={{...Sty.th,textAlign:"right"}}>Revenu</th><th style={{...Sty.th,textAlign:"right"}}>Dépenses</th><th style={{...Sty.th,textAlign:"right"}}>Profit</th><th style={{...Sty.th,textAlign:"right"}}>Marge %</th>
 </tr></thead><tbody>
 {Object.entries(calc.byMonth).sort().map(([m,v])=>{const p=v.rev-v.dep;return<tr key={m}>
 <td style={Sty.td}>{m}</td>
@@ -799,7 +1377,7 @@ const[running,setRunning]=useState(false);const[log,setLog]=useState([]);const[s
 const addLog=(msg,type="info")=>setLog(p=>[...p,{msg,type,time:new Date().toLocaleTimeString()}]);
 const buildTalonHtml=(e)=>{const jours={};e.voyDetails.forEach(d=>{const k=d.date;if(!jours[k])jours[k]={date:k,zones:{}};if(!jours[k].zones[d.zone])jours[k].zones[d.zone]=0;jours[k].zones[d.zone]+=d.nb;});
 const jourRows=Object.values(jours).sort((a,b)=>a.date.localeCompare(b.date)).map(j=>{const zList=Object.entries(j.zones).map(([z,n])=>`${ZM[z]||z}: ${n}`).join(", ");const dayTotal=Object.values(j.zones).reduce((s,n)=>s+n,0);return`<tr><td>${fD(j.date)}</td><td>${zList}</td><td style="text-align:right;font-weight:700">${dayTotal}</td></tr>`;}).join("");
-return`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Talon - ${e.nom}</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{background:#fff;color:#1a1a1a;padding:20px}.stub{max-width:700px;margin:0 auto;border:2px solid #1e293b;border-radius:8px;overflow:hidden}.header{background:#1e293b;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}.header h2{font-size:18px}.co-info{font-size:10px;text-align:right;color:#94a3b8;line-height:1.6}.co-info strong{color:#fff;font-size:12px}.section{padding:16px 24px;border-bottom:1px solid #e2e8f0}.section-title{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#64748b;font-weight:700;margin-bottom:10px}.row{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}.row .label{color:#64748b}.row .val{font-weight:600}table{width:100%;border-collapse:collapse;margin:8px 0}th{background:#f8fafc;padding:6px 10px;text-align:left;font-size:9px;text-transform:uppercase;color:#64748b;border:1px solid #e2e8f0}td{padding:6px 10px;font-size:11px;border:1px solid #e2e8f0}.net-box{background:#1e293b;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}.net-box .label{font-size:12px;color:#94a3b8}.net-box .amount{font-size:24px;font-weight:900;color:#4ade80}.footer{background:#f8fafc;padding:12px 24px;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8}@media print{body{padding:0}}</style></head><body><div class="stub"><div class="header"><div><h2>TALON DE PAIE</h2><div style="font-size:11px;color:#94a3b8;margin-top:2px">P\u00e9riode : ${fD(wd[0])} au ${fD(wd[4])}</div></div><div class="co-info"><strong>${eI.nom}</strong><br/>${eI.adresse||""}<br/>${eI.ville||""}<br/>${eI.telephone||""}<br/>${eI.courriel||""}</div></div><div class="section"><div class="section-title">Employ\u00e9</div><div class="row"><span class="label">Nom</span><span class="val">${e.nom}</span></div><div class="row"><span class="label">R\u00f4le</span><span class="val">${e.role}</span></div><div class="row"><span class="label">Taux/voyage</span><span class="val">${fM(e.tx)}</span></div></div><div class="section"><div class="section-title">D\u00e9tail voyages</div><table><thead><tr><th>Date</th><th>Zones</th><th style="text-align:right">Voy.</th></tr></thead><tbody>${jourRows}</tbody></table></div><div class="section"><div class="section-title">R\u00e9mun\u00e9ration</div><div class="row"><span class="label">${e.vy} voyages \u00d7 ${fM(e.tx)}</span><span class="val">${fM(e.br)}</span></div></div><div class="net-box"><span class="label">MONTANT NET</span><span class="amount">${fM(e.br)}</span></div><div class="footer"><span>${eI.nom}</span><span>${fD(today())}</span></div></div><script>window.onload=function(){window.print()}<\\/script></body></html>`;};
+return`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Talon - ${e.nom}</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{background:#fff;color:#1a1a1a;padding:20px}.stub{max-width:700px;margin:0 auto;border:2px solid #1e293b;border-radius:8px;overflow:hidden}.header{background:#1e293b;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}.header h2{font-size:18px}.co-info{font-size:10px;text-align:right;color:#94a3b8;line-height:1.6}.co-info strong{color:#fff;font-size:12px}.section{padding:16px 24px;border-bottom:1px solid #e2e8f0}.section-title{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#64748b;font-weight:700;margin-bottom:10px}.row{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}.row .label{color:#64748b}.row .val{font-weight:600}table{width:100%;border-collapse:collapse;margin:8px 0}th{background:#f8fafc;padding:6px 10px;text-align:left;font-size:9px;text-transform:uppercase;color:#64748b;border:1px solid #e2e8f0}td{padding:6px 10px;font-size:11px;border:1px solid #e2e8f0}.net-box{background:#1e293b;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}.net-box .label{font-size:12px;color:#94a3b8}.net-box .amount{font-size:24px;font-weight:900;color:#4ade80}.footer{background:#f8fafc;padding:12px 24px;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8}@media print{body{padding:0}}</style></head><body><div class="stub"><div class="header"><div><h2>TALON DE PAIE</h2><div style="font-size:11px;color:#94a3b8;margin-top:2px">Période : ${fD(wd[0])} au ${fD(wd[4])}</div></div><div class="co-info"><strong>${eI.nom}</strong><br/>${eI.adresse||""}<br/>${eI.ville||""}<br/>${eI.telephone||""}<br/>${eI.courriel||""}</div></div><div class="section"><div class="section-title">Employé</div><div class="row"><span class="label">Nom</span><span class="val">${e.nom}</span></div><div class="row"><span class="label">Rôle</span><span class="val">${e.role}</span></div><div class="row"><span class="label">Taux/voyage</span><span class="val">${fM(e.tx)}</span></div></div><div class="section"><div class="section-title">Détail voyages</div><table><thead><tr><th>Date</th><th>Zones</th><th style="text-align:right">Voy.</th></tr></thead><tbody>${jourRows}</tbody></table></div><div class="section"><div class="section-title">Rémunération</div><div class="row"><span class="label">${e.vy} voyages × ${fM(e.tx)}</span><span class="val">${fM(e.br)}</span></div></div><div class="net-box"><span class="label">MONTANT NET</span><span class="amount">${fM(e.br)}</span></div><div class="footer"><span>${eI.nom}</span><span>${fD(today())}</span></div></div><script>window.onload=function(){window.print()}<\\/script></body></html>`;};
 const openEmail=(provider,to,subject,body)=>{let url;const s=encodeURIComponent(subject);const b=encodeURIComponent(body);
 if(provider==="gmail")url=`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${s}&body=${b}`;
 else if(provider==="outlook")url=`https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${s}&body=${b}`;
@@ -809,32 +1387,32 @@ const runAgent=async()=>{setRunning(true);setLog([]);setStep(0);const tasks=[];
 emps.forEach(e=>{if(e.courriel)tasks.push({type:"paie",emp:e});});
 clientFacts.forEach(cf=>{if(cf.cl.courriel)tasks.push({type:"fact",cf});});
 setTotal(tasks.length);
-addLog(`\u{1F916} Agent IA d\u00e9mar\u00e9 — ${tasks.length} t\u00e2ches d\u00e9tect\u00e9es`,"start");
+addLog(`\u{1F916} Agent IA démaré — ${tasks.length} tâches détectées`,"start");
 addLog(`\u{1F4C5} Semaine: ${fD(wd[0])} au ${fD(wd[4])}`);
 const newFacs=[...facs];
 for(let i=0;i<tasks.length;i++){const t=tasks[i];setStep(i+1);
 if(t.type==="paie"){const e=t.emp;
-addLog(`\u{1F4C4} G\u00e9n\u00e9ration talon paie: ${e.nom}...`);
+addLog(`\u{1F4C4} Génération talon paie: ${e.nom}...`);
 const w=window.open("","_blank");if(w){w.document.write(buildTalonHtml(e));w.document.close();}
 await new Promise(r=>setTimeout(r,800));
 addLog(`\u{1F4E7} Ouverture email pour ${e.nom} (${e.courriel})...`,"email");
-openEmail(provider,e.courriel,`Talon de paie - ${e.nom} - Sem. ${fD(wd[0])} au ${fD(wd[4])}`,`Bonjour ${e.nom},\n\nVeuillez trouver ci-joint votre talon de paie.\n\nP\u00e9riode : ${fD(wd[0])} au ${fD(wd[4])}\nVoyages : ${e.vy}\nMontant : ${fM(e.br)}\n\nCordialement,\n${eI.nom}`);
+openEmail(provider,e.courriel,`Talon de paie - ${e.nom} - Sem. ${fD(wd[0])} au ${fD(wd[4])}`,`Bonjour ${e.nom},\n\nVeuillez trouver ci-joint votre talon de paie.\n\nPériode : ${fD(wd[0])} au ${fD(wd[4])}\nVoyages : ${e.vy}\nMontant : ${fM(e.br)}\n\nCordialement,\n${eI.nom}`);
 await new Promise(r=>setTimeout(r,1500));
-addLog(`\u2705 ${e.nom} — talon + email pr\u00eat`,"ok");
+addLog(`✅ ${e.nom} — talon + email prêt`,"ok");
 }else if(t.type==="fact"){const{cf}=t;const cl=cf.cl;const c=cf.calc;
 const num=`FAC-${(newFacs.length+1).toString().padStart(3,"0")}`;
 const periode=`${fD(wd[0])} au ${fD(wd[4])}`;
-addLog(`\u{1F4C4} G\u00e9n\u00e9ration facture ${num} pour ${cl.nom}...`);
-const facObj={id:gid(),clientId:cl.id,date:today(),dateLimite:"",periode,details:cf.details,avecTPS:true,avecTVQ:true,statut:"Envoy\u00e9e",numero:num,sousTotal:c.st,tps:c.tv,tvq:c.qv,total:c.total};
+addLog(`\u{1F4C4} Génération facture ${num} pour ${cl.nom}...`);
+const facObj={id:gid(),clientId:cl.id,date:today(),dateLimite:"",periode,details:cf.details,avecTPS:true,avecTVQ:true,statut:"Envoyée",numero:num,sousTotal:c.st,tps:c.tv,tvq:c.qv,total:c.total};
 newFacs.push(facObj);
 await new Promise(r=>setTimeout(r,800));
 addLog(`\u{1F4E7} Ouverture email facture ${num} pour ${cl.nom} (${cl.courriel})...`,"email");
-openEmail(provider,cl.courriel,`Facture ${num} - ${eI.nom}`,`Bonjour ${cl.nom},\n\nVeuillez trouver ci-joint la facture ${num}.\n\nP\u00e9riode : ${periode}\nTotal : ${fM(c.total)}\n\nMerci pour votre confiance.\n\n${eI.nom}\n${eI.telephone||""}`);
+openEmail(provider,cl.courriel,`Facture ${num} - ${eI.nom}`,`Bonjour ${cl.nom},\n\nVeuillez trouver ci-joint la facture ${num}.\n\nPériode : ${periode}\nTotal : ${fM(c.total)}\n\nMerci pour votre confiance.\n\n${eI.nom}\n${eI.telephone||""}`);
 await new Promise(r=>setTimeout(r,1500));
-addLog(`\u2705 ${cl.nom} — facture ${num} + email pr\u00eat`,"ok");
+addLog(`✅ ${cl.nom} — facture ${num} + email prêt`,"ok");
 }}
 sv({...data,factures:newFacs});
-addLog(`\u{1F389} Termin\u00e9! ${tasks.length} t\u00e2ches compl\u00e9t\u00e9es`,"done");
+addLog(`\u{1F389} Terminé! ${tasks.length} tâches complétées`,"done");
 setRunning(false);};
 const empReady=emps.filter(e=>e.courriel);const empNoEmail=emps.filter(e=>!e.courriel);
 const clReady=clientFacts.filter(cf=>cf.cl.courriel);const clNoEmail=clientFacts.filter(cf=>!cf.cl.courriel);
@@ -956,8 +1534,8 @@ return<div>
 </div>;}
 
 function Back({data,sv,ms}){
-const st=data.settings||def.settings;const[tare,setTare]=useState(st.tare||DEF_TARE);const[txC,setTxC]=useState(st.tauxChauffeur);const[txH,setTxH]=useState(st.tauxHelper);
-const saveSt=()=>{sv({...data,settings:{...st,tare:parseInt(tare)||DEF_TARE,tauxChauffeur:parseFloat(txC)||80,tauxHelper:parseFloat(txH)||65}});ms("OK!");};
+const st=data.settings||def.settings;const[tare,setTare]=useState(st.tare||DEF_TARE);const[txC,setTxC]=useState(st.tauxChauffeur);const[txH,setTxH]=useState(st.tauxHelper);const[bonusLav,setBonusLav]=useState(st.bonusLavalPerEmp!=null?st.bonusLavalPerEmp:15);
+const saveSt=()=>{sv({...data,settings:{...st,tare:parseInt(tare)||DEF_TARE,tauxChauffeur:parseFloat(txC)||80,tauxHelper:parseFloat(txH)||65,bonusLavalPerEmp:parseFloat(bonusLav)||0}});ms("OK!");};
 return<div><h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>Sauvegarde & Paramètres</h1>
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:16,marginBottom:16}}>
 <div style={{fontSize:13,fontWeight:700,color:C.muted,marginBottom:10}}>Paramètres</div>
@@ -965,6 +1543,12 @@ return<div><h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>Sauvegarde &
 <In label="TARE (kg)" type="number" value={tare} onChange={setTare}/>
 <In label="Taux Chauffeur Défaut ($)" type="number" value={txC} onChange={setTxC}/>
 <In label="Taux Helper Défaut ($)" type="number" value={txH} onChange={setTxH}/>
+</div>
+<div className="jw-grid2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+<In label="💰 Bonus Laval (par employé / voyage)" type="number" value={bonusLav} onChange={setBonusLav}/>
+<div style={{display:"flex",alignItems:"center",fontSize:11,color:C.muted,padding:"8px 10px",background:C.bg,borderRadius:6}}>
+Aplike otomatikman sou chak vwayaj Laval (zòn 13) pou chak anplwaye sou voyaj la. Mete <b>0</b> pou dezaktive.
+</div>
 </div>
 <div style={{fontSize:10,color:C.dim,marginBottom:10,fontStyle:"italic"}}>💡 Taux défaut yo itilize lè yon employè pa gen taux personnel. Ale nan paj "Employés" pou mete taux endividyèl.</div>
 <Bt onClick={saveSt} color={C.green} size="sm">Sauvegarder</Bt>
@@ -1058,52 +1642,52 @@ const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>RL-1 - ${emp
 .note{background:#f9f9f9;border:1px solid #ccc;padding:8px;font-size:9px;color:#333;margin-top:8px}
 .footer{text-align:center;font-size:8px;color:#999;margin-top:8px}
 @media print{.page{padding:10px;margin:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
-${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
+${"Copie de l'employeur,Copie de l'employé(e)".split(",").map(copy=>`
 <div class="page">
 <div class="copy-label">${copy}</div>
 <div class="form">
 <div class="form-header">
-<div class="fh-logo"><div><div class="rq">REVENU<br/>QU\u00C9BEC</div><div style="font-size:7px;color:#003366">\u269C</div></div></div>
-<div class="fh-title"><h1>RELEV\u00C9 1</h1><div class="sub">Revenus d'emploi et revenus divers</div></div>
-<div class="fh-year"><div class="lbl">Ann\u00e9e</div><div class="val">${year}</div></div>
-<div class="fh-info"><div class="lbl">Code du relev\u00e9</div><div class="val"></div><div style="margin-top:4px"><div class="lbl">No du dernier relev\u00e9 transmis</div><div class="val"></div></div></div>
-<div class="fh-rl"><div class="big">RL-1 (${year}-10)</div><div class="ver">Revenu Qu\u00e9bec</div></div>
+<div class="fh-logo"><div><div class="rq">REVENU<br/>QUÉBEC</div><div style="font-size:7px;color:#003366">⚜</div></div></div>
+<div class="fh-title"><h1>RELEVÉ 1</h1><div class="sub">Revenus d'emploi et revenus divers</div></div>
+<div class="fh-year"><div class="lbl">Année</div><div class="val">${year}</div></div>
+<div class="fh-info"><div class="lbl">Code du relevé</div><div class="val"></div><div style="margin-top:4px"><div class="lbl">No du dernier relevé transmis</div><div class="val"></div></div></div>
+<div class="fh-rl"><div class="big">RL-1 (${year}-10)</div><div class="ver">Revenu Québec</div></div>
 </div>
 <div class="cases">
 <div class="cs"><div class="cn">A</div><div class="ct">Revenus d'emploi</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">B</div><div class="ct">Cotisation au RRQ</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">B-1</div><div class="ct">Cotisation suppl\u00e9mentaire au RRQ</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">C</div><div class="ct">Cotisation \u00e0 l'assurance emploi</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">B-1</div><div class="ct">Cotisation supplémentaire au RRQ</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">C</div><div class="ct">Cotisation à l'assurance emploi</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">D</div><div class="ct">Cotisation syndicale</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">E</div><div class="ct">Salaire admissible au RRQ</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">F</div><div class="ct">Cotisation au RQAP</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">G</div><div class="ct">Salaire admissible au RQAP</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">H</div><div class="ct">Cotisation \u00e0 un RPA</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">I</div><div class="ct">Salaire admissible au R\u00e9g. ass. m\u00e9d.</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">J</div><div class="ct">R\u00e9gime priv\u00e9 d'ass. maladie</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">K</div><div class="ct">Voyages (r\u00e9gion d\u00e9sign\u00e9e)</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">H</div><div class="ct">Cotisation à un RPA</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">I</div><div class="ct">Salaire admissible au Rég. ass. méd.</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">J</div><div class="ct">Régime privé d'ass. maladie</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">K</div><div class="ct">Voyages (région désignée)</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">L</div><div class="ct">Autres avantages</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">M</div><div class="ct">Commissions</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">N</div><div class="ct">Dons de bienfaisance</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">O</div><div class="ct">Autres revenus</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">P</div><div class="ct">R\u00e9gime d'ass. interentreprises</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">Q</div><div class="ct">Salaires diff\u00e9r\u00e9s</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">R</div><div class="ct">Revenu \u00ab situ\u00e9 \u00bb dans une r\u00e9serve</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">S</div><div class="ct">Pourboires re\u00e7us</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">T</div><div class="ct">Pourboires attribu\u00e9s</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">P</div><div class="ct">Régime d'ass. interentreprises</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">Q</div><div class="ct">Salaires différés</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">R</div><div class="ct">Revenu « situé » dans une réserve</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">S</div><div class="ct">Pourboires reçus</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">T</div><div class="ct">Pourboires attribués</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">U</div><div class="ct">Retraite progressive</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">V</div><div class="ct">Nourriture et logement</div><div class="cv"></div></div>
 <div class="cs hl"><div class="cn" style="background:#003366;color:#fff;padding:1px 6px">W</div><div class="ct" style="font-weight:700">Autres revenus</div><div class="cv red" style="font-size:14px">${brut} $</div></div>
-<div class="cs"><div class="cn">Imp\u00f4t du Qu\u00e9bec</div><div class="ct">retenu</div><div class="cv"></div></div>
-<div class="cs"><div class="cn">V\u00e9hicule \u00e0 moteur</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">Impôt du Québec</div><div class="ct">retenu</div><div class="cv"></div></div>
+<div class="cs"><div class="cn">Véhicule à moteur</div><div class="cv"></div></div>
 <div class="cs"><div class="cn">Code (case O)</div><div class="cv"></div></div>
 </div>
 <div class="recip">
-<div class="rc"><div class="lbl">Num\u00e9ro d'assurance sociale du particulier</div><div class="val">${emp.sin||""}</div></div>
-<div class="rc" style="max-width:160px"><div class="lbl">Num\u00e9ro de r\u00e9f\u00e9rence (facultatif)</div><div class="val"></div></div>
+<div class="rc"><div class="lbl">Numéro d'assurance sociale du particulier</div><div class="val">${emp.sin||""}</div></div>
+<div class="rc" style="max-width:160px"><div class="lbl">Numéro de référence (facultatif)</div><div class="val"></div></div>
 </div>
 <div style="padding:4px 8px;border-top:1px solid #000">
-<div class="lbl">Nom de famille, pr\u00e9nom et adresse du particulier</div>
+<div class="lbl">Nom de famille, prénom et adresse du particulier</div>
 <div class="val" style="font-size:11px">${emp.nom}</div>
 <div style="font-size:9px">${emp.adresse||"N/A"}</div>
 </div>
@@ -1114,7 +1698,7 @@ ${"Copie de l'employeur,Copie de l'employ\u00e9(e)".split(",").map(copy=>`
 <div style="font-size:8px;color:#666;margin-top:2px">NEQ: ${ent.neq||""} | TPS: ${st.tpsNum||""} | TVQ: ${st.tvqNum||""}</div>
 </div>
 </div>
-<div class="note"><b>Travailleur autonome</b> &mdash; Case W: ${brut} $ (${emp.totalVoy} voyages \u00d7 ${fN(emp.tx)} $/voy) &mdash; Aucune retenue \u00e0 la source. Le b\u00e9n\u00e9ficiaire est responsable de d\u00e9clarer ce revenu. Consultez votre comptable.</div>
+<div class="note"><b>Travailleur autonome</b> &mdash; Case W: ${brut} $ (${emp.totalVoy} voyages × ${fN(emp.tx)} $/voy) &mdash; Aucune retenue à la source. Le bénéficiaire est responsable de déclarer ce revenu. Consultez votre comptable.</div>
 <div class="footer">${ent.nom||"J&W Transport"} | NEQ: ${ent.neq||""} | Produit le ${new Date().toLocaleDateString("fr-CA")}</div>
 </div>`).join("")}
 <script>window.onload=function(){window.print()}<\/script></body></html>`;
@@ -1138,11 +1722,12 @@ return<div>
 </div>
 <Tb columns={[
 {key:"nom",label:"Nom",render:r=><b>{r.nom}</b>},
-{key:"role",label:"R\u00f4le",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},
+{key:"role",label:"Rôle",render:r=><Bg text={r.role} color={r.role==="Chauffeur"?C.accent:C.purple}/>},
 {key:"sin",label:"NAS",render:r=><span style={{fontSize:10,color:r.sin?C.green:C.red,fontWeight:600}}>{r.sin||"Manquant"}</span>},
 {key:"adresse",label:"Adresse",render:r=><span style={{fontSize:10,color:r.adresse?C.text:C.red}}>{r.adresse||"Manquant"}</span>},
 {key:"totalVoy",label:"Voyages",align:"right",render:r=><span style={{fontWeight:700,color:C.cyan}}>{r.totalVoy}</span>},
 {key:"tx",label:"Taux",align:"right",render:r=><span style={{fontSize:11}}>${fN(r.tx)}</span>},
+{key:"bonus",label:"Bonus",align:"right",render:r=><span style={{fontSize:11,fontWeight:700,color:r.bonus>0?C.orange:C.dim}}>{r.bonus>0?fM(r.bonus):"—"}</span>},
 {key:"brut",label:"Brut ($)",align:"right",render:r=><span style={{fontWeight:800,color:C.green}}>{fM(r.brut)}</span>},
 {key:"a",label:"Actions",render:r=><div style={{display:"flex",gap:4,flexWrap:"wrap"}}><Bt size="sm" color={C.accent} onClick={()=>genT4A(r)}>T4A</Bt><Bt size="sm" color="#003366" onClick={()=>genRL1(r)}>RL-1</Bt><button onClick={()=>{setEditModal(r.id);setEditF({sin:r.sin||"",adresse:r.adresse||""});}} style={{background:"none",border:`1px solid ${C.border}`,borderRadius:6,cursor:"pointer",color:C.muted,fontSize:10,padding:"4px 8px"}}>Edit</button></div>}
 ]} data={emps}/>
@@ -1379,7 +1964,7 @@ return<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10
 
 function ChatBot({data,user}){
 const[open,setOpen]=useState(false);
-const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos donn\u00e9es\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, d\u00e9penses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les v\u00e9hicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
+const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos données\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, dépenses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les véhicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
 const[input,setInput]=useState("");
 const[loading,setLoading]=useState(false);
 const[showKey,setShowKey]=useState(false);
@@ -1388,8 +1973,8 @@ const[aiMode,setAiMode]=useState(()=>!!localStorage.getItem("jw-api-key"));
 const chatRef=useRef(null);
 useEffect(()=>{if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scrollHeight;},[msgs]);
 
-const saveKey=(k)=>{const clean=k.trim().replace(/[^\x20-\x7E]/g,"");if(clean){localStorage.setItem("jw-api-key",clean);setApiKey(clean);setAiMode(true);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"✅ Cl\u00e9 API enregistr\u00e9e! Maintenant j'utilise Claude AI pour vous r\u00e9pondre. 🧠"}]);}};
-const removeKey=()=>{localStorage.removeItem("jw-api-key");setApiKey("");setAiMode(false);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"🔄 Cl\u00e9 API supprim\u00e9e. Retour en mode local."}]);};
+const saveKey=(k)=>{const clean=k.trim().replace(/[^\x20-\x7E]/g,"");if(clean){localStorage.setItem("jw-api-key",clean);setApiKey(clean);setAiMode(true);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"✅ Clé API enregistrée! Maintenant j'utilise Claude AI pour vous répondre. 🧠"}]);}};
+const removeKey=()=>{localStorage.removeItem("jw-api-key");setApiKey("");setAiMode(false);setShowKey(false);setMsgs(prev=>[...prev,{role:"assistant",content:"🔄 Clé API supprimée. Retour en mode local."}]);};
 
 const buildContext=()=>{
 const s=data.settings||{};const ent=s.entreprise||{};
@@ -1404,22 +1989,22 @@ const totDep=deps.reduce((a,d)=>a+(d.montant||0),0);
 const totFac=yrFacs.reduce((a,f)=>a+(f.total||0),0);
 const tare=s.tare||DEF_TARE;
 let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);totRev+=pN*(ZR[t.zone]||0)*(t.nbVoyages||1);}));
-return `Tu es l'assistant IA de J&W Transport. R\u00e9ponds toujours en fran\u00e7ais. Ann\u00e9e en cours: ${yr}.
+return `Tu es l'assistant IA de J&W Transport. Réponds toujours en français. Année en cours: ${yr}.
 Entreprise: ${ent.nom||"J&W Transport"}, ${ent.adresse||""}, ${ent.ville||""}
 TPS: ${s.tpsNum||"N/A"}, TVQ: ${s.tvqNum||"N/A"}, NEQ: ${ent.neq||"N/A"}
 Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy, TARE: ${tare}kg
 Employés et taux: ${emps.map(e=>`${e.nom}(${e.role})=${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}$/voy`).join(", ")}
-Stats ${yr}: ${emps.length} employ\u00e9s (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} v\u00e9hicules, ${yrFacs.length} factures(${totFac.toFixed(0)}$), ${deps.length} d\u00e9penses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu ${yr}: ${totRev.toFixed(0)}$, Profit ${yr}: ${(totRev-totDep).toFixed(0)}$
+Stats ${yr}: ${emps.length} employés (${emps.map(e=>e.nom+"="+e.role).join(", ")}), ${voys.length} jours/${totTrips} trajets, ${(data.clients||[]).length} clients, ${vehs.length} véhicules, ${yrFacs.length} factures(${totFac.toFixed(0)}$), ${deps.length} dépenses(${totDep.toFixed(0)}$), ${ents.length} entretiens, Revenu ${yr}: ${totRev.toFixed(0)}$, Profit ${yr}: ${(totRev-totDep).toFixed(0)}$
 IMPORTANT: Utilise UNIQUEMENT les chiffres ci-dessus pour ${yr}. Ne jamais inventer ou estimer des chiffres.
-Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employ\u00e9s, Clients, V\u00e9hicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilit\u00e9, Agent IA(automatise paie+factures), Rapport Annuel, 📋 Fiscal(T4A fédéral Case 048 + RL-1 Québec Case W pour travailleur autonome), Backup(JSON).
-${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fr\u00e9quence=${ps.frequency}, d\u00e9lai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} \u00e0 ${nx.weekFri}.`:""}`;})()}
-Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de d\u00e9lai.
-Sois concis, utile, et utilise les donn\u00e9es r\u00e9elles ci-dessus.
+Fonctions: Dashboard, Voyages(zones 06=MTL/13=LAV), Employés, Clients, Véhicules+Entretiens, Paie(par semaine), 📅 Calendrier de Paie(dates de paiement), Factures(TPS/TVQ+email), Comptabilité, Agent IA(automatise paie+factures), Rapport Annuel, 📋 Fiscal(T4A fédéral Case 048 + RL-1 Québec Case W pour travailleur autonome), Backup(JSON).
+${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const nx=pds.find(p=>p.payDate>=today());return`Calendrier Paie: fréquence=${ps.frequency}, délai=${ps.payDelay} semaines, jour=${JRSK[ps.payDay]||"Vendredi"}. ${nx?`Prochaine paie: ${nx.payDate} pour semaine ${nx.weekMon} à ${nx.weekFri}.`:""}`;})()}
+Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de délai.
+Sois concis, utile, et utilise les données réelles ci-dessus.
 ${(()=>{try{const yr=new Date().getFullYear();const tx=calcTaxSummary(data,yr);const pa=calcProfitAnalysis(data,yr);return`COMPTABILITÉ ${yr}: Marge profit ${pa.margin}%, TPS/TVQ net à remettre: ${tx.totalNet.toFixed(0)}$ (TPS ${tx.tpsNet.toFixed(0)}$, TVQ ${tx.tvqNet.toFixed(0)}$). Top dépenses: ${pa.topCats.slice(0,3).map(([c,a])=>c+":"+a.toFixed(0)+"$").join(", ")}. Projection mensuelle: ${pa.projection.toFixed(0)}$.`;}catch(e){return"";}})()}
 Nouveau: Page "Agent Comptable" avec analyse TPS/TVQ, déductions, échéances fiscales et assistant IA spécialisé.`;};
 
 const analyze=(q)=>{
-const lo=q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const lo=q.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
 const s=data.settings||{};const ent=s.entreprise||{};
 const yr=new Date().getFullYear();const yrStr=String(yr);
 const allVoys=data.voyages||[];const allDeps=data.depenses||[];const allFacs=data.factures||[];
@@ -1435,26 +2020,26 @@ const tare=s.tare||DEF_TARE;
 let totRev=0;voys.forEach(v=>(v.trips||[]).forEach(t=>{const pN=Math.max(0,(t.poidsChaj||0)-tare);totRev+=pN*(ZR[t.zone]||0)*(t.nbVoyages||1);}));
 const profit=totRev-totDep;
 if(lo.match(/^(bonjou|bonswa|hello|hi|hey|salut|sak pase|sa k ap|koman ou ye)/))return`Bonjour ${user?.displayName||""}! 👋 Comment puis-je vous aider aujourd'hui?`;
-if(lo.match(/stati|resume|rezime|sommaire|overview|dashboard|done mwen|tout bagay|general/))return`📊 R\u00e9sum\u00e9:\n👥 ${emps.length} Employ\u00e9(s): ${emps.map(e=>e.nom).join(", ")||"aucun"}\n🚛 ${vehs.length} V\u00e9hicule(s): ${vehs.map(v=>v.nom).join(", ")||"aucun"}\n👤 ${clis.length} Client(s): ${clis.map(c=>c.nom).join(", ")||"aucun"}\n📦 ${voys.length} jours de voyage (${totTrips} trajets)\n🧾 ${facs.length} Facture(s) (${fN(totFac)} $)\n💸 ${deps.length} D\u00e9pense(s) (${fN(totDep)} $)\n🔧 ${ents.length} Entretien(s)\n💰 Revenu: ${fN(totRev)} $ | Profit: ${fN(profit)} $`;
-if(lo.match(/voyaj|voyage|trip|livrezon|combien voyage|konben voyage/)){const byM={};voys.forEach(v=>{const m=v.date?.substring(0,7);if(m){if(!byM[m])byM[m]=0;(v.trips||[]).forEach(t=>{byM[m]+=(t.nbVoyages||0);});}});return`📦 ${voys.length} jours, ${totTrips} trajets\n${Object.entries(byM).sort().map(([m,n])=>`  ${m}: ${n}`).join("\n")}\n➡️ Allez \u00e0 "Voyages"`;}
-if(lo.match(/revni|revenu|revenue|lajan|konben mwen fe|konben m fe|gain|rantre/))return`💰 Revenu: ${fN(totRev)} $\nFactures: ${fN(totFac)} $ | D\u00e9penses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ ${profit>=0?"✅":"⚠️"}\n➡️ "Rapport Annuel"`;
-if(lo.match(/depans|depens|expense|essence|assuranc|cout|kou|konben m depanse/)){const byCat={};deps.forEach(d=>{byCat[d.categorie||"Autre"]=(byCat[d.categorie||"Autre"]||0)+(d.montant||0);});return`💸 ${deps.length} d\u00e9penses = ${fN(totDep)} $\n${Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([c,m])=>`  ${c}: ${fN(m)} $`).join("\n")}\n➡️ "Comptabilit\u00e9"`;}
+if(lo.match(/stati|resume|rezime|sommaire|overview|dashboard|done mwen|tout bagay|general/))return`📊 Résumé:\n👥 ${emps.length} Employé(s): ${emps.map(e=>e.nom).join(", ")||"aucun"}\n🚛 ${vehs.length} Véhicule(s): ${vehs.map(v=>v.nom).join(", ")||"aucun"}\n👤 ${clis.length} Client(s): ${clis.map(c=>c.nom).join(", ")||"aucun"}\n📦 ${voys.length} jours de voyage (${totTrips} trajets)\n🧾 ${facs.length} Facture(s) (${fN(totFac)} $)\n💸 ${deps.length} Dépense(s) (${fN(totDep)} $)\n🔧 ${ents.length} Entretien(s)\n💰 Revenu: ${fN(totRev)} $ | Profit: ${fN(profit)} $`;
+if(lo.match(/voyaj|voyage|trip|livrezon|combien voyage|konben voyage/)){const byM={};voys.forEach(v=>{const m=v.date?.substring(0,7);if(m){if(!byM[m])byM[m]=0;(v.trips||[]).forEach(t=>{byM[m]+=(t.nbVoyages||0);});}});return`📦 ${voys.length} jours, ${totTrips} trajets\n${Object.entries(byM).sort().map(([m,n])=>`  ${m}: ${n}`).join("\n")}\n➡️ Allez à "Voyages"`;}
+if(lo.match(/revni|revenu|revenue|lajan|konben mwen fe|konben m fe|gain|rantre/))return`💰 Revenu: ${fN(totRev)} $\nFactures: ${fN(totFac)} $ | Dépenses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ ${profit>=0?"✅":"⚠️"}\n➡️ "Rapport Annuel"`;
+if(lo.match(/depans|depens|expense|essence|assuranc|cout|kou|konben m depanse/)){const byCat={};deps.forEach(d=>{byCat[d.categorie||"Autre"]=(byCat[d.categorie||"Autre"]||0)+(d.montant||0);});return`💸 ${deps.length} dépenses = ${fN(totDep)} $\n${Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([c,m])=>`  ${c}: ${fN(m)} $`).join("\n")}\n➡️ "Comptabilité"`;}
 if(lo.match(/fakti|factur|invoice/)){return`🧾 ${facs.length} factures = ${fN(totFac)} $\n${facs.map(f=>`  ${f.numero}: ${fN(f.total||0)} $ — ${f.statut}`).join("\n")}\n➡️ "Factures"`;}
-if(lo.match(/kalandriye|calendrier|calendar|dat paie|next payday|kile.*touche|kile.*peye|prochen paie|prochen peman|prochaine paie|dat peman|jou paie|jour de paie|kile.*paye|touche kob|quand.*pay/)){const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const upc=pds.filter(p=>p.payDate>=today()).slice(0,3);if(upc.length===0)return`📅 Aucune date de paie trouv\u00e9e. Allez \u00e0 "📅 Calendrier" pour configurer votre horaire de paie.`;const nx=upc[0];const du=Math.ceil((new Date(nx.payDate+"T12:00:00")-new Date(today()+"T12:00:00"))/86400000);let r=`📅 Prochaine Paie:\n💰 ${fD(nx.payDate)} (${JRSK[ps.payDay]||"Vendredi"})`;r+=du===0?" — AUJOURD'HUI! 🎉\n":` — dans ${du} jours\n`;r+=`   Pour la semaine: ${fDs(nx.weekMon)} → ${fDs(nx.weekFri)}\n`;if(upc.length>1){r+=`\n📆 Ensuite:\n`;upc.slice(1).forEach(p=>{r+=`   ${fD(p.payDate)} → sem. ${fDs(p.weekMon)}-${fDs(p.weekFri)}\n`;});}r+=`\n⚙️ D\u00e9lai: ${ps.payDelay} semaines | ${ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque semaine"}`;r+=`\n➡️ "📅 Calendrier"`;return r;}
+if(lo.match(/kalandriye|calendrier|calendar|dat paie|next payday|kile.*touche|kile.*peye|prochen paie|prochen peman|prochaine paie|dat peman|jou paie|jour de paie|kile.*paye|touche kob|quand.*pay/)){const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const pds=getPayPeriods(today(),30,s,voys);const upc=pds.filter(p=>p.payDate>=today()).slice(0,3);if(upc.length===0)return`📅 Aucune date de paie trouvée. Allez à "📅 Calendrier" pour configurer votre horaire de paie.`;const nx=upc[0];const du=Math.ceil((new Date(nx.payDate+"T12:00:00")-new Date(today()+"T12:00:00"))/86400000);let r=`📅 Prochaine Paie:\n💰 ${fD(nx.payDate)} (${JRSK[ps.payDay]||"Vendredi"})`;r+=du===0?" — AUJOURD'HUI! 🎉\n":` — dans ${du} jours\n`;r+=`   Pour la semaine: ${fDs(nx.weekMon)} → ${fDs(nx.weekFri)}\n`;if(upc.length>1){r+=`\n📆 Ensuite:\n`;upc.slice(1).forEach(p=>{r+=`   ${fD(p.payDate)} → sem. ${fDs(p.weekMon)}-${fDs(p.weekFri)}\n`;});}r+=`\n⚙️ Délai: ${ps.payDelay} semaines | ${ps.frequency==="biweekly"?"Aux 2 sem.":"Chaque semaine"}`;r+=`\n➡️ "📅 Calendrier"`;return r;}
 if(lo.match(/paie|pai|pay|salaire|saler|chofe|helper/))return`💵 Taux défaut: Chauffeur ${s.tauxChauffeur||80}$/voy, Helper ${s.tauxHelper||65}$/voy\n${emps.map(e=>`  ${e.nom} (${e.role}) → $${parseFloat(e.tauxPersonnel)||(e.role==="Chauffeur"?s.tauxChauffeur:s.tauxHelper)}/voy${e.tauxPersonnel?" (perso)":""}`).join("\n")}\n➡️ "Paie" ou "🤖 Agent IA"`;
 if(lo.match(/kliyan|client/))return`👤 Clients:\n${clis.map(c=>`  ${c.nom} — ${c.telephone||""} — ${c.courriel||""}`).join("\n")||"Aucun"}\n➡️ "Clients"`;
-if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 V\u00e9hicules:\n${vehs.map(v=>`  ${v.nom} | ${v.plaque||"—"} | ${v.annee||"—"}`).join("\n")||"Aucun"}\n🔧 ${ents.length} entretien(s) (${fN(ents.reduce((s,e)=>s+(e.cout||0),0))} $)\n➡️ "V\u00e9hicules"`;
-if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretiens:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Aucun"}\n➡️ "V\u00e9hicules"`;
-if(lo.match(/employe|anplwaye|staff|ekip/))return`👥 Employ\u00e9s:\n${emps.map(e=>`  ${e.nom} — ${e.role} — ${e.courriel||"—"}`).join("\n")||"Aucun"}\n➡️ "Employ\u00e9s"`;
-if(lo.match(/entreprise|compani|info|tps|tvq|neq|adres/))return`🏢 ${ent.nom||"—"}\n${ent.adresse||""}, ${ent.ville||""}\nT\u00e9l: ${ent.telephone||"—"} | Email: ${ent.courriel||"—"}\nTPS: ${s.tpsNum||"—"} | TVQ: ${s.tvqNum||"—"} | NEQ: ${ent.neq||"—"}`;
+if(lo.match(/vehic|camion|truck|auto|machin|plaque/))return`🚛 Véhicules:\n${vehs.map(v=>`  ${v.nom} | ${v.plaque||"—"} | ${v.annee||"—"}`).join("\n")||"Aucun"}\n🔧 ${ents.length} entretien(s) (${fN(ents.reduce((s,e)=>s+(e.cout||0),0))} $)\n➡️ "Véhicules"`;
+if(lo.match(/entretien|maintenance|reparas|huile|filtre/))return`🔧 Entretiens:\n${ents.map(e=>{const v=vehs.find(x=>x.id===e.vehiculeId);return`  ${fD(e.date)} ${v?.nom||"?"}: ${e.type} — ${fN(e.cout||0)} $`;}).join("\n")||"Aucun"}\n➡️ "Véhicules"`;
+if(lo.match(/employe|anplwaye|staff|ekip/))return`👥 Employés:\n${emps.map(e=>`  ${e.nom} — ${e.role} — ${e.courriel||"—"}`).join("\n")||"Aucun"}\n➡️ "Employés"`;
+if(lo.match(/entreprise|compani|info|tps|tvq|neq|adres/))return`🏢 ${ent.nom||"—"}\n${ent.adresse||""}, ${ent.ville||""}\nTél: ${ent.telephone||"—"} | Email: ${ent.courriel||"—"}\nTPS: ${s.tpsNum||"—"} | TVQ: ${s.tvqNum||"—"} | NEQ: ${ent.neq||"—"}`;
 if(lo.match(/fiscal|t4a|rl-1|rl1|releve|relevé|impot|impôt|nas|taxe|tax|formulaire fiscal/)){const fe=calcFiscal(data,new Date().getFullYear());const tot=fe.reduce((s,e)=>s+e.brut,0);return`📋 Formulaires Fiscaux:\n${fe.map(e=>`  ${e.nom}: ${e.totalVoy} voyages × $${fN(e.tx)} = ${fM(e.brut)}`).join("\n")}\nTotal: ${fM(tot)}\n\nT4A (Fédéral) → Case 048: Honoraires\nRL-1 (Québec) → Case W: Autres revenus\n➡️ "📋 Fiscal"`;}
-if(lo.match(/ajan|agent|otomatiz|automati/))return`🤖 Agent IA automatise:\n1. Calculer la paie\n2. Cr\u00e9er PDF talon\n3. Ouvrir email\n4. Cr\u00e9er facture\n5. Envoyer par email\n➡️ "🤖 Agent IA"`;
-if(lo.match(/backup|save|sauvegard|restore|import|export/))return`💾 Allez \u00e0 "Backup" pour:\n📥 T\u00e9l\u00e9charger JSON | 📤 Importer backup\n⚠️ Faites des sauvegardes souvent!`;
-if(lo.match(/kijan|koman|how|comment|tutorial|gid|guide|ede|help|eksplik/))return`📖 Guide: Voyages→Factures→Paie→Comptabilit\u00e9→Backup\nUtilisez "🤖 Agent IA" pour tout automatiser!`;
-if(lo.match(/profi|profit|benef|margin|marge/))return`📈 Revenu: ${fN(totRev)} $ | D\u00e9penses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ (${totRev>0?(profit/totRev*100).toFixed(1):0}%) ${profit>=0?"✅":"⚠️"}`;
+if(lo.match(/ajan|agent|otomatiz|automati/))return`🤖 Agent IA automatise:\n1. Calculer la paie\n2. Créer PDF talon\n3. Ouvrir email\n4. Créer facture\n5. Envoyer par email\n➡️ "🤖 Agent IA"`;
+if(lo.match(/backup|save|sauvegard|restore|import|export/))return`💾 Allez à "Backup" pour:\n📥 Télécharger JSON | 📤 Importer backup\n⚠️ Faites des sauvegardes souvent!`;
+if(lo.match(/kijan|koman|how|comment|tutorial|gid|guide|ede|help|eksplik/))return`📖 Guide: Voyages→Factures→Paie→Comptabilité→Backup\nUtilisez "🤖 Agent IA" pour tout automatiser!`;
+if(lo.match(/profi|profit|benef|margin|marge/))return`📈 Revenu: ${fN(totRev)} $ | Dépenses: ${fN(totDep)} $\nProfit: ${fN(profit)} $ (${totRev>0?(profit/totRev*100).toFixed(1):0}%) ${profit>=0?"✅":"⚠️"}`;
 if(lo.match(/tare|pwa|poid|weight|kilo/))return`⚖️ TARE: ${s.tare||DEF_TARE}kg\nZone MTL(06): ${RM}$/kg | LAV(13): ${RL}$/kg\nCalcul: (Poids − TARE) × Taux × Nb`;
 if(lo.match(/mesi|merci|thanks/))return`Avec plaisir! 😊`;
-return`Je n'ai pas bien compris "${q}".\n\nEssayez: "r\u00e9sum\u00e9", "voyages", "d\u00e9penses", "factures", "paie", "v\u00e9hicules", "clients", "profit", "backup", "comment utiliser l'app"`;
+return`Je n'ai pas bien compris "${q}".\n\nEssayez: "résumé", "voyages", "dépenses", "factures", "paie", "véhicules", "clients", "profit", "backup", "comment utiliser l'app"`;
 };
 
 const sendMsg=async()=>{
@@ -1471,7 +2056,7 @@ if(d.error)throw new Error(d.error.message||"API error");
 const reply=d.content?.map(b=>b.text||"").join("")||"Excusez-moi, une erreur est survenue.";
 setMsgs(prev=>[...prev,{role:"assistant",content:reply}]);
 }catch(e){
-setMsgs(prev=>[...prev,{role:"assistant",content:`⚠️ Erreur API: ${e.message}\n\nSolutions:\n• V\u00e9rifiez la cl\u00e9 API dans ⚙️\n• V\u00e9rifiez vos cr\u00e9dits sur console.anthropic.com\n\nR\u00e9ponse locale:\n${analyze(input.trim())}`}]);
+setMsgs(prev=>[...prev,{role:"assistant",content:`⚠️ Erreur API: ${e.message}\n\nSolutions:\n• Vérifiez la clé API dans ⚙️\n• Vérifiez vos crédits sur console.anthropic.com\n\nRéponse locale:\n${analyze(input.trim())}`}]);
 }setLoading(false);
 }else{
 const reply=analyze(input.trim());
@@ -1492,19 +2077,19 @@ return<>
 </div>
 </div>
 {showKey&&<div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,background:C.bg}}>
-<div style={{fontSize:10,color:C.muted,marginBottom:6}}>🔑 Cl\u00e9 API Anthropic (optionnel — pour Claude AI)</div>
+<div style={{fontSize:10,color:C.muted,marginBottom:6}}>🔑 Clé API Anthropic (optionnel — pour Claude AI)</div>
 <div style={{display:"flex",gap:6}}>
 <input type="password" value={apiKey} onChange={e=>setApiKey(e.target.value)} placeholder="sk-ant-..." style={{flex:1,background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"6px 10px",fontSize:11,outline:"none"}}/>
 <button onClick={()=>saveKey(apiKey)} style={{padding:"6px 10px",borderRadius:6,border:"none",cursor:"pointer",background:C.green,color:"#fff",fontSize:10,fontWeight:700}}>✓</button>
 </div>
-{aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Supprimer la cl\u00e9 / Retour local</button>}
-<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 La cl\u00e9 reste uniquement dans votre navigateur</div>
+{aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Supprimer la clé / Retour local</button>}
+<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 La clé reste uniquement dans votre navigateur</div>
 </div>}
 <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"12px 14px",display:"flex",flexDirection:"column",gap:10}}>
 {msgs.map((m,i)=><div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"85%"}}>
 <div style={{background:m.role==="user"?C.accent:C.card2,color:m.role==="user"?"#fff":C.text,padding:"8px 12px",borderRadius:m.role==="user"?"12px 12px 2px 12px":"12px 12px 12px 2px",fontSize:12,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{m.content}</div>
 </div>)}
-{loading&&<div style={{alignSelf:"flex-start"}}><div style={{background:C.card2,padding:"8px 16px",borderRadius:12,fontSize:12,color:C.dim}}>🧠 Claude r\u00e9fl\u00e9chit...</div></div>}
+{loading&&<div style={{alignSelf:"flex-start"}}><div style={{background:C.card2,padding:"8px 16px",borderRadius:12,fontSize:12,color:C.dim}}>🧠 Claude réfléchit...</div></div>}
 </div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`,display:"flex",gap:8}}>
 <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")sendMsg();}} placeholder={aiMode?"Posez n'importe quelle question...":"Posez votre question..."} style={{flex:1,background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:8,padding:"8px 12px",fontSize:12,outline:"none"}}/>
@@ -1512,6 +2097,109 @@ return<>
 </div>
 </div>}
 </>;}
+
+function Automation({data}){
+const[loading,setLoading]=useState(null);
+const[result,setResult]=useState(null);
+const[error,setError]=useState(null);
+const trigger=async(type,dryRun)=>{
+  setLoading(type+(dryRun?"-dry":"-live"));setError(null);setResult(null);
+  try{
+    const token=localStorage.getItem('jw-token');
+    const res=await fetch('/.netlify/functions/automation-trigger',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',...(token?{'Authorization':'Bearer '+token}:{})},
+      body:JSON.stringify({type,dryRun})
+    });
+    const json=await res.json();
+    if(!res.ok){setError(json.error||'Erreur');return;}
+    setResult(json);
+  }catch(e){setError(e.message||String(e));}finally{setLoading(null);}
+};
+const st=data.settings||{};
+const ent=st.entreprise||{};
+const ps=st.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};
+const clients=data.clients||[];
+const employees=(data.chauffeurs||[]).filter(c=>c.aktif);
+const clientWithEmail=clients.filter(c=>c.courriel).length;
+const empWithEmail=employees.filter(c=>c.courriel).length;
+const freqLabel=ps.frequency==="biweekly"?"Chak 2 semèn":"Chak semèn";
+const dayLabels=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+const payDayLabel=dayLabels[ps.payDay===7?0:ps.payDay]||"Ven";
+return<div>
+<h1 style={{fontSize:22,fontWeight:800,marginBottom:14}}>🤖 Otomatizasyon</h1>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:16}}>
+<div style={{fontSize:14,fontWeight:700,marginBottom:10,color:C.text}}>📅 Orè otomatik</div>
+<div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
+  <div style={{flex:"1 1 280px",background:C.bg,border:`1px solid ${C.purple}30`,borderRadius:10,padding:14}}>
+    <div style={{fontSize:12,color:C.purple,fontWeight:700,marginBottom:4}}>📨 FAKTI POU KLIYAN</div>
+    <div style={{fontSize:18,fontWeight:800,color:C.text}}>Chak Dimanch — 00:00 ET</div>
+    <div style={{fontSize:11,color:C.muted,marginTop:6}}>Sistèm nan ap kreye fakti pou semèn ki sòt fini an (Lendi → Vandredi) epi voye li bay {clients.length>0?clients[0].nom:"kliyan an"} pa imèl ak <b style={{color:C.orange}}>📎 PDF atache</b>.</div>
+  </div>
+  <div style={{flex:"1 1 280px",background:C.bg,border:`1px solid ${C.green}30`,borderRadius:10,padding:14}}>
+    <div style={{fontSize:12,color:C.green,fontWeight:700,marginBottom:4}}>💵 TALON PAIE POU ANPLWAYE</div>
+    <div style={{fontSize:18,fontWeight:800,color:C.text}}>Jedi 16:00 ET — anvan jou paie a</div>
+    <div style={{fontSize:11,color:C.muted,marginTop:6}}>Suiv kalandriye paie ki konfigire: <b style={{color:C.green}}>{freqLabel}</b>, peman {payDayLabel}, {ps.payDelay} semèn delè. Chak anplwaye resevwa talon paie li pa imèl ak <b style={{color:C.orange}}>📎 PDF atache</b>.</div>
+    {ps.frequency==="biweekly"&&<div style={{fontSize:10,color:C.orange,marginTop:6,fontStyle:"italic"}}>⚠ Sou cycle biweekly: imèl la voye sèlman Jedi anvan vrè dat paie a (pa chak Jedi).</div>}
+  </div>
+</div>
+</div>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:16}}>
+<div style={{fontSize:14,fontWeight:700,marginBottom:10}}>📋 Estati konfigirasyon</div>
+<div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+  <div style={{flex:"1 1 160px",padding:"10px 12px",background:clientWithEmail>0?`${C.green}15`:`${C.red}15`,border:`1px solid ${clientWithEmail>0?C.green:C.red}30`,borderRadius:8}}><div style={{fontSize:10,color:C.muted,fontWeight:700}}>KLIYAN AK IMÈL</div><div style={{fontSize:16,fontWeight:800,color:clientWithEmail>0?C.green:C.red}}>{clientWithEmail} / {clients.length}</div></div>
+  <div style={{flex:"1 1 160px",padding:"10px 12px",background:empWithEmail>0?`${C.green}15`:`${C.red}15`,border:`1px solid ${empWithEmail>0?C.green:C.red}30`,borderRadius:8}}><div style={{fontSize:10,color:C.muted,fontWeight:700}}>ANPLWAYE AK IMÈL</div><div style={{fontSize:16,fontWeight:800,color:empWithEmail>0?C.green:C.red}}>{empWithEmail} / {employees.length}</div></div>
+  <div style={{flex:"1 1 160px",padding:"10px 12px",background:ent.courriel?`${C.green}15`:`${C.orange}15`,border:`1px solid ${ent.courriel?C.green:C.orange}30`,borderRadius:8}}><div style={{fontSize:10,color:C.muted,fontWeight:700}}>IMÈL ANTREPRIZ (Reply-To)</div><div style={{fontSize:13,fontWeight:800,color:ent.courriel?C.green:C.orange}}>{ent.courriel||"⚠ Pa konfigire"}</div></div>
+</div>
+<div style={{marginTop:10,fontSize:11,color:C.dim,lineHeight:1.6}}>💡 Pou imèl yo voye, administratè a dwe konfigire <code style={{background:C.bg,padding:"1px 5px",borderRadius:3}}>EMAIL_USER</code>, <code style={{background:C.bg,padding:"1px 5px",borderRadius:3}}>EMAIL_PASS</code> (yon Gmail App Password) ak <code style={{background:C.bg,padding:"1px 5px",borderRadius:3}}>FIREBASE_KEY</code> nan paramèt anviwònman Netlify.</div>
+</div>
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:16}}>
+<div style={{fontSize:14,fontWeight:700,marginBottom:6}}>🧪 Tès manyèl</div>
+<div style={{fontSize:11,color:C.muted,marginBottom:12}}>Sèvi ak <b>Test (san imèl)</b> pou wè sa ki t ap voye san pa voye okenn imèl. Sèvi ak <b>VOYE KOUNYE A</b> sèlman si w sèten.</div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+  <div style={{background:C.bg,border:`1px solid ${C.purple}30`,borderRadius:10,padding:12}}>
+    <div style={{fontSize:12,fontWeight:700,color:C.purple,marginBottom:8}}>📨 Fakti Kliyan</div>
+    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+      <Bt size="sm" variant="outline" color={C.purple} onClick={()=>trigger("invoices",true)} disabled={loading}>{loading==="invoices-dry"?"⏳ Tcheke...":"Test (san imèl)"}</Bt>
+      <Bt size="sm" color={C.purple} onClick={()=>{if(window.confirm("Voye fakti a vrèman pa imèl?"))trigger("invoices",false);}} disabled={loading}>{loading==="invoices-live"?"⏳ Voye...":"📨 VOYE KOUNYE A"}</Bt>
+    </div>
+  </div>
+  <div style={{background:C.bg,border:`1px solid ${C.green}30`,borderRadius:10,padding:12}}>
+    <div style={{fontSize:12,fontWeight:700,color:C.green,marginBottom:8}}>💵 Talon Paie</div>
+    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+      <Bt size="sm" variant="outline" color={C.green} onClick={()=>trigger("payslips",true)} disabled={loading}>{loading==="payslips-dry"?"⏳ Tcheke...":"Test (san imèl)"}</Bt>
+      <Bt size="sm" color={C.green} onClick={()=>{if(window.confirm("Voye talon paie yo vrèman pa imèl bay tout anplwaye yo?"))trigger("payslips",false);}} disabled={loading}>{loading==="payslips-live"?"⏳ Voye...":"💵 VOYE KOUNYE A"}</Bt>
+    </div>
+  </div>
+</div>
+</div>
+{error&&<div style={{background:`${C.red}15`,border:`1px solid ${C.red}30`,borderRadius:10,padding:14,marginBottom:14,color:C.red,fontSize:12,fontWeight:600}}>❌ {error}</div>}
+{result&&<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+  <div style={{fontSize:14,fontWeight:700}}>📊 Rezilta {result.dryRun?"(TÈS — okenn imèl pa voye)":"(IMÈL VOYE)"}</div>
+  <Bg text={`${result.count} liy`} color={C.accent}/>
+</div>
+{(result.results||[]).map((r,i)=><div key={i} style={{padding:"10px 12px",borderBottom:`1px solid ${C.border}`,fontSize:12,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6}}>
+  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+    <Bg text={r.kind==="invoices"?"📨 Fakti":"💵 Talon"} color={r.kind==="invoices"?C.purple:C.green}/>
+    <Bg text={r.status} color={r.status==="sent"?C.green:r.status==="dry-run"?C.cyan:r.status==="skipped"?C.muted:C.red}/>
+    {r.pdfAttached&&<Bg text="📎 PDF" color={C.orange}/>}
+    <span style={{color:C.text,fontWeight:600}}>{r.employee||r.client||r.username}</span>
+    {r.employeeEmail&&<span style={{color:C.muted,fontSize:10}}>{r.employeeEmail}</span>}
+    {r.clientEmail&&<span style={{color:C.muted,fontSize:10}}>{r.clientEmail}</span>}
+  </div>
+  <div style={{fontSize:11,color:C.muted}}>
+    {r.period&&<span style={{color:C.muted,fontSize:10,marginRight:6}}>{r.period}</span>}
+    {r.payDate&&<span style={{color:C.accentL,fontSize:10,fontWeight:700,marginRight:6}}>📅 {r.payDate}</span>}
+    {r.invoiceTotal!=null&&<span style={{color:C.cyan,fontWeight:700}}>{fM(r.invoiceTotal)}</span>}
+    {r.brut!=null&&<span style={{color:C.green,fontWeight:700}}>{fM(r.brut)}{r.bonus>0?` (+${fM(r.bonus)})`:""}</span>}
+    {r.reason&&<span style={{color:C.dim,fontStyle:"italic"}}>{r.reason}</span>}
+    {r.error&&<span style={{color:C.red}}>{r.error}</span>}
+  </div>
+</div>)}
+{(result.results||[]).length===0&&<div style={{textAlign:"center",color:C.dim,padding:20}}>Okenn rezilta</div>}
+</div>}
+</div>;}
 
 function App(){
 const[user,setUser]=useState(null);const[authMode,setAuthMode]=useState("login");
@@ -1551,7 +2239,7 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 
 const sv=useCallback(nd=>{setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
-const nav=[{id:"dashboard",label:"Dashboard"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"\uD83D\uDCC5 Calendrier"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"\uD83D\uDCCB Fiscal"},{id:"agentcompta",label:"🧮 Agent Comptable"},{id:"backup",label:"Backup"}];
+const nav=[{id:"dashboard",label:"Dashboard"},{id:"flot",label:"🛛 Flòt (GPS)"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"location",label:"🔑 Location"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"📅 Calendrier"},{id:"kalpeyman",label:"💳 Bills à Payer"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"📋 Fiscal"},{id:"agentcompta",label:"🧮 Agent Comptable"},{id:"automation",label:"⚙️ Otomatizasyon"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
 if(ld)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:40,fontWeight:900,background:C.g1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>J&W Transport</div></div>;
@@ -1602,12 +2290,15 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 <button onClick={doLogout} style={{padding:"10px 8px",borderRadius:7,border:`1px solid ${C.red}30`,cursor:"pointer",background:"transparent",color:C.red,fontSize:11,fontWeight:700,textAlign:"left",gridColumn:"1/3"}}>Déconnexion ({user.displayName})</button>
 </div>}
 {pg==="dashboard"&&<Dash data={data} go={goPage}/>}
+{pg==="flot"&&<Flot data={data}/>}
 {pg==="voyages"&&<Voy data={data} sv={sv} ms={ms}/>}
 {pg==="chauffeurs"&&<Chauf data={data} sv={sv} ms={ms}/>}
 {pg==="clients"&&<Clients data={data} sv={sv} ms={ms}/>}
 {pg==="vehicules"&&<Vehic data={data} sv={sv} ms={ms}/>}
+{pg==="location"&&<Lokasyon data={data} sv={sv} ms={ms}/>}
 {pg==="paie"&&<Paie data={data}/>}
 {pg==="kalandriye"&&<KalandryePaie data={data} sv={sv} ms={ms}/>}
+{pg==="kalpeyman"&&<KalPeyman data={data} sv={sv} ms={ms}/>}
 {pg==="factures"&&<Fact data={data} sv={sv} ms={ms}/>}
 {pg==="comptabilite"&&<Compta data={data} sv={sv} ms={ms}/>}
 {pg==="livrecomptable"&&<LivreComptable data={data} sv={sv} ms={ms}/>}
@@ -1615,6 +2306,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 {pg==="revenus"&&<RevAn data={data}/>}
 {pg==="fiscal"&&<Fiscal data={data} sv={sv} ms={ms}/>}
 {pg==="agentcompta"&&<AgentComptable data={data} sv={sv} ms={ms}/>}
+{pg==="automation"&&<Automation data={data}/>}
 {pg==="backup"&&<Back data={data} sv={sv} ms={ms}/>}
 </main>
 </div>

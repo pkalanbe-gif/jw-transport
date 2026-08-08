@@ -1,6 +1,6 @@
 [build]
   publish = "build"
-  command = "CI= npm run build"
+  command = "npm run build"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -19,7 +19,19 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  external_node_modules = []
+  # pdfkit ships font files (.afm) that esbuild can't bundle correctly.
+  # Marking it external means Netlify includes node_modules/pdfkit verbatim at runtime.
+  external_node_modules = ["pdfkit"]
+
+# Scheduled: invoices to clients, every Sunday at 00:00 Eastern Time.
+# Cron is in UTC. 05:00 UTC Sunday = 00:00 EST (winter) / 01:00 EDT (summer).
+[functions."weekly-invoices"]
+  schedule = "0 5 * * 0"
+
+# Scheduled: pay-stubs to employees, every Thursday at 16:00 Eastern Time.
+# 21:00 UTC Thursday = 16:00 EST (winter) / 17:00 EDT (summer).
+[functions."weekly-paystubs"]
+  schedule = "0 21 * * 4"
 
 [dev]
   command = "npm start"

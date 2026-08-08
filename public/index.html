@@ -25,6 +25,39 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>J&W Transport</title>
+    <!-- Firebase (Firestore) for real-time fleet tracking -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+      import {
+        initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
+        getFirestore, doc, setDoc, deleteDoc, serverTimestamp, collection,
+        onSnapshot, query, where, orderBy, addDoc, updateDoc, getDocs
+      } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBBhfZcivoKsM-RRwWyNg_JeF8kMAf96U4",
+        authDomain: "jw-transport-aada6.firebaseapp.com",
+        projectId: "jw-transport-aada6",
+        storageBucket: "jw-transport-aada6.firebasestorage.app",
+        messagingSenderId: "302121677602",
+        appId: "1:302121677602:web:55edab2ae3e990ac0e2b7b"
+      };
+
+      const fbApp = initializeApp(firebaseConfig);
+      let db;
+      try {
+        db = initializeFirestore(fbApp, {
+          localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+        });
+      } catch (e) {
+        db = getFirestore(fbApp);
+      }
+      window.__fb = {
+        db, doc, setDoc, deleteDoc, serverTimestamp, collection, onSnapshot,
+        query, where, orderBy, addDoc, updateDoc, getDocs, ready: true
+      };
+      window.dispatchEvent(new Event('fb-ready'));
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
