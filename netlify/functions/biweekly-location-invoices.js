@@ -53,6 +53,9 @@ async function processLocationInvoicesForUser(username, data, today) {
 
   for (const l of locs) {
     const base = { username, kind: 'location-invoices', locataire: l.locataire || '—' };
+    // Manual mode is the default: the cron only touches contracts where the
+    // user explicitly enabled "Envoi automatique" (l.auto).
+    if (!l.auto) { results.push({ ...base, status: 'skipped', reason: 'manual-mode' }); continue; }
     let per = currentPeriod(l, today);
     if (!per) { results.push({ ...base, status: 'skipped', reason: 'not-started-or-no-debut' }); continue; }
 

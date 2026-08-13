@@ -953,7 +953,7 @@ const curYear=todayStr.substring(0,4);
 const[month,setMonth]=useState(curMonth);
 const[showC,setShowC]=useState(false);
 const[editC,setEditC]=useState(null);
-const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",tarif:"fixe",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false};
+const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",tarif:"fixe",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false,auto:false};
 const[fc,setFc]=useState(emptyC);
 const[showP,setShowP]=useState(null);
 const[fp,setFp]=useState({date:today(),montant:"",note:""});
@@ -974,10 +974,10 @@ const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"num
 const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const openAddC=()=>{setEditC(null);setFc({...emptyC,vehiculeId:vehs[0]?.id||""});setShowC(true);};
-const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),tarif:l.tarif||"fixe",frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes});setShowC(true);};
+const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),tarif:l.tarif||"fixe",frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes,auto:!!l.auto});setShowC(true);};
 const saveC=()=>{if(!fc.locataire.trim()||!parseFloat(fc.montant)){ms("Locataire et montant requis!","error");return;}
 if(!fc.vehiculeId){ms("Choisissez un camion!","error");return;}
-const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,courriel:fc.courriel.trim(),montant:Math.round(parseFloat(fc.montant)*100)/100,tarif:fc.tarif,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note,avecTaxes:!!fc.avecTaxes};
+const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,courriel:fc.courriel.trim(),montant:Math.round(parseFloat(fc.montant)*100)/100,tarif:fc.tarif,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note,avecTaxes:!!fc.avecTaxes,auto:!!fc.auto};
 const nl=editC?locs.map(l=>l.id===editC?{...l,...rec}:l):[...locs,{id:gid(),...rec,statut:"Actif",paiementsRecus:[]}];
 sv({...data,locations:nl});ms(editC?"Location modifiée!":"Location ajoutée!");setShowC(false);};
 const delC=id=>{if(!window.confirm("Supprimer cette location et tout son historique de paiements?"))return;sv({...data,locations:locs.filter(l=>l.id!==id)});ms("Location supprimée!");};
@@ -1026,6 +1026,13 @@ sv({...data,locations:locs.map(l=>l.id===locId?{...l,jours:(l.jours||[]).filter(
 const printFac=f=>{const ent=data.settings?.entreprise||{};
 openPrint(`Facture ${f.numero}`,`<div class=hdr><div class=av>JW</div><div class=ci><strong>${ent.nom||"J&W Transport"}</strong><br/>${ent.adresse||""}<br/>${ent.ville||""}<br/>${ent.telephone||""}<br/>${ent.courriel||""}</div></div><div class=per>Location de camion — Période : ${f.periode}</div><div style="display:flex;gap:30px;margin-bottom:16px"><div style="flex:1"><div class=mr><span class=l>Facture</span><span class=v>${f.numero}</span></div><div class=mr><span class=l>Date</span><span class=v>${f.date}</span></div><div class=mr><span class=l>Statut</span><span class=bg>${f.statut}</span></div></div><div class=cb><strong>${f.locataire}</strong><br/>${f.courriel||""}</div></div><table><thead><tr><th>Description</th><th class=r>Montant</th></tr></thead><tbody>${(f.lignes&&f.lignes.length?f.lignes:[{label:"Location",debut:f.periodeDebut,fin:f.periodeFin,montant:f.montant}]).map(li=>`<tr><td>Location camion ${f.vehicule} — <strong>${li.label}</strong> : ${fD(li.debut)} au ${fD(li.fin)}</td><td class="r b">${fM(li.montant)}</td></tr>`).join("")}</tbody></table><div class=ts><div class=tr><span>Sous-total</span><span class=b>${fM(f.sousTotal)}</span></div>${f.avecTaxes?`<div class=tr><span>TPS 5%</span><span>${fM(f.tps)}</span></div><div class=tr><span>TVQ 9.975%</span><span>${fM(f.tvq)}</span></div>`:""}<div class="tr t"><span>Total</span><span>${fM(f.total)}</span></div></div><div class=ft>${ent.nom||"J&W Transport"} - ${ent.courriel||""} - ${ent.telephone||""}</div>`);};
 const toggleFacStatut=f=>{sv({...data,locationFactures:locFacs.map(x=>x.id===f.id?{...x,statut:x.statut==="Payée"?"Envoyée":"Payée"}:x)});ms(f.statut==="Payée"?"Marquée non payée":"Marquée payée! ✅");};
+const emailFac=f=>{if(!f.courriel){ms("Locataire san courriel! Ajoute li nan kontra a (✏️).","error");return;}
+printFac(f);
+setTimeout(()=>{const ent=data.settings?.entreprise||{};
+const subject=encodeURIComponent(`Facture ${f.numero} — Location camion ${f.vehicule} - ${ent.nom||"J&W Transport"}`);
+const body=encodeURIComponent(`Bonjour ${f.locataire},\n\nVeuillez trouver ci-joint la facture ${f.numero} (location camion ${f.vehicule}) d'un montant de ${fM(f.total)}.\n\nPériode : ${f.periode}\n\nMerci pour votre confiance.\n\n${ent.nom||""}\n${ent.telephone||""}\n${ent.courriel||""}`);
+window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(f.courriel)}&su=${subject}&body=${body}`,"_blank");
+sv({...data,locationFactures:locFacs.map(x=>x.id===f.id?{...x,statut:x.statut==="Payée"?"Payée":"Envoyée"}:x)});},600);};
 const delFac=id=>{if(!window.confirm("Supprimer cette facture de location?"))return;sv({...data,locationFactures:locFacs.filter(x=>x.id!==id)});ms("Facture supprimée!");};
 const showPLoc=locs.find(l=>l.id===showP);
 return<div>
@@ -1068,7 +1075,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>}
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
 <div style={{fontSize:13,fontWeight:800,color:C.text,marginBottom:4}}>📄 Factures Location</div>
-<div style={{fontSize:10,color:C.dim,marginBottom:12}}>🤖 Les factures sont générées et envoyées automatiquement par courriel au locataire selon la fréquence du contrat (ex: aux 2 semaines). Assurez-vous que le courriel du locataire est rempli dans le contrat (✏️). Vous pouvez aussi générer manuellement avec "📄 Facture".</div>
+<div style={{fontSize:10,color:C.dim,marginBottom:12}}>✋ Mode manuel: klike "📄 Facture" sou kontra a pou jenere fakti période a (li fè total jou yo si tarif la "par jour"), epi 📧 pou voye li bay locataire a (li ouvri Gmail — enprime PDF a epi tache li). Si ou vle otomatik, aktive "🤖 Envoi automatique" nan kontra a (✏️).</div>
 <Tb columns={[
 {key:"numero",label:"No.",render:r=><b style={{color:C.accentL}}>{r.numero}</b>},
 {key:"date",label:"Date",render:r=>fDs(r.date)},
@@ -1077,7 +1084,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 {key:"locataire",label:"Locataire"},
 {key:"total",label:"Total",align:"right",render:r=><b style={{color:C.green}}>{fM(r.total)}</b>},
 {key:"statut",label:"Statut",render:r=><div style={{display:"flex",gap:4,alignItems:"center"}}><Bg text={r.statut} color={r.statut==="Payée"?C.green:r.statut==="Envoyée"?C.orange:C.accent}/>{r.sentAt&&<span title={"Envoyée par courriel: "+r.sentAt} style={{fontSize:11}}>📧</span>}</div>},
-{key:"a",label:"",align:"right",render:r=><div style={{display:"flex",gap:6,justifyContent:"flex-end"}}><button onClick={()=>printFac(r)} title="Imprimer / PDF" style={{background:"none",border:"none",cursor:"pointer",color:C.cyan,fontSize:12}}>🖨️</button><button onClick={()=>toggleFacStatut(r)} style={{background:"none",border:"none",cursor:"pointer",color:r.statut==="Payée"?C.dim:C.green,fontSize:10,fontWeight:700}}>{r.statut==="Payée"?"Annuler":"Payée ✓"}</button><button onClick={()=>delFac(r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12}}>🗑</button></div>}
+{key:"a",label:"",align:"right",render:r=><div style={{display:"flex",gap:6,justifyContent:"flex-end"}}><button onClick={()=>emailFac(r)} title="Envoyer par courriel (Gmail)" style={{background:"none",border:"none",cursor:"pointer",fontSize:12}}>📧</button><button onClick={()=>printFac(r)} title="Imprimer / PDF" style={{background:"none",border:"none",cursor:"pointer",color:C.cyan,fontSize:12}}>🖨️</button><button onClick={()=>toggleFacStatut(r)} style={{background:"none",border:"none",cursor:"pointer",color:r.statut==="Payée"?C.dim:C.green,fontSize:10,fontWeight:700}}>{r.statut==="Payée"?"Annuler":"Payée ✓"}</button><button onClick={()=>delFac(r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12}}>🗑</button></div>}
 ]} data={[...locFacs].sort((a,b)=>(b.date||"").localeCompare(a.date||""))}/>
 </div>
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px"}}>
@@ -1119,6 +1126,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 <In label="Note (optionnel)" value={fc.note} onChange={v=>setFc({...fc,note:v})} placeholder="Dépôt, conditions, assurance..."/>
 <Ck label="Ajouter TPS/TVQ sur les factures de location" checked={fc.avecTaxes} onChange={v=>setFc({...fc,avecTaxes:v})}/>
+<Ck label="🤖 Envoi automatique par courriel (chak période) — kite li DEZAKTIVE pou voye manyèlman" checked={fc.auto} onChange={v=>setFc({...fc,auto:v})}/>
 <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
 <Bt variant="outline" color={C.dim} onClick={()=>setShowC(false)}>Annuler</Bt>
 <Bt onClick={saveC}>{editC?"Sauvegarder":"Ajouter"}</Bt>
