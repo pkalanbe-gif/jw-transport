@@ -1107,7 +1107,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>}
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
 <div style={{fontSize:13,fontWeight:800,color:C.text,marginBottom:4}}>📄 Factures Location</div>
-<div style={{fontSize:10,color:C.dim,marginBottom:12}}>💵 Ou antre kòb la manyèlman chak jou (bouton "💵 Jou", lundi jiska vendredi). 🤖 Nan fen chak période 2 semaines, fakti a jenere epi ale otomatik pa imel bay locataire a avèk total jou ou te antre yo — jou camion an pa travay pa chaje. Ou ka toujou jenere/voye manyèlman ak "📄 Facture" ak 📧.</div>
+<div style={{fontSize:10,color:C.dim,marginBottom:12}}>💵 Ou antre kòb la manyèlman chak jou (bouton "💵 Jou", lundi jiska vendredi). 🤖 Fakti location an ale otomatik pa imel <b>chak 2 dimanch nan mitan lannwit</b> — menm lè ak fakti kliyan an (ki li menm ale chak dimanch) — avèk total jou ou te antre yo; jou camion an pa travay pa chaje. Ou ka toujou jenere/voye manyèlman ak "📄 Facture" ak 📧.</div>
 <Tb columns={[
 {key:"numero",label:"No.",render:r=><b style={{color:C.accentL}}>{r.numero}</b>},
 {key:"date",label:"Date",render:r=>fDs(r.date)},

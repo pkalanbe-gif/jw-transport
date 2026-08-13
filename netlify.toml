@@ -33,11 +33,12 @@
 [functions."weekly-paystubs"]
   schedule = "0 21 * * 4"
 
-# Scheduled: truck-rental (location) invoices to renters. Runs daily at
-# 17:00 UTC (12:00 EST / 13:00 EDT); each contract is billed once per period
-# (aux 2 semaines / hebdomadaire / mensuel) — sentAt guards duplicates.
+# Scheduled: truck-rental (location) invoices to renters. Runs Sundays at
+# the SAME time as weekly-invoices (05:00 UTC = 00:00 EST / 01:00 EDT) but
+# only bills every second Sunday per biweekly contract (the off-week is
+# skipped) — sentAt guards duplicates.
 [functions."biweekly-location-invoices"]
-  schedule = "0 17 * * *"
+  schedule = "0 5 * * 0"
 
 [dev]
   command = "npm start"

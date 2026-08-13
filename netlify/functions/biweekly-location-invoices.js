@@ -67,17 +67,30 @@ async function processLocationInvoicesForUser(username, data, today) {
     // Auto-send is ON by default; only skip when the user explicitly
     // unchecked "Envoi automatique" on the contract.
     if (l.auto === false) { results.push({ ...base, status: 'skipped', reason: 'manual-mode' }); continue; }
-    let per = currentPeriod(l, today);
-    if (!per) { results.push({ ...base, status: 'skipped', reason: 'not-started-or-no-debut' }); continue; }
 
-    // "Par jour" contracts are billed AFTER the period ends (all days recorded),
-    // so target the most recent COMPLETED period instead of the running one.
-    if (l.tarif === 'parjour' && toL(today) <= per.fin) {
-      const prevEnd = new Date(per.debut + 'T12:00:00');
-      prevEnd.setDate(prevEnd.getDate() - 1);
-      if (toL(prevEnd) < l.debut) { results.push({ ...base, status: 'skipped', reason: 'period-not-finished' }); continue; }
-      per = currentPeriod(l, prevEnd);
-      if (!per) { results.push({ ...base, status: 'skipped', reason: 'period-not-finished' }); continue; }
+    // The cron fires Sundays alongside weekly-invoices. Bill the period whose
+    // work-weeks just ended: the Friday two days ago must land in the LAST
+    // week of the period — week 2 for biweekly contracts, so the off-week
+    // Sunday is skipped and the rental invoice goes every second Sunday.
+    let per;
+    if ((l.frequence || 'mensuel') === 'mensuel') {
+      per = currentPeriod(l, today);
+      if (per && toL(today) <= per.fin) {
+        const prevEnd = new Date(per.debut + 'T12:00:00');
+        prevEnd.setDate(prevEnd.getDate() - 1);
+        per = currentPeriod(l, prevEnd);
+      }
+      if (!per) { results.push({ ...base, status: 'skipped', reason: 'month-not-finished' }); continue; }
+    } else {
+      const fri = new Date(today);
+      fri.setDate(fri.getDate() - 2);
+      per = currentPeriod(l, fri);
+      if (!per) { results.push({ ...base, status: 'skipped', reason: 'not-started-or-no-debut' }); continue; }
+      const offset = Math.floor((new Date(toL(fri) + 'T12:00:00') - new Date(per.debut + 'T12:00:00')) / 86400000);
+      if (l.frequence === '2semaines' && offset < 7) {
+        results.push({ ...base, status: 'skipped', reason: 'biweekly-off-week', period: `${per.debut} au ${per.fin}` });
+        continue;
+      }
     }
     if (l.fin && per.debut > l.fin) { results.push({ ...base, status: 'skipped', reason: 'contract-ended' }); continue; }
 
