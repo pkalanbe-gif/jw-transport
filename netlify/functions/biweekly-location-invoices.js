@@ -53,17 +53,57 @@ async function processLocationInvoicesForUser(username, data, today) {
 
   for (const l of locs) {
     const base = { username, kind: 'location-invoices', locataire: l.locataire || '—' };
-    const per = currentPeriod(l, today);
+    let per = currentPeriod(l, today);
     if (!per) { results.push({ ...base, status: 'skipped', reason: 'not-started-or-no-debut' }); continue; }
+
+    // "Par jour" contracts are billed AFTER the period ends (all days recorded),
+    // so target the most recent COMPLETED period instead of the running one.
+    if (l.tarif === 'parjour' && toL(today) <= per.fin) {
+      const prevEnd = new Date(per.debut + 'T12:00:00');
+      prevEnd.setDate(prevEnd.getDate() - 1);
+      if (toL(prevEnd) < l.debut) { results.push({ ...base, status: 'skipped', reason: 'period-not-finished' }); continue; }
+      per = currentPeriod(l, prevEnd);
+      if (!per) { results.push({ ...base, status: 'skipped', reason: 'period-not-finished' }); continue; }
+    }
     if (l.fin && per.debut > l.fin) { results.push({ ...base, status: 'skipped', reason: 'contract-ended' }); continue; }
 
     let facs = data.locationFactures || [];
     let fac = facs.find(f => f.locationId === l.id && f.periodeDebut === per.debut);
     if (!fac) {
-      const montant = Math.round((parseFloat(l.montant) || 0) * 100) / 100;
+      // "Par jour" contracts bill the sum of the day entries recorded in the
+      // period (l.jours); fixed contracts bill the flat contract amount.
+      const parJour = l.tarif === 'parjour';
+      const sumJ = arr => Math.round(arr.reduce((s, j) => s + (parseFloat(j.montant) || 0), 0) * 100) / 100;
+      const jours = parJour ? (l.jours || []).filter(j => j.date >= per.debut && j.date <= per.fin) : [];
+      if (parJour && !jours.length) {
+        results.push({ ...base, status: 'skipped', reason: 'parjour-no-days', period: `${per.debut} au ${per.fin}` });
+        continue;
+      }
+      const montant = parJour ? sumJ(jours) : Math.round((parseFloat(l.montant) || 0) * 100) / 100;
       const avecTaxes = !!l.avecTaxes;
       const tps = avecTaxes ? Math.round(montant * TPS_R * 100) / 100 : 0;
       const tvq = avecTaxes ? Math.round(montant * TVQ_R * 100) / 100 : 0;
+      // "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2 —
+      // half the fixed amount each, or the actual per-day totals of each week.
+      const lignes = [];
+      if (l.frequence === '2semaines') {
+        const w1e = new Date(per.debut + 'T12:00:00'); w1e.setDate(w1e.getDate() + 6);
+        const w1eS = toL(w1e);
+        const w2s = new Date(per.debut + 'T12:00:00'); w2s.setDate(w2s.getDate() + 7);
+        if (parJour) {
+          const j1 = jours.filter(j => j.date <= w1eS);
+          const j2 = jours.filter(j => j.date > w1eS);
+          lignes.push({ label: `Semaine 1 (${j1.length} jou)`, debut: per.debut, fin: w1eS, montant: sumJ(j1) });
+          lignes.push({ label: `Semaine 2 (${j2.length} jou)`, debut: toL(w2s), fin: per.fin, montant: sumJ(j2) });
+        } else {
+          const m1 = Math.round(montant / 2 * 100) / 100;
+          const m2 = Math.round((montant - m1) * 100) / 100;
+          lignes.push({ label: 'Semaine 1', debut: per.debut, fin: w1eS, montant: m1 });
+          lignes.push({ label: 'Semaine 2', debut: toL(w2s), fin: per.fin, montant: m2 });
+        }
+      } else {
+        lignes.push({ label: (l.frequence === 'hebdomadaire' ? 'Semaine' : 'Mois') + (parJour ? ` (${jours.length} jou)` : ''), debut: per.debut, fin: per.fin, montant });
+      }
       fac = {
         id: 'loc_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
         numero: `LOC-${(facs.length + 1).toString().padStart(3, '0')}`,
@@ -72,6 +112,7 @@ async function processLocationInvoicesForUser(username, data, today) {
         periodeDebut: per.debut,
         periodeFin: per.fin,
         periode: `${fD(per.debut)} au ${fD(per.fin)}`,
+        lignes,
         locataire: l.locataire || '',
         courriel: l.courriel || '',
         vehicule: (vehicules.find(v => v.id === l.vehiculeId) || {}).nom || '',
@@ -90,14 +131,18 @@ async function processLocationInvoicesForUser(username, data, today) {
     if (!l.courriel) { results.push({ ...base, status: 'skipped', reason: 'no-renter-email', numero: fac.numero, period: fac.periode }); continue; }
 
     // Shape the record like a standard invoice so PDF/email helpers can render it.
+    // One detail line per week (Semaine 1 / Semaine 2 for biweekly contracts).
+    const facLignes = (fac.lignes && fac.lignes.length)
+      ? fac.lignes
+      : [{ label: 'Location', debut: fac.periodeDebut, fin: fac.periodeFin, montant: fac.montant }];
     const invoice = {
       numero: fac.numero, date: fac.date, dateLimite: '', periode: fac.periode,
-      details: [{
-        id: fac.id, zone: '',
-        description: `Location camion ${fac.vehicule} — ${fac.periode}`,
-        quantite: '1', unite: 'lot', prixUnitaire: String(fac.montant), dt: '',
+      details: facLignes.map((li, i) => ({
+        id: fac.id + '_' + i, zone: '',
+        description: `Location camion ${fac.vehicule} — ${li.label} : ${fD(li.debut)} au ${fD(li.fin)}`,
+        quantite: '1', unite: 'lot', prixUnitaire: String(li.montant), dt: '',
         taxable: fac.avecTaxes
-      }],
+      })),
       avecTPS: fac.avecTaxes, avecTVQ: fac.avecTaxes,
       sousTotal: fac.sousTotal, tps: fac.tps, tvq: fac.tvq, total: fac.total,
       statut: 'Envoyée'

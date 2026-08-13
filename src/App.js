@@ -953,10 +953,12 @@ const curYear=todayStr.substring(0,4);
 const[month,setMonth]=useState(curMonth);
 const[showC,setShowC]=useState(false);
 const[editC,setEditC]=useState(null);
-const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false};
+const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",tarif:"fixe",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false};
 const[fc,setFc]=useState(emptyC);
 const[showP,setShowP]=useState(null);
 const[fp,setFp]=useState({date:today(),montant:"",note:""});
+const[showJ,setShowJ]=useState(null);
+const[fj,setFj]=useState({date:today(),montant:""});
 const gV=id=>vehs.find(v=>v.id===id)?.nom||"—";
 const active=locs.filter(l=>l.statut!=="Terminé");
 const allPays=useMemo(()=>{const r=[];locs.forEach(l=>{(l.paiementsRecus||[]).forEach(p=>r.push({...p,locId:l.id,locataire:l.locataire,veh:gV(l.vehiculeId)}));});return r.sort((a,b)=>b.date.localeCompare(a.date));},[locs,vehs]);
@@ -972,10 +974,10 @@ const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"num
 const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const openAddC=()=>{setEditC(null);setFc({...emptyC,vehiculeId:vehs[0]?.id||""});setShowC(true);};
-const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes});setShowC(true);};
+const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),tarif:l.tarif||"fixe",frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes});setShowC(true);};
 const saveC=()=>{if(!fc.locataire.trim()||!parseFloat(fc.montant)){ms("Locataire et montant requis!","error");return;}
 if(!fc.vehiculeId){ms("Choisissez un camion!","error");return;}
-const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,courriel:fc.courriel.trim(),montant:Math.round(parseFloat(fc.montant)*100)/100,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note,avecTaxes:!!fc.avecTaxes};
+const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,courriel:fc.courriel.trim(),montant:Math.round(parseFloat(fc.montant)*100)/100,tarif:fc.tarif,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note,avecTaxes:!!fc.avecTaxes};
 const nl=editC?locs.map(l=>l.id===editC?{...l,...rec}:l):[...locs,{id:gid(),...rec,statut:"Actif",paiementsRecus:[]}];
 sv({...data,locations:nl});ms(editC?"Location modifiée!":"Location ajoutée!");setShowC(false);};
 const delC=id=>{if(!window.confirm("Supprimer cette location et tout son historique de paiements?"))return;sv({...data,locations:locs.filter(l=>l.id!==id)});ms("Location supprimée!");};
@@ -988,15 +990,41 @@ const delP=(locId,pid)=>{if(!window.confirm("Supprimer ce paiement?"))return;
 const nl=locs.map(l=>l.id===locId?{...l,paiementsRecus:(l.paiementsRecus||[]).filter(p=>p.id!==pid)}:l);
 sv({...data,locations:nl});ms("Paiement supprimé!");};
 const locFacs=data.locationFactures||[];
+const sumJ=arr=>Math.round(arr.reduce((s,j)=>s+(parseFloat(j.montant)||0),0)*100)/100;
+const joursPeriode=(l,per)=>(l.jours||[]).filter(j=>j.date>=per.debut&&j.date<=per.fin);
 const genFacture=l=>{const per=locPeriod(l,todayStr);if(!per){ms("Dat kòmansman kontra a pa bon!","error");return;}
 if(locFacs.some(x=>x.locationId===l.id&&x.periodeDebut===per.debut)){ms("Facture pou période sa a deja egziste!","error");return;}
-const montant=Math.round((parseFloat(l.montant)||0)*100)/100;const avecTaxes=!!l.avecTaxes;
+const parJour=l.tarif==="parjour";
+const jours=parJour?joursPeriode(l,per):[];
+if(parJour&&!jours.length){ms("Pa gen jou antre pou période sa a! Sèvi ak bouton 💵 Jou.","error");return;}
+const montant=parJour?sumJ(jours):Math.round((parseFloat(l.montant)||0)*100)/100;
+const avecTaxes=!!l.avecTaxes;
 const tps=avecTaxes?Math.round(montant*TPS_R*100)/100:0;const tvq=avecTaxes?Math.round(montant*TVQ_R*100)/100:0;
 const num=`LOC-${(locFacs.length+1).toString().padStart(3,"0")}`;
-const fac={id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:`${fD(per.debut)} au ${fD(per.fin)}`,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"};
+// "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2 —
+// half the fixed amount each, or the actual per-day totals of each week.
+const lignes=[];
+if(l.frequence==="2semaines"){
+const w1e=new Date(per.debut+"T12:00:00");w1e.setDate(w1e.getDate()+6);const w1eS=toL(w1e);
+const w2s=new Date(per.debut+"T12:00:00");w2s.setDate(w2s.getDate()+7);
+if(parJour){const j1=jours.filter(j=>j.date<=w1eS);const j2=jours.filter(j=>j.date>w1eS);
+lignes.push({label:`Semaine 1 (${j1.length} jou)`,debut:per.debut,fin:w1eS,montant:sumJ(j1)});
+lignes.push({label:`Semaine 2 (${j2.length} jou)`,debut:toL(w2s),fin:per.fin,montant:sumJ(j2)});}
+else{const m1=Math.round(montant/2*100)/100;const m2=Math.round((montant-m1)*100)/100;
+lignes.push({label:"Semaine 1",debut:per.debut,fin:w1eS,montant:m1});
+lignes.push({label:"Semaine 2",debut:toL(w2s),fin:per.fin,montant:m2});}}
+else lignes.push({label:(l.frequence==="hebdomadaire"?"Semaine":"Mois")+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:per.fin,montant});
+const fac={id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:`${fD(per.debut)} au ${fD(per.fin)}`,lignes,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"};
 sv({...data,locationFactures:[...locFacs,fac]});ms(`Facture ${num} créée! 📄`);};
+const openJ=l=>{setShowJ(l.id);setFj({date:today(),montant:String(l.tarif==="parjour"?l.montant||"":"")});};
+const addJour=()=>{if(!parseFloat(fj.montant)){ms("Montant requis!","error");return;}
+const nl=locs.map(l=>l.id===showJ?{...l,jours:[...(l.jours||[]),{id:gid(),date:fj.date,montant:Math.round(parseFloat(fj.montant)*100)/100}]}:l);
+sv({...data,locations:nl});ms(`Jou ${fDs(fj.date)} ajoute! 💵`);
+const d=new Date(fj.date+"T12:00:00");d.setDate(d.getDate()+1);setFj({...fj,date:toL(d)});};
+const delJour=(locId,jid)=>{if(!window.confirm("Supprimer ce jour?"))return;
+sv({...data,locations:locs.map(l=>l.id===locId?{...l,jours:(l.jours||[]).filter(j=>j.id!==jid)}:l)});ms("Jou supprimé!");};
 const printFac=f=>{const ent=data.settings?.entreprise||{};
-openPrint(`Facture ${f.numero}`,`<div class=hdr><div class=av>JW</div><div class=ci><strong>${ent.nom||"J&W Transport"}</strong><br/>${ent.adresse||""}<br/>${ent.ville||""}<br/>${ent.telephone||""}<br/>${ent.courriel||""}</div></div><div class=per>Location de camion — Période : ${f.periode}</div><div style="display:flex;gap:30px;margin-bottom:16px"><div style="flex:1"><div class=mr><span class=l>Facture</span><span class=v>${f.numero}</span></div><div class=mr><span class=l>Date</span><span class=v>${f.date}</span></div><div class=mr><span class=l>Statut</span><span class=bg>${f.statut}</span></div></div><div class=cb><strong>${f.locataire}</strong><br/>${f.courriel||""}</div></div><table><thead><tr><th>Description</th><th class=r>Montant</th></tr></thead><tbody><tr><td>Location camion ${f.vehicule} — ${f.periode}</td><td class="r b">${fM(f.montant)}</td></tr></tbody></table><div class=ts><div class=tr><span>Sous-total</span><span class=b>${fM(f.sousTotal)}</span></div>${f.avecTaxes?`<div class=tr><span>TPS 5%</span><span>${fM(f.tps)}</span></div><div class=tr><span>TVQ 9.975%</span><span>${fM(f.tvq)}</span></div>`:""}<div class="tr t"><span>Total</span><span>${fM(f.total)}</span></div></div><div class=ft>${ent.nom||"J&W Transport"} - ${ent.courriel||""} - ${ent.telephone||""}</div>`);};
+openPrint(`Facture ${f.numero}`,`<div class=hdr><div class=av>JW</div><div class=ci><strong>${ent.nom||"J&W Transport"}</strong><br/>${ent.adresse||""}<br/>${ent.ville||""}<br/>${ent.telephone||""}<br/>${ent.courriel||""}</div></div><div class=per>Location de camion — Période : ${f.periode}</div><div style="display:flex;gap:30px;margin-bottom:16px"><div style="flex:1"><div class=mr><span class=l>Facture</span><span class=v>${f.numero}</span></div><div class=mr><span class=l>Date</span><span class=v>${f.date}</span></div><div class=mr><span class=l>Statut</span><span class=bg>${f.statut}</span></div></div><div class=cb><strong>${f.locataire}</strong><br/>${f.courriel||""}</div></div><table><thead><tr><th>Description</th><th class=r>Montant</th></tr></thead><tbody>${(f.lignes&&f.lignes.length?f.lignes:[{label:"Location",debut:f.periodeDebut,fin:f.periodeFin,montant:f.montant}]).map(li=>`<tr><td>Location camion ${f.vehicule} — <strong>${li.label}</strong> : ${fD(li.debut)} au ${fD(li.fin)}</td><td class="r b">${fM(li.montant)}</td></tr>`).join("")}</tbody></table><div class=ts><div class=tr><span>Sous-total</span><span class=b>${fM(f.sousTotal)}</span></div>${f.avecTaxes?`<div class=tr><span>TPS 5%</span><span>${fM(f.tps)}</span></div><div class=tr><span>TVQ 9.975%</span><span>${fM(f.tvq)}</span></div>`:""}<div class="tr t"><span>Total</span><span>${fM(f.total)}</span></div></div><div class=ft>${ent.nom||"J&W Transport"} - ${ent.courriel||""} - ${ent.telephone||""}</div>`);};
 const toggleFacStatut=f=>{sv({...data,locationFactures:locFacs.map(x=>x.id===f.id?{...x,statut:x.statut==="Payée"?"Envoyée":"Payée"}:x)});ms(f.statut==="Payée"?"Marquée non payée":"Marquée payée! ✅");};
 const delFac=id=>{if(!window.confirm("Supprimer cette facture de location?"))return;sv({...data,locationFactures:locFacs.filter(x=>x.id!==id)});ms("Facture supprimée!");};
 const showPLoc=locs.find(l=>l.id===showP);
@@ -1025,12 +1053,13 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 {!done&&<Bg text={ok?(exp>1?`✅ ${n}/${exp} reçu ce mois`:"✅ Reçu ce mois"):`⏳ ${n}/${exp} ce mois`} color={ok?C.green:C.orange}/>}
 </div>
 </div>
-<div style={{fontSize:12,color:C.text,marginBottom:4}}><b style={{color:C.cyan,fontSize:15}}>{fM(l.montant)}</b> / {freqLbl(l.frequence)}</div>
+<div style={{fontSize:12,color:C.text,marginBottom:4}}><b style={{color:C.cyan,fontSize:15}}>{fM(l.montant)}</b> / {l.tarif==="parjour"?"jour":freqLbl(l.frequence)}{l.tarif==="parjour"&&(()=>{const per=locPeriod(l,todayStr);const js=per?joursPeriode(l,per):[];return<span style={{fontSize:10,color:C.orange,marginLeft:8}}>💵 Période: {js.length} jou = {fM(sumJ(js))}</span>;})()}</div>
 <div style={{fontSize:10,color:C.muted,marginBottom:10}}>Depuis: {fD(l.debut)}{l.fin?` → ${fD(l.fin)}`:""}{l.note?` • ${l.note}`:""}</div>
 <div style={{fontSize:10,color:C.dim,marginBottom:10}}>Total reçu: <b style={{color:C.green}}>{fM((l.paiementsRecus||[]).reduce((s,p)=>s+(parseFloat(p.montant)||0),0))}</b> ({(l.paiementsRecus||[]).length} paiements)</div>
 <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
 {!done&&<Bt size="sm" color={C.green} onClick={()=>openAddP(l)}>💰 Paiement reçu</Bt>}
 {!done&&<Bt size="sm" color={C.purple} onClick={()=>genFacture(l)}>📄 Facture</Bt>}
+{!done&&l.tarif==="parjour"&&<Bt size="sm" color={C.cyan} onClick={()=>openJ(l)}>💵 Jou</Bt>}
 <Bt size="sm" variant="outline" color={C.accent} onClick={()=>openEditC(l)}>✏️</Bt>
 <Bt size="sm" variant="outline" color={done?C.green:C.orange} onClick={()=>toggleStatut(l)}>{done?"Réactiver":"Terminer"}</Bt>
 <Bt size="sm" variant="outline" color={C.red} onClick={()=>delC(l.id)}>🗑</Bt>
@@ -1079,9 +1108,11 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 <In label="Courriel locataire (pou fakti otomatik yo 📧)" value={fc.courriel} onChange={v=>setFc({...fc,courriel:v})} placeholder="locataire@email.com"/>
 <div style={{display:"flex",gap:10}}>
-<In label="Montant ($)" type="number" value={fc.montant} onChange={v=>setFc({...fc,montant:v})} placeholder="1500.00"/>
-<In label="Fréquence" value={fc.frequence} onChange={v=>setFc({...fc,frequence:v})} options={[{value:"mensuel",label:"Par mois"},{value:"2semaines",label:"Aux 2 semaines"},{value:"hebdomadaire",label:"Par semaine"}]}/>
+<In label="Tarif" value={fc.tarif} onChange={v=>setFc({...fc,tarif:v})} options={[{value:"fixe",label:"Montant fixe"},{value:"parjour",label:"💵 Par jour"}]}/>
+<In label={fc.tarif==="parjour"?"Tarif par jour ($)":"Montant ($)"} type="number" value={fc.montant} onChange={v=>setFc({...fc,montant:v})} placeholder={fc.tarif==="parjour"?"150.00":"1500.00"}/>
+<In label="Facturation" value={fc.frequence} onChange={v=>setFc({...fc,frequence:v})} options={[{value:"mensuel",label:"Par mois"},{value:"2semaines",label:"Aux 2 semaines"},{value:"hebdomadaire",label:"Par semaine"}]}/>
 </div>
+{fc.tarif==="parjour"&&<div style={{fontSize:10,color:C.orange,fontStyle:"italic"}}>💡 Avèk tarif par jour: sèvi ak bouton "💵 Jou" sou kontra a pou antre kòb chak jou. Facture a ap fè total jou yo pa semaine.</div>}
 <div style={{display:"flex",gap:10}}>
 <In label="Début" type="date" value={fc.debut} onChange={v=>setFc({...fc,debut:v})}/>
 <In label="Fin (optionnel)" type="date" value={fc.fin} onChange={v=>setFc({...fc,fin:v})}/>
@@ -1107,6 +1138,21 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 </div>
 </Mo>}
+{showJ&&(()=>{const jl=locs.find(l=>l.id===showJ);if(!jl)return null;const per=locPeriod(jl,todayStr);const js=per?joursPeriode(jl,per):[];
+return<Mo open={true} onClose={()=>setShowJ(null)} title={`💵 Kòb pa jou — ${gV(jl.vehiculeId)} (${jl.locataire})`} width={520}>
+<div style={{display:"flex",gap:10,alignItems:"flex-end",marginBottom:14}}>
+<In label="Date" type="date" value={fj.date} onChange={v=>setFj({...fj,date:v})}/>
+<In label="Montant ($)" type="number" value={fj.montant} onChange={v=>setFj({...fj,montant:v})}/>
+<Bt color={C.green} onClick={addJour}>+ Ajoute</Bt>
+</div>
+{per&&<div style={{fontSize:11,color:C.orange,marginBottom:10}}>Période courante: {fDs(per.debut)} {"→"} {fDs(per.fin)} • {js.length} jou = <b>{fM(sumJ(js))}</b></div>}
+<Tb columns={[
+{key:"date",label:"Date",render:r=>fD(r.date)},
+{key:"montant",label:"Montant",align:"right",render:r=><b style={{color:C.green}}>{fM(r.montant)}</b>},
+{key:"a",label:"",align:"right",render:r=><button onClick={()=>delJour(jl.id,r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12}}>🗑</button>}
+]} data={[...(jl.jours||[])].sort((a,b)=>b.date.localeCompare(a.date))}/>
+<div style={{textAlign:"right",marginTop:8,fontSize:12,fontWeight:800,color:C.green}}>Total tout jou yo: {fM(sumJ(jl.jours||[]))}</div>
+</Mo>;})()}
 </div>;}
 
 function LivreComptable({data,sv,ms}){
