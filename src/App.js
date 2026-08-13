@@ -1063,7 +1063,8 @@ setTimeout(()=>{const ent=data.settings?.entreprise||{};
 const subject=encodeURIComponent(`Facture ${f.numero} — Location camion ${f.vehicule} - ${ent.nom||"J&W Transport"}`);
 const body=encodeURIComponent(`Bonjour ${f.locataire},\n\nVeuillez trouver ci-joint la facture ${f.numero} (location camion ${f.vehicule}) d'un montant de ${fM(f.total)}.\n\nPériode : ${f.periode}\n\nMerci pour votre confiance.\n\n${ent.nom||""}\n${ent.telephone||""}\n${ent.courriel||""}`);
 window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(f.courriel)}&su=${subject}&body=${body}`,"_blank");
-sv({...data,locationFactures:locFacs.map(x=>x.id===f.id?{...x,statut:x.statut==="Payée"?"Payée":"Envoyée"}:x)});},600);};
+// sentAt also tells the scheduled function this invoice is handled — no double send.
+sv({...data,locationFactures:locFacs.map(x=>x.id===f.id?{...x,statut:x.statut==="Payée"?"Payée":"Envoyée",sentAt:x.sentAt||new Date().toISOString()}:x)});},600);};
 const delFac=id=>{if(!window.confirm("Supprimer cette facture de location?"))return;sv({...data,locationFactures:locFacs.filter(x=>x.id!==id)});ms("Facture supprimée!");};
 const showPLoc=locs.find(l=>l.id===showP);
 return<div>
