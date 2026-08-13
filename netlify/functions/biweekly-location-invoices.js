@@ -25,16 +25,22 @@ const fD = s => new Date(s + 'T12:00:00').toLocaleDateString('fr-CA', { day: 'nu
 
 function currentPeriod(loc, today) {
   if (!loc.debut) return null;
-  const d0 = new Date(loc.debut + 'T12:00:00');
   const dn = new Date(toL(today) + 'T12:00:00');
-  if (dn < d0) return null;
   if ((loc.frequence || 'mensuel') === 'mensuel') {
+    const d0 = new Date(loc.debut + 'T12:00:00');
+    if (dn < d0) return null;
     let months = (dn.getFullYear() - d0.getFullYear()) * 12 + (dn.getMonth() - d0.getMonth());
     let ps = new Date(d0); ps.setMonth(d0.getMonth() + months);
     if (ps > dn) { ps = new Date(d0); ps.setMonth(d0.getMonth() + months - 1); }
     const pe = new Date(ps); pe.setMonth(pe.getMonth() + 1); pe.setDate(pe.getDate() - 1);
     return { debut: toL(ps), fin: toL(pe) };
   }
+  // Weekly/biweekly periods snap to the MONDAY of the contract-start week so
+  // invoice weeks always read lundi → vendredi. Keep in sync with locPeriod().
+  const d0 = new Date(loc.debut + 'T12:00:00');
+  const dy = d0.getDay();
+  d0.setDate(d0.getDate() - dy + (dy === 0 ? -6 : 1));
+  if (dn < d0) return null;
   const step = loc.frequence === 'hebdomadaire' ? 7 : 14;
   const days = Math.floor((dn - d0) / 86400000);
   const n = Math.floor(days / step);
@@ -42,6 +48,9 @@ function currentPeriod(loc, today) {
   const pe = new Date(ps); pe.setDate(ps.getDate() + step - 1);
   return { debut: toL(ps), fin: toL(pe) };
 }
+
+// Date string s + k days.
+const addD = (s, k) => { const d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + k); return toL(d); };
 
 async function processLocationInvoicesForUser(username, data, today) {
   const settings = data.settings || {};
@@ -53,9 +62,9 @@ async function processLocationInvoicesForUser(username, data, today) {
 
   for (const l of locs) {
     const base = { username, kind: 'location-invoices', locataire: l.locataire || '—' };
-    // Manual mode is the default: the cron only touches contracts where the
-    // user explicitly enabled "Envoi automatique" (l.auto).
-    if (!l.auto) { results.push({ ...base, status: 'skipped', reason: 'manual-mode' }); continue; }
+    // Auto-send is ON by default; only skip when the user explicitly
+    // unchecked "Envoi automatique" on the contract.
+    if (l.auto === false) { results.push({ ...base, status: 'skipped', reason: 'manual-mode' }); continue; }
     let per = currentPeriod(l, today);
     if (!per) { results.push({ ...base, status: 'skipped', reason: 'not-started-or-no-debut' }); continue; }
 
@@ -86,27 +95,33 @@ async function processLocationInvoicesForUser(username, data, today) {
       const avecTaxes = !!l.avecTaxes;
       const tps = avecTaxes ? Math.round(montant * TPS_R * 100) / 100 : 0;
       const tvq = avecTaxes ? Math.round(montant * TVQ_R * 100) / 100 : 0;
-      // "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2 —
-      // half the fixed amount each, or the actual per-day totals of each week.
+      // "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2, each
+      // shown lundi → vendredi — half the fixed amount, or the per-day totals.
       const lignes = [];
       if (l.frequence === '2semaines') {
-        const w1e = new Date(per.debut + 'T12:00:00'); w1e.setDate(w1e.getDate() + 6);
-        const w1eS = toL(w1e);
-        const w2s = new Date(per.debut + 'T12:00:00'); w2s.setDate(w2s.getDate() + 7);
+        const w1ven = addD(per.debut, 4), w1fin = addD(per.debut, 6);
+        const w2lun = addD(per.debut, 7), w2ven = addD(per.debut, 11);
         if (parJour) {
-          const j1 = jours.filter(j => j.date <= w1eS);
-          const j2 = jours.filter(j => j.date > w1eS);
-          lignes.push({ label: `Semaine 1 (${j1.length} jou)`, debut: per.debut, fin: w1eS, montant: sumJ(j1) });
-          lignes.push({ label: `Semaine 2 (${j2.length} jou)`, debut: toL(w2s), fin: per.fin, montant: sumJ(j2) });
+          const j1 = jours.filter(j => j.date <= w1fin);
+          const j2 = jours.filter(j => j.date > w1fin);
+          lignes.push({ label: `Semaine 1 (${j1.length} jou)`, debut: per.debut, fin: w1ven, montant: sumJ(j1) });
+          lignes.push({ label: `Semaine 2 (${j2.length} jou)`, debut: w2lun, fin: w2ven, montant: sumJ(j2) });
         } else {
           const m1 = Math.round(montant / 2 * 100) / 100;
           const m2 = Math.round((montant - m1) * 100) / 100;
-          lignes.push({ label: 'Semaine 1', debut: per.debut, fin: w1eS, montant: m1 });
-          lignes.push({ label: 'Semaine 2', debut: toL(w2s), fin: per.fin, montant: m2 });
+          lignes.push({ label: 'Semaine 1', debut: per.debut, fin: w1ven, montant: m1 });
+          lignes.push({ label: 'Semaine 2', debut: w2lun, fin: w2ven, montant: m2 });
         }
+      } else if (l.frequence === 'hebdomadaire') {
+        lignes.push({ label: 'Semaine' + (parJour ? ` (${jours.length} jou)` : ''), debut: per.debut, fin: addD(per.debut, 4), montant });
       } else {
-        lignes.push({ label: (l.frequence === 'hebdomadaire' ? 'Semaine' : 'Mois') + (parJour ? ` (${jours.length} jou)` : ''), debut: per.debut, fin: per.fin, montant });
+        lignes.push({ label: 'Mois' + (parJour ? ` (${jours.length} jou)` : ''), debut: per.debut, fin: per.fin, montant });
       }
+      const periodeAff = l.frequence === '2semaines'
+        ? `${fD(per.debut)} au ${fD(addD(per.debut, 11))}`
+        : l.frequence === 'hebdomadaire'
+          ? `${fD(per.debut)} au ${fD(addD(per.debut, 4))}`
+          : `${fD(per.debut)} au ${fD(per.fin)}`;
       fac = {
         id: 'loc_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
         numero: `LOC-${(facs.length + 1).toString().padStart(3, '0')}`,
@@ -114,7 +129,7 @@ async function processLocationInvoicesForUser(username, data, today) {
         date: toL(today),
         periodeDebut: per.debut,
         periodeFin: per.fin,
-        periode: `${fD(per.debut)} au ${fD(per.fin)}`,
+        periode: periodeAff,
         lignes,
         locataire: l.locataire || '',
         courriel: l.courriel || '',

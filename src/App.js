@@ -941,9 +941,17 @@ return<div key={o.id+o.due} style={{display:"flex",alignItems:"center",gap:12,pa
 // Current billing period of a rental contract on a given date, anchored on the
 // contract start date. "2semaines" = 14 days, "hebdomadaire" = 7, "mensuel" = 1 month.
 // Must stay in sync with netlify/functions/biweekly-location-invoices.js.
-const locPeriod=(l,onDate)=>{if(!l.debut)return null;const d0=new Date(l.debut+"T12:00:00");const dn=new Date(onDate+"T12:00:00");if(dn<d0)return null;
-if((l.frequence||"mensuel")==="mensuel"){let months=(dn.getFullYear()-d0.getFullYear())*12+(dn.getMonth()-d0.getMonth());let ps=new Date(d0);ps.setMonth(d0.getMonth()+months);if(ps>dn){ps=new Date(d0);ps.setMonth(d0.getMonth()+months-1);}const pe=new Date(ps);pe.setMonth(pe.getMonth()+1);pe.setDate(pe.getDate()-1);return{debut:toL(ps),fin:toL(pe)};}
-const step=l.frequence==="hebdomadaire"?7:14;const days=Math.floor((dn-d0)/86400000);const n=Math.floor(days/step);const ps=new Date(d0);ps.setDate(d0.getDate()+n*step);const pe=new Date(ps);pe.setDate(ps.getDate()+step-1);return{debut:toL(ps),fin:toL(pe)};};
+const locPeriod=(l,onDate)=>{if(!l.debut)return null;
+if((l.frequence||"mensuel")==="mensuel"){const d0=new Date(l.debut+"T12:00:00");const dn=new Date(onDate+"T12:00:00");if(dn<d0)return null;let months=(dn.getFullYear()-d0.getFullYear())*12+(dn.getMonth()-d0.getMonth());let ps=new Date(d0);ps.setMonth(d0.getMonth()+months);if(ps>dn){ps=new Date(d0);ps.setMonth(d0.getMonth()+months-1);}const pe=new Date(ps);pe.setMonth(pe.getMonth()+1);pe.setDate(pe.getDate()-1);return{debut:toL(ps),fin:toL(pe)};}
+// Weekly/biweekly periods snap to the MONDAY of the contract-start week so
+// invoice weeks always read lundi → vendredi.
+const step=l.frequence==="hebdomadaire"?7:14;
+const d0=new Date(gMon(new Date(l.debut+"T12:00:00"))+"T12:00:00");
+const dn=new Date(onDate+"T12:00:00");if(dn<d0)return null;
+const days=Math.floor((dn-d0)/86400000);const n=Math.floor(days/step);
+const ps=new Date(d0);ps.setDate(d0.getDate()+n*step);const pe=new Date(ps);pe.setDate(ps.getDate()+step-1);
+return{debut:toL(ps),fin:toL(pe)};};
+const locAddD=(s,k)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+k);return toL(d);};
 function Lokasyon({data,sv,ms}){
 const vehs=data.vehicules||[];
 const locs=data.locations||[];
@@ -953,7 +961,7 @@ const curYear=todayStr.substring(0,4);
 const[month,setMonth]=useState(curMonth);
 const[showC,setShowC]=useState(false);
 const[editC,setEditC]=useState(null);
-const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",tarif:"fixe",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false,auto:false};
+const emptyC={vehiculeId:"",locataire:"",telephone:"",courriel:"",montant:"",tarif:"parjour",frequence:"2semaines",debut:today(),fin:"",note:"",avecTaxes:false,auto:true};
 const[fc,setFc]=useState(emptyC);
 const[showP,setShowP]=useState(null);
 const[fp,setFp]=useState({date:today(),montant:"",note:""});
@@ -974,7 +982,7 @@ const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"num
 const prevM=()=>{const d=new Date(y,m-2,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const nextM=()=>{const d=new Date(y,m,1);setMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`);};
 const openAddC=()=>{setEditC(null);setFc({...emptyC,vehiculeId:vehs[0]?.id||""});setShowC(true);};
-const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),tarif:l.tarif||"fixe",frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes,auto:!!l.auto});setShowC(true);};
+const openEditC=l=>{setEditC(l.id);setFc({vehiculeId:l.vehiculeId||"",locataire:l.locataire||"",telephone:l.telephone||"",courriel:l.courriel||"",montant:String(l.montant||""),tarif:l.tarif||"fixe",frequence:l.frequence||"mensuel",debut:l.debut||today(),fin:l.fin||"",note:l.note||"",avecTaxes:!!l.avecTaxes,auto:l.auto!==false});setShowC(true);};
 const saveC=()=>{if(!fc.locataire.trim()||!parseFloat(fc.montant)){ms("Locataire et montant requis!","error");return;}
 if(!fc.vehiculeId){ms("Choisissez un camion!","error");return;}
 const rec={vehiculeId:fc.vehiculeId,locataire:fc.locataire.trim(),telephone:fc.telephone,courriel:fc.courriel.trim(),montant:Math.round(parseFloat(fc.montant)*100)/100,tarif:fc.tarif,frequence:fc.frequence,debut:fc.debut,fin:fc.fin,note:fc.note,avecTaxes:!!fc.avecTaxes,auto:!!fc.auto};
@@ -1001,20 +1009,21 @@ const montant=parJour?sumJ(jours):Math.round((parseFloat(l.montant)||0)*100)/100
 const avecTaxes=!!l.avecTaxes;
 const tps=avecTaxes?Math.round(montant*TPS_R*100)/100:0;const tvq=avecTaxes?Math.round(montant*TVQ_R*100)/100:0;
 const num=`LOC-${(locFacs.length+1).toString().padStart(3,"0")}`;
-// "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2 —
-// half the fixed amount each, or the actual per-day totals of each week.
+// "Aux 2 semaines" invoices are detailed as Semaine 1 + Semaine 2, each shown
+// lundi → vendredi — half the fixed amount, or the actual per-day totals.
 const lignes=[];
 if(l.frequence==="2semaines"){
-const w1e=new Date(per.debut+"T12:00:00");w1e.setDate(w1e.getDate()+6);const w1eS=toL(w1e);
-const w2s=new Date(per.debut+"T12:00:00");w2s.setDate(w2s.getDate()+7);
-if(parJour){const j1=jours.filter(j=>j.date<=w1eS);const j2=jours.filter(j=>j.date>w1eS);
-lignes.push({label:`Semaine 1 (${j1.length} jou)`,debut:per.debut,fin:w1eS,montant:sumJ(j1)});
-lignes.push({label:`Semaine 2 (${j2.length} jou)`,debut:toL(w2s),fin:per.fin,montant:sumJ(j2)});}
+const w1ven=locAddD(per.debut,4),w1fin=locAddD(per.debut,6),w2lun=locAddD(per.debut,7),w2ven=locAddD(per.debut,11);
+if(parJour){const j1=jours.filter(j=>j.date<=w1fin);const j2=jours.filter(j=>j.date>w1fin);
+lignes.push({label:`Semaine 1 (${j1.length} jou)`,debut:per.debut,fin:w1ven,montant:sumJ(j1)});
+lignes.push({label:`Semaine 2 (${j2.length} jou)`,debut:w2lun,fin:w2ven,montant:sumJ(j2)});}
 else{const m1=Math.round(montant/2*100)/100;const m2=Math.round((montant-m1)*100)/100;
-lignes.push({label:"Semaine 1",debut:per.debut,fin:w1eS,montant:m1});
-lignes.push({label:"Semaine 2",debut:toL(w2s),fin:per.fin,montant:m2});}}
-else lignes.push({label:(l.frequence==="hebdomadaire"?"Semaine":"Mois")+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:per.fin,montant});
-const fac={id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:`${fD(per.debut)} au ${fD(per.fin)}`,lignes,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"};
+lignes.push({label:"Semaine 1",debut:per.debut,fin:w1ven,montant:m1});
+lignes.push({label:"Semaine 2",debut:w2lun,fin:w2ven,montant:m2});}}
+else if(l.frequence==="hebdomadaire")lignes.push({label:"Semaine"+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:locAddD(per.debut,4),montant});
+else lignes.push({label:"Mois"+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:per.fin,montant});
+const periodeAff=l.frequence==="2semaines"?`${fD(per.debut)} au ${fD(locAddD(per.debut,11))}`:l.frequence==="hebdomadaire"?`${fD(per.debut)} au ${fD(locAddD(per.debut,4))}`:`${fD(per.debut)} au ${fD(per.fin)}`;
+const fac={id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:periodeAff,lignes,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"};
 sv({...data,locationFactures:[...locFacs,fac]});ms(`Facture ${num} créée! 📄`);};
 const openJ=l=>{setShowJ(l.id);setFj({date:today(),montant:String(l.tarif==="parjour"?l.montant||"":"")});};
 const addJour=()=>{if(!parseFloat(fj.montant)){ms("Montant requis!","error");return;}
@@ -1075,7 +1084,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>}
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px",marginBottom:20}}>
 <div style={{fontSize:13,fontWeight:800,color:C.text,marginBottom:4}}>📄 Factures Location</div>
-<div style={{fontSize:10,color:C.dim,marginBottom:12}}>✋ Mode manuel: klike "📄 Facture" sou kontra a pou jenere fakti période a (li fè total jou yo si tarif la "par jour"), epi 📧 pou voye li bay locataire a (li ouvri Gmail — enprime PDF a epi tache li). Si ou vle otomatik, aktive "🤖 Envoi automatique" nan kontra a (✏️).</div>
+<div style={{fontSize:10,color:C.dim,marginBottom:12}}>💵 Ou antre kòb la manyèlman chak jou (bouton "💵 Jou", lundi jiska vendredi). 🤖 Nan fen chak période 2 semaines, fakti a jenere epi ale otomatik pa imel bay locataire a avèk total jou ou te antre yo — jou camion an pa travay pa chaje. Ou ka toujou jenere/voye manyèlman ak "📄 Facture" ak 📧.</div>
 <Tb columns={[
 {key:"numero",label:"No.",render:r=><b style={{color:C.accentL}}>{r.numero}</b>},
 {key:"date",label:"Date",render:r=>fDs(r.date)},
@@ -1126,7 +1135,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 <In label="Note (optionnel)" value={fc.note} onChange={v=>setFc({...fc,note:v})} placeholder="Dépôt, conditions, assurance..."/>
 <Ck label="Ajouter TPS/TVQ sur les factures de location" checked={fc.avecTaxes} onChange={v=>setFc({...fc,avecTaxes:v})}/>
-<Ck label="🤖 Envoi automatique par courriel (chak période) — kite li DEZAKTIVE pou voye manyèlman" checked={fc.auto} onChange={v=>setFc({...fc,auto:v})}/>
+<Ck label="🤖 Envoi automatique par courriel nan fen chak période (aktive pa défaut)" checked={fc.auto} onChange={v=>setFc({...fc,auto:v})}/>
 <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
 <Bt variant="outline" color={C.dim} onClick={()=>setShowC(false)}>Annuler</Bt>
 <Bt onClick={saveC}>{editC?"Sauvegarder":"Ajouter"}</Bt>
