@@ -35,9 +35,11 @@ function currentPeriod(loc, today) {
     const pe = new Date(ps); pe.setMonth(pe.getMonth() + 1); pe.setDate(pe.getDate() - 1);
     return { debut: toL(ps), fin: toL(pe) };
   }
-  // Weekly/biweekly periods snap to the MONDAY of the contract-start week so
-  // invoice weeks always read lundi → vendredi. Keep in sync with locPeriod().
-  const d0 = new Date(loc.debut + 'T12:00:00');
+  // Weekly/biweekly periods snap to the MONDAY of the anchor week so invoice
+  // weeks always read lundi → vendredi. loc.ancre (set when the user picks a
+  // Monday while generating manually) overrides loc.debut, so automatic
+  // invoices follow the same rhythm. Keep in sync with locPeriod() in App.js.
+  const d0 = new Date((loc.ancre || loc.debut) + 'T12:00:00');
   const dy = d0.getDay();
   d0.setDate(d0.getDate() - dy + (dy === 0 ? -6 : 1));
   if (dn < d0) return null;

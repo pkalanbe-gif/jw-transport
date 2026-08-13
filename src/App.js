@@ -946,7 +946,9 @@ if((l.frequence||"mensuel")==="mensuel"){const d0=new Date(l.debut+"T12:00:00");
 // Weekly/biweekly periods snap to the MONDAY of the contract-start week so
 // invoice weeks always read lundi → vendredi.
 const step=l.frequence==="hebdomadaire"?7:14;
-const d0=new Date(gMon(new Date(l.debut+"T12:00:00"))+"T12:00:00");
+// l.ancre (set when a manual invoice picks its Monday) overrides l.debut as
+// the period anchor, so auto invoices follow the same rhythm.
+const d0=new Date(gMon(new Date((l.ancre||l.debut)+"T12:00:00"))+"T12:00:00");
 const dn=new Date(onDate+"T12:00:00");if(dn<d0)return null;
 const days=Math.floor((dn-d0)/86400000);const n=Math.floor(days/step);
 const ps=new Date(d0);ps.setDate(d0.getDate()+n*step);const pe=new Date(ps);pe.setDate(ps.getDate()+step-1);
@@ -967,6 +969,8 @@ const[showP,setShowP]=useState(null);
 const[fp,setFp]=useState({date:today(),montant:"",note:""});
 const[showJ,setShowJ]=useState(null);
 const[fj,setFj]=useState({date:today(),montant:""});
+const[showG,setShowG]=useState(null);
+const[gLun,setGLun]=useState(today());
 const gV=id=>vehs.find(v=>v.id===id)?.nom||"—";
 const active=locs.filter(l=>l.statut!=="Terminé");
 const allPays=useMemo(()=>{const r=[];locs.forEach(l=>{(l.paiementsRecus||[]).forEach(p=>r.push({...p,locId:l.id,locataire:l.locataire,veh:gV(l.vehiculeId)}));});return r.sort((a,b)=>b.date.localeCompare(a.date));},[locs,vehs]);
@@ -1000,11 +1004,12 @@ sv({...data,locations:nl});ms("Paiement supprimé!");};
 const locFacs=data.locationFactures||[];
 const sumJ=arr=>Math.round(arr.reduce((s,j)=>s+(parseFloat(j.montant)||0),0)*100)/100;
 const joursPeriode=(l,per)=>(l.jours||[]).filter(j=>j.date>=per.debut&&j.date<=per.fin);
-const genFacture=l=>{const per=locPeriod(l,todayStr);if(!per){ms("Dat kòmansman kontra a pa bon!","error");return;}
-if(locFacs.some(x=>x.locationId===l.id&&x.periodeDebut===per.debut)){ms("Facture pou période sa a deja egziste!","error");return;}
+const buildFacture=(l,per)=>{
+const ovl=locFacs.find(x=>x.locationId===l.id&&x.periodeDebut<=per.fin&&x.periodeFin>=per.debut);
+if(ovl)return{err:`Période sa a chevoche facture ${ovl.numero} (${ovl.periode}). Efase li avan (🗑) si ou vle refè li.`};
 const parJour=l.tarif==="parjour";
 const jours=parJour?joursPeriode(l,per):[];
-if(parJour&&!jours.length){ms("Pa gen jou antre pou période sa a! Sèvi ak bouton 💵 Jou.","error");return;}
+if(parJour&&!jours.length)return{err:"Pa gen jou antre pou période sa a! Sèvi ak bouton 💵 Jou."};
 const montant=parJour?sumJ(jours):Math.round((parseFloat(l.montant)||0)*100)/100;
 const avecTaxes=!!l.avecTaxes;
 const tps=avecTaxes?Math.round(montant*TPS_R*100)/100:0;const tvq=avecTaxes?Math.round(montant*TVQ_R*100)/100:0;
@@ -1023,8 +1028,25 @@ lignes.push({label:"Semaine 2",debut:w2lun,fin:w2ven,montant:m2});}}
 else if(l.frequence==="hebdomadaire")lignes.push({label:"Semaine"+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:locAddD(per.debut,4),montant});
 else lignes.push({label:"Mois"+(parJour?` (${jours.length} jou)`:""),debut:per.debut,fin:per.fin,montant});
 const periodeAff=l.frequence==="2semaines"?`${fD(per.debut)} au ${fD(locAddD(per.debut,11))}`:l.frequence==="hebdomadaire"?`${fD(per.debut)} au ${fD(locAddD(per.debut,4))}`:`${fD(per.debut)} au ${fD(per.fin)}`;
-const fac={id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:periodeAff,lignes,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"};
-sv({...data,locationFactures:[...locFacs,fac]});ms(`Facture ${num} créée! 📄`);};
+return{fac:{id:gid(),numero:num,locationId:l.id,date:todayStr,periodeDebut:per.debut,periodeFin:per.fin,periode:periodeAff,lignes,locataire:l.locataire||"",courriel:l.courriel||"",vehicule:gV(l.vehiculeId),montant,avecTaxes,sousTotal:montant,tps,tvq,total:Math.round((montant+tps+tvq)*100)/100,statut:"Nouvelle"}};};
+const openG=l=>{const covered=locFacs.filter(f=>f.locationId===l.id);
+const uncov=(l.jours||[]).map(j=>j.date).filter(d=>!covered.some(f=>d>=f.periodeDebut&&d<=f.periodeFin)).sort();
+const defLun=uncov[0]?gMon(new Date(uncov[0]+"T12:00:00")):(locPeriod(l,todayStr)?.debut||gMon());
+setShowG(l.id);setGLun(defLun);};
+const gPerFor=l=>{const lun=gMon(new Date(gLun+"T12:00:00"));
+return l.frequence==="mensuel"?locPeriod(l,gLun):{debut:lun,fin:locAddD(lun,l.frequence==="hebdomadaire"?6:13)};};
+const doGen=()=>{const l=locs.find(x=>x.id===showG);if(!l)return;
+const per=gPerFor(l);if(!per){ms("Dat la pa bon!","error");return;}
+const r=buildFacture(l,per);if(r.err){ms(r.err,"error");return;}
+// Align future automatic invoices on this Monday if the rhythm differs.
+let nlocs=locs;
+if(l.frequence!=="mensuel"&&(l.ancre||l.debut)){
+const a=new Date(gMon(new Date((l.ancre||l.debut)+"T12:00:00"))+"T12:00:00");
+const b=new Date(per.debut+"T12:00:00");
+const step=l.frequence==="hebdomadaire"?7:14;
+const diff=Math.round((b-a)/86400000);
+if(((diff%step)+step)%step!==0)nlocs=locs.map(x=>x.id===l.id?{...x,ancre:per.debut}:x);}
+sv({...data,locations:nlocs,locationFactures:[...locFacs,r.fac]});ms(`Facture ${r.fac.numero} créée! 📄`);setShowG(null);};
 const openJ=l=>{setShowJ(l.id);setFj({date:today(),montant:String(l.tarif==="parjour"?l.montant||"":"")});};
 const addJour=()=>{if(!parseFloat(fj.montant)){ms("Montant requis!","error");return;}
 const nl=locs.map(l=>l.id===showJ?{...l,jours:[...(l.jours||[]),{id:gid(),date:fj.date,montant:Math.round(parseFloat(fj.montant)*100)/100}]}:l);
@@ -1074,7 +1096,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 <div style={{fontSize:10,color:C.dim,marginBottom:10}}>Total reçu: <b style={{color:C.green}}>{fM((l.paiementsRecus||[]).reduce((s,p)=>s+(parseFloat(p.montant)||0),0))}</b> ({(l.paiementsRecus||[]).length} paiements)</div>
 <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
 {!done&&<Bt size="sm" color={C.green} onClick={()=>openAddP(l)}>💰 Paiement reçu</Bt>}
-{!done&&<Bt size="sm" color={C.purple} onClick={()=>genFacture(l)}>📄 Facture</Bt>}
+{!done&&<Bt size="sm" color={C.purple} onClick={()=>openG(l)}>📄 Facture</Bt>}
 {!done&&l.tarif==="parjour"&&<Bt size="sm" color={C.cyan} onClick={()=>openJ(l)}>💵 Jou</Bt>}
 <Bt size="sm" variant="outline" color={C.accent} onClick={()=>openEditC(l)}>✏️</Bt>
 <Bt size="sm" variant="outline" color={done?C.green:C.orange} onClick={()=>toggleStatut(l)}>{done?"Réactiver":"Terminer"}</Bt>
@@ -1169,6 +1191,27 @@ return<Mo open={true} onClose={()=>setShowJ(null)} title={`💵 Kòb pa jou — 
 {key:"a",label:"",align:"right",render:r=><button onClick={()=>delJour(jl.id,r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12}}>🗑</button>}
 ]} data={[...(jl.jours||[])].sort((a,b)=>b.date.localeCompare(a.date))}/>
 <div style={{textAlign:"right",marginTop:8,fontSize:12,fontWeight:800,color:C.green}}>Total tout jou yo: {fM(sumJ(jl.jours||[]))}</div>
+</Mo>;})()}
+{showG&&(()=>{const l=locs.find(x=>x.id===showG);if(!l)return null;
+const per=gPerFor(l);if(!per)return null;
+const parJour=l.tarif==="parjour";const js=parJour?joursPeriode(l,per):[];
+const w1fin=locAddD(per.debut,6);
+const j1=js.filter(j=>j.date<=w1fin),j2=js.filter(j=>j.date>w1fin);
+return<Mo open={true} onClose={()=>setShowG(null)} title={`📄 Générer facture — ${gV(l.vehiculeId)} (${l.locataire})`} width={470}>
+<div style={{display:"flex",flexDirection:"column",gap:12}}>
+<In label="📅 LUNDI Semaine 1 la — chwazi ki lundi peryòd la kòmanse" type="date" value={gLun} onChange={setGLun}/>
+<div style={{background:C.card2,borderRadius:10,padding:14,fontSize:12,lineHeight:1.9}}>
+<div>Semaine 1 : <b>{fDs(per.debut)} {"→"} {fDs(locAddD(per.debut,4))}</b>{parJour&&<span style={{color:C.orange,fontWeight:700}}> • {j1.length} jou = {fM(sumJ(j1))}</span>}</div>
+{l.frequence==="2semaines"&&<div>Semaine 2 : <b>{fDs(locAddD(per.debut,7))} {"→"} {fDs(locAddD(per.debut,11))}</b>{parJour&&<span style={{color:C.orange,fontWeight:700}}> • {j2.length} jou = {fM(sumJ(j2))}</span>}</div>}
+{parJour?<div style={{fontWeight:800,color:C.green,marginTop:4}}>Total facture: {fM(sumJ(js))}{l.avecTaxes?" + TPS/TVQ":""}</div>:<div style={{fontWeight:800,color:C.green,marginTop:4}}>Total facture: {fM(parseFloat(l.montant)||0)}{l.avecTaxes?" + TPS/TVQ":""}</div>}
+{parJour&&js.length===0&&<div style={{color:C.red,fontWeight:700,marginTop:4}}>⚠️ Pa gen okenn jou antre nan peryòd sa a — chanje lundi a oswa antre jou yo avan (💵 Jou)</div>}
+</div>
+<div style={{fontSize:10,color:C.dim}}>🤖 Pwochen fakti otomatik yo ap swiv menm ritm sa a (chak {l.frequence==="hebdomadaire"?"semaine":"2 semaines"} apre lundi sa a).</div>
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowG(null)}>Annuler</Bt>
+<Bt color={C.purple} onClick={doGen}>📄 Générer</Bt>
+</div>
+</div>
 </Mo>;})()}
 </div>;}
 
