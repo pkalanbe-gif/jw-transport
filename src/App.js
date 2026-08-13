@@ -1130,7 +1130,7 @@ return<div key={l.id} style={{background:C.card,border:`1px solid ${done?C.borde
 </div>
 {fc.tarif==="parjour"&&<div style={{fontSize:10,color:C.orange,fontStyle:"italic"}}>💡 Avèk tarif par jour: sèvi ak bouton "💵 Jou" sou kontra a pou antre kòb chak jou. Facture a ap fè total jou yo pa semaine.</div>}
 <div style={{display:"flex",gap:10}}>
-<In label="Début" type="date" value={fc.debut} onChange={v=>setFc({...fc,debut:v})}/>
+<In label="Début — mete LUNDI premye semaine w ap faktire a" type="date" value={fc.debut} onChange={v=>setFc({...fc,debut:v})}/>
 <In label="Fin (optionnel)" type="date" value={fc.fin} onChange={v=>setFc({...fc,fin:v})}/>
 </div>
 <In label="Note (optionnel)" value={fc.note} onChange={v=>setFc({...fc,note:v})} placeholder="Dépôt, conditions, assurance..."/>
