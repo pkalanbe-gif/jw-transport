@@ -2333,6 +2333,7 @@ function App(){
 const[user,setUser]=useState(null);const[authMode,setAuthMode]=useState("login");
 const[aUser,setAUser]=useState("");const[aPass,setAPass]=useState("");const[aPass2,setAPass2]=useState("");const[aErr,setAErr]=useState("");
 const[pg,setPg]=useState("dashboard");const[data,setData]=useState(def);const[ld,setLd]=useState(true);const[toast,setToast]=useState(null);const[menuOpen,setMenuOpen]=useState(false);const[saveStatus,setSaveStatus]=useState(null);
+const lastTouchRef=useRef(0);
 
 // === API helpers (SQLite backend) ===
 const API_URL=process.env.REACT_APP_API_URL||'';
@@ -2365,8 +2366,21 @@ setAErr("");}catch(e){setAErr(e.message||"Nom d'utilisateur ou mot de passe inco
 
 const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser("");setAPass("");setAPass2("");setToken(null);};
 
-const sv=useCallback(nd=>{setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
+const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
+// Refetch data when the tab regains focus (and every 5 min) so an app left
+// open overnight picks up invoices written by the scheduled functions instead
+// of overwriting them on the next local save. Skipped within 30s of a local
+// change to avoid racing an in-flight save.
+useEffect(()=>{
+const refresh=async()=>{if(!getToken())return;if(Date.now()-lastTouchRef.current<30000)return;
+try{const d=await api('/api/data');if(Date.now()-lastTouchRef.current<30000)return;setData({...def,...d});}catch(e){}};
+const onVis=()=>{if(document.visibilityState==="visible")refresh();};
+window.addEventListener("focus",refresh);
+document.addEventListener("visibilitychange",onVis);
+const iv=setInterval(refresh,5*60*1000);
+return()=>{window.removeEventListener("focus",refresh);document.removeEventListener("visibilitychange",onVis);clearInterval(iv);};
+},[]);// eslint-disable-line react-hooks/exhaustive-deps
 const nav=[{id:"dashboard",label:"Dashboard"},{id:"flot",label:"🛛 Flòt (GPS)"},{id:"voyages",label:"Voyages"},{id:"chauffeurs",label:"Employés"},{id:"clients",label:"Clients"},{id:"vehicules",label:"Véhicules"},{id:"location",label:"🔑 Location"},{id:"paie",label:"Paie"},{id:"kalandriye",label:"📅 Calendrier"},{id:"kalpeyman",label:"💳 Bills à Payer"},{id:"factures",label:"Factures"},{id:"comptabilite",label:"Comptabilité"},{id:"livrecomptable",label:"📒 Livre Compta"},{id:"agent",label:"🤖 Agent IA"},{id:"revenus",label:"Rapport Annuel"},{id:"fiscal",label:"📋 Fiscal"},{id:"agentcompta",label:"🧮 Agent Comptable"},{id:"automation",label:"⚙️ Otomatizasyon"},{id:"backup",label:"Backup"}];
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
