@@ -46,9 +46,14 @@ function drawHeader(doc, ent, accentColor = '#1e293b') {
 function drawFooter(doc, ent) {
   const y = 740;
   doc.moveTo(40, y).lineTo(572, y).strokeColor('#e2e8f0').lineWidth(0.5).stroke();
+  // The footer sits below the bottom margin, which makes PDFKit spill it onto a
+  // blank extra page. Drop the margin while writing it, then put it back.
+  const bottom = doc.page.margins.bottom;
+  doc.page.margins.bottom = 0;
   doc.font('Helvetica').fontSize(8).fillColor('#94a3b8')
     .text(`${safe(ent.nom || 'J&W Transport')} — ${safe(ent.courriel || '')} — ${safe(ent.telephone || '')}`,
-      40, y + 6, { width: 532, align: 'center' });
+      40, y + 6, { width: 532, align: 'center', lineBreak: false });
+  doc.page.margins.bottom = bottom;
 }
 
 async function generateInvoicePDF(invoice, client, ent, settings) {
@@ -244,12 +249,35 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
     const addD = (s, k) => { const d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + k); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
     const mon = opts.mondayStr || '';
     const wk2 = (isBiweekly && mon) ? addD(mon, 7) : '';
+    // One line per trip fills two pages on a two-week period, which reads badly.
+    // Trips of the same day, zone and rate are one line with the count summed.
+    const pack = (list) => {
+      const out = [];
+      list.forEach(d => {
+        const prev = out.find(r => r.date === d.date && r.zone === d.zone && r.tx === d.tx);
+        if (prev) { prev.nb += (d.nb || 0); prev.bonus += (d.bonus || 0); prev.sub += (d.sub || 0); }
+        else out.push({ ...d, nb: d.nb || 0, bonus: d.bonus || 0, sub: d.sub || 0 });
+      });
+      return out;
+    };
     const groups = wk2
       ? [
-          { label: `SEMAINE 1 — ${fD(mon)} au ${fD(addD(mon, 4))}`, rows: trips.filter(d => d.date < wk2) },
-          { label: `SEMAINE 2 — ${fD(wk2)} au ${fD(addD(wk2, 4))}`, rows: trips.filter(d => d.date >= wk2) }
+          { label: `SEMAINE 1 — ${fD(mon)} au ${fD(addD(mon, 4))}`, rows: pack(trips.filter(d => d.date < wk2)) },
+          { label: `SEMAINE 2 — ${fD(wk2)} au ${fD(addD(wk2, 4))}`, rows: pack(trips.filter(d => d.date >= wk2)) }
         ]
-      : [{ label: '', rows: trips }];
+      : [{ label: '', rows: pack(trips) }];
+
+    // Shrink the rows just enough to keep the whole stub on a single page.
+    const nRows = groups.reduce((s, g) => s + Math.max(g.rows.length, g.label ? 1 : 0), 0);
+    const nBands = groups.filter(g => g.label).length;
+    const avail = 560 - y;                       // room left before the totals block
+    let rowH = 18, fs = 9;
+    if (nRows > 0) {
+      rowH = Math.floor((avail - nBands * 34) / nRows);
+      rowH = Math.max(11, Math.min(18, rowH));
+      fs = rowH >= 16 ? 9 : rowH >= 13 ? 8 : 7;
+    }
+    const pad = Math.max(2, Math.round((rowH - fs) / 2) - 1);
 
     if (trips.length === 0) {
       doc.font('Helvetica-Oblique').fontSize(10).fillColor('#94a3b8')
@@ -270,21 +298,21 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
           y += 18;
           return;
         }
-        doc.font('Helvetica').fontSize(9).fillColor('#1a1a1a');
+        doc.font('Helvetica').fontSize(fs).fillColor('#1a1a1a');
         g.rows.forEach((d, i) => {
-          ensure(18, true);
-          if (i % 2 === 1) doc.rect(40, y, 532, 18).fill('#fafafa');
-          doc.fillColor('#1a1a1a').font('Helvetica');
-          doc.text(safe(fD(d.date)),  46,  y + 5, { width: 68 });
-          doc.text(safe(d.zone),      126, y + 5, { width: 68 });
-          doc.text(String(d.nb || 0), 206, y + 5, { width: 38, align: 'right' });
-          doc.text(fM(d.tx),          256, y + 5, { width: 68, align: 'right' });
+          ensure(rowH, true);
+          if (i % 2 === 1) doc.rect(40, y, 532, rowH).fill('#fafafa');
+          doc.fillColor('#1a1a1a').font('Helvetica').fontSize(fs);
+          doc.text(safe(fD(d.date)),  46,  y + pad, { width: 68 });
+          doc.text(safe(d.zone),      126, y + pad, { width: 68 });
+          doc.text(String(d.nb || 0), 206, y + pad, { width: 38, align: 'right' });
+          doc.text(fM(d.tx),          256, y + pad, { width: 68, align: 'right' });
           doc.fillColor(d.bonus > 0 ? '#f59e0b' : '#94a3b8')
-             .text(d.bonus > 0 ? fM(d.bonus) : '—', 336, y + 5, { width: 68, align: 'right' });
+             .text(d.bonus > 0 ? fM(d.bonus) : '—', 336, y + pad, { width: 68, align: 'right' });
           doc.fillColor('#1a1a1a').font('Helvetica-Bold')
-             .text(fM(d.sub), 416, y + 5, { width: 156, align: 'right' });
+             .text(fM(d.sub), 416, y + pad, { width: 156, align: 'right' });
           doc.font('Helvetica');
-          y += 18;
+          y += rowH;
         });
         if (g.label) {
           ensure(20, true);
