@@ -221,10 +221,22 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
       { label: 'BONUS',   x: 330, w: 80,  align: 'right' },
       { label: 'TOTAL',   x: 410, w: 162, align: 'right' }
     ];
-    doc.rect(40, y, 532, 22).fill('#f1f5f9');
-    doc.font('Helvetica-Bold').fontSize(9).fillColor('#475569');
-    cols.forEach(c => doc.text(c.label, c.x + 6, y + 7, { width: c.w - 12, align: c.align }));
-    y += 22;
+    const drawTableHead = () => {
+      doc.rect(40, y, 532, 22).fill('#f1f5f9');
+      doc.font('Helvetica-Bold').fontSize(9).fillColor('#475569');
+      cols.forEach(c => doc.text(c.label, c.x + 6, y + 7, { width: c.w - 12, align: c.align }));
+      y += 22;
+    };
+    drawTableHead();
+    // A long period runs past the bottom of the page; without an explicit break
+    // the rows keep going and the totals box is drawn off-page and lost.
+    const PAGE_BOTTOM = 720;
+    const ensure = (need, repeatHead) => {
+      if (y + need <= PAGE_BOTTOM) return;
+      doc.addPage();
+      y = 50;
+      if (repeatHead) drawTableHead();
+    };
 
     const trips = emp.tripDetails || [];
     // A biweekly pay period covers two work weeks; show them as Semaine 1 and
@@ -246,6 +258,7 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
     } else {
       groups.forEach(g => {
         if (g.label) {
+          ensure(56, true);
           doc.rect(40, y, 532, 18).fill('#eef2ff');
           doc.font('Helvetica-Bold').fontSize(8).fillColor('#4338ca')
             .text(g.label, 46, y + 5, { width: 400 });
@@ -259,6 +272,7 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
         }
         doc.font('Helvetica').fontSize(9).fillColor('#1a1a1a');
         g.rows.forEach((d, i) => {
+          ensure(18, true);
           if (i % 2 === 1) doc.rect(40, y, 532, 18).fill('#fafafa');
           doc.fillColor('#1a1a1a').font('Helvetica');
           doc.text(safe(fD(d.date)),  46,  y + 5, { width: 68 });
@@ -273,6 +287,7 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
           y += 18;
         });
         if (g.label) {
+          ensure(20, true);
           const sv = g.rows.reduce((s, d) => s + (d.nb || 0), 0);
           const ss = g.rows.reduce((s, d) => s + (d.sub || 0), 0);
           doc.font('Helvetica-Bold').fontSize(9).fillColor('#4338ca')
@@ -283,8 +298,9 @@ async function generatePayslipPDF(emp, weekLabel, ent, payDate, opts = {}) {
       });
     }
 
-    // Totals box
+    // Totals box — keep it, the note and the footer on the same page.
     y += 14;
+    ensure(140, false);
     const tbX = 320, tbW = 252;
     const totRow = (label, value, bg, fg) => {
       if (bg) doc.rect(tbX, y, tbW, 22).fill(bg);
