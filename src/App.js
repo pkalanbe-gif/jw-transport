@@ -422,6 +422,57 @@ const wa=useMemo(()=>agg(data.voyages.filter(v=>v.date>=wd[0]&&v.date<=wd[4])),[
 const[showHist,setShowHist]=useState(false);
 const allVoys=useMemo(()=>[...data.voyages].sort((a,b)=>b.date.localeCompare(a.date)),[data.voyages]);
 const openEdit=d=>{const mon=gMon(new Date(d+"T12:00:00"));setWk(mon);setTimeout(()=>openDay(d),50);};
+// ── Scan fiche photos with Claude vision: extract DT / poids / zone per fiche ──
+const[scanBusy,setScanBusy]=useState(false);
+const fileRef=useRef(null);
+const resizeImg=file=>new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(file);
+img.onload=()=>{const max=1568;let w=img.width,h=img.height;const sc=Math.min(1,max/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);
+const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);
+URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",0.85).split(",")[1]);};
+img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("Imaj la pa ka li"));};img.src=url;});
+const scanFiches=async files=>{
+const key=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
+if(!key){ms("Ajoute kle API Claude ou nan chatbot la (💬 → ⚙️) avan!","error");return;}
+setScanBusy(true);
+try{
+const imgs=[];for(const f of files)imgs.push(await resizeImg(f));
+const prompt=`Tu analyses des photos de fiches de transport de camion (J&W Transport). Il y a deux types de documents:
+
+1) FICHE TPOL / E360S (formulaire rempli à la main):
+   - "# DT-DIR-ORD" = le numéro DT (ex: 80088903)
+   - "RÉGION" = la zone: 06 (Montréal) ou 13 (Laval)
+   - "POIDS" = le poids CHARGÉ en kg
+   - "# PLAQUE", "NOM DU CHAUFFEUR", "DATE" = infos du camion
+
+2) TICKET DE PESÉE DEMIX AGRÉGATS (imprimé, "Billet: 665xxxxx"):
+   - "Brut: N Kg" = une pesée du camion. Le camion est pesé DEUX fois par voyage:
+     une fois CHARGÉ (poids élevé, ex 8550 kg) et une fois VIDE (poids bas, ex 4700 kg).
+   - Le ticket avec le poids le PLUS ÉLEVÉ = poids chargé; le PLUS BAS = poids vide (tare).
+
+REGROUPE les documents qui appartiennent au MÊME voyage (même DT, même plaque, même date/heure proche).
+Pour chaque VOYAGE trouvé, retourne un objet avec:
+- "dt": le numéro DT-DIR-ORD si visible, sinon le numéro de Billet Demix (chaîne)
+- "poids": le poids CHARGÉ en kg (nombre, sans unité)
+- "tare": le poids VIDE en kg si un deuxième ticket le montre, sinon null
+- "zone": "06" (Montréal) ou "13" (Laval) — depuis RÉGION; si absent, déduis de l'adresse/ville; si incertain "06"
+
+Réponds UNIQUEMENT avec un tableau JSON valide, aucun autre texte:
+[{"dt":"80088903","poids":8550,"tare":4700,"zone":"06"}]`;
+const content=[...imgs.map(d=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:d}})),{type:"text",text:prompt}];
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",max_tokens:2000,fallbacks:"default",messages:[{role:"user",content}]})});
+if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`Erreur ${res.status}`);}
+const j=await res.json();
+if(j.stop_reason==="refusal")throw new Error("Claude pa t ka trete imaj sa a");
+const txt=(j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Pa jwenn done fiche nan foto a");
+const arr=JSON.parse(m[0]);
+if(!Array.isArray(arr)||!arr.length)throw new Error("Okenn fiche pa detekte nan foto a");
+const newTrips=arr.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:parseFloat(t.poids)||"",tare:parseFloat(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
+setTrips(prev=>[...prev.filter(t=>t.poidsChaj||t.dt),...newTrips]);
+const nTare=newTrips.filter(t=>t.tare).length;
+ms(`✅ ${newTrips.length} fiche li${nTare?` (${nTare} ak pwa vid)`:""}! Verifye done yo anvan ou anrejistre.`);
+}catch(e){ms("Erè scan: "+(e.message||e),"error");}
+setScanBusy(false);};
 return<div>
 <h1 style={{fontSize:22,fontWeight:800,marginBottom:12}}>Voyages</h1>
 <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 16px"}}><button onClick={()=>{const d=new Date(wk+"T12:00:00");d.setDate(d.getDate()-7);setWk(toL(d));}} style={{background:"none",border:"none",cursor:"pointer",color:C.muted}}>{"◀"}</button><div style={{flex:1,textAlign:"center",fontSize:14,fontWeight:700}}>{fDs(wd[0])} {"—"} {fDs(wd[4])}</div><button onClick={()=>{const d=new Date(wk+"T12:00:00");d.setDate(d.getDate()+7);setWk(toL(d));}} style={{background:"none",border:"none",cursor:"pointer",color:C.muted}}>{"▶"}</button></div>
@@ -461,7 +512,11 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:28,marginTop:4,flexWrap:"wrap"}}><In type="number" value={t.tauxChofe||""} onChange={v=>upT(t.id,"tauxChofe",v)} placeholder={`Taux Chofè (${(data.settings||def.settings).tauxChauffeur}$)`} style={{maxWidth:150}}/><In type="number" value={t.tauxHelper||""} onChange={v=>upT(t.id,"tauxHelper",v)} placeholder={`Taux Helper (${(data.settings||def.settings).tauxHelper}$)`} style={{maxWidth:150}}/><In type="number" value={t.tare||""} onChange={v=>upT(t.id,"tare",v)} placeholder={`Poids vide (${(data.settings||def.settings).tare||DEF_TARE}kg)`} style={{maxWidth:170}}/></div>
 <div style={{marginLeft:28,marginTop:6,padding:"8px 10px",background:C.card,borderRadius:8,border:`1px solid ${C.border}`}}><div style={{fontSize:10,color:C.muted,marginBottom:6,fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>💰 Bonus pa anplwaye</div>{(ch||hlp.length>0)?<>{t.zone==="13"&&((data.settings||def.settings).bonusLavalPerEmp>0)&&<div style={{fontSize:10,color:C.orange,marginBottom:6,fontStyle:"italic"}}>✨ Bonus Laval otomatik: {fM((data.settings||def.settings).bonusLavalPerEmp)} pa anplwaye (modifyab pa anplwaye)</div>}<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{[ch,...hlp].filter(Boolean).map(empId=>{const emp=data.chauffeurs.find(c=>c.id===empId);if(!emp)return null;const cur=(t.bonuses||{})[empId];const isDr=ch===empId;return<div key={empId} style={{display:"flex",alignItems:"center",gap:6,background:C.bg,border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 8px"}}><span style={{fontSize:10,color:isDr?C.accent:C.purple,fontWeight:700}}>{isDr?"🚛 ":"👤 "}{emp.nom}</span><input type="number" value={cur==null?"":cur} onChange={e=>upT(t.id,"bonus_"+empId,e.target.value)} placeholder="0" style={{background:C.card2,color:C.text,border:`1px solid ${C.border}`,borderRadius:4,padding:"3px 6px",fontSize:13,width:70,outline:"none",fontWeight:600}}/><span style={{fontSize:10,color:C.dim}}>$</span></div>;})}</div></>:<div style={{fontSize:11,color:C.dim,fontStyle:"italic",padding:"4px 0"}}>👆 Chwazi yon Chauffeur ak/oswa Helper anwo a pou w ka antre bonus la</div>}</div>
 <div style={{marginLeft:28,marginTop:4}}><In value={t.dt||""} onChange={v=>upT(t.id,"dt",v)} placeholder={`DT — Notes zone ${ZM[t.zone]||""}...`} multiline/></div></div>;})}
-<Bt variant="outline" color={C.accent} onClick={addT} size="sm" style={{marginBottom:10}}>+ Trip</Bt>
+<input ref={fileRef} type="file" accept="image/*" capture="environment" multiple style={{display:"none"}} onChange={e=>{const fs=[...e.target.files];e.target.value="";if(fs.length)scanFiches(fs);}}/>
+<div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+<Bt variant="outline" color={C.accent} onClick={addT} size="sm">+ Trip</Bt>
+<Bt variant="outline" color={C.cyan} size="sm" disabled={scanBusy} onClick={()=>fileRef.current&&fileRef.current.click()}>{scanBusy?"🧠 Claude ap li foto a...":"📷 Foto Fiche (IA)"}</Bt>
+</div>
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setModal(false)}>Annuler</Bt><Bt onClick={saveDay} size="lg">Enregistrer</Bt></div>
 </Mo></div>;}
 
