@@ -477,7 +477,10 @@ rien, ne décide pas ce qui est un voyage — le logiciel s'en charge ensuite.
 Retourne UN objet par document visible, dans l'ordre des photos.
 
 Fiche TPOL manuscrite:
-  {"type":"fiche","dt":"80088903","zone":"06","poids":8550}
+  {"type":"fiche","dt":"80088903","zone":"06","poids":8550,
+   "chauffeur":"BAIN J GINIOR","plaque":"860450"}
+  "chauffeur" = ce qui est écrit dans "NOM DU CHAUFFEUR", tel quel.
+  "plaque" = ce qui est écrit dans "# PLAQUE", tel quel.
 Ticket de pesée Demix:
   {"type":"pesee","billet":"66580558","brut":8550,"manuscrit":true}
   "manuscrit" = true s'il y a de l'écriture au stylo sur la MÊME photo,
@@ -498,7 +501,7 @@ la même photo, la fiche TPOL manuscrite "# DT-DIR-ORD 80088903, RÉGION 06,
 POIDS 8550". Photo 2: ticket Demix "Billet 66580632, Brut: 4700 Kg" imprimé,
 aucune écriture au stylo.
 Réponse correcte:
-[{"type":"fiche","dt":"80088903","zone":"06","poids":8550},
+[{"type":"fiche","dt":"80088903","zone":"06","poids":8550,"chauffeur":"BAIN J GINIOR","plaque":"860450"},
  {"type":"pesee","billet":"66580558","brut":8550,"manuscrit":true},
  {"type":"pesee","billet":"66580632","brut":4700,"manuscrit":false}]
 
@@ -538,12 +541,52 @@ light=pool[pool.length-1];
 tareFor=trips.filter(t=>!num(t.tare)&&num(t.poidsChaj)>light).sort((a,b)=>num(a.poidsChaj)-num(b.poidsChaj))[0]||null;
 // No loaded trip waiting: heaviest pass is the load, lightest the tare.
 if(!tareFor)rows=[{dt:String(arr[0].billet||arr[0].dt||""),poids:pool[0],tare:pool.length>1?light:null,zone:"06"}];}
+// The fiche also names the driver and the plate — match them against the lists
+// so the day header fills itself in. Only fill what is still blank, never
+// overwrite a choice the user already made.
+const auto=[];
+const nrm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase();
+const f0=fiches[0]||{};
+let drvId="";
+if(f0.chauffeur){
+// Names on the fiche are abbreviated and hand-written ("BAIN J GINIOR" for
+// "Brain Jean Ginior"), so score tokens loosely: exact, prefix, one-letter
+// typo, or an initial. Require a clear winner before selecting anybody.
+const ed1=(a,b)=>{if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,d=0;
+while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}
+if(++d>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++;}}
+return d+(a.length-i)+(b.length-j)<=1;};
+const toks=nrm(f0.chauffeur).split(/[^A-Z0-9]+/).filter(Boolean);
+const score=c=>{const ct=nrm(c.nom).split(/[^A-Z0-9]+/).filter(Boolean);let s=0;
+toks.forEach(w=>{if(ct.includes(w))s+=2;
+else if(w.length>=3&&ct.some(x=>x.length>=3&&(x.startsWith(w)||w.startsWith(x))))s+=2;
+else if(w.length>=4&&ct.some(x=>ed1(w,x)))s+=2;
+else if(w.length===1&&ct.some(x=>x[0]===w))s+=1;});return s;};
+const ranked=(data.chauffeurs||[]).filter(c=>c.aktif).map(c=>({c,s:score(c)})).sort((a,b)=>b.s-a.s);
+if(ranked.length&&ranked[0].s>=3&&(ranked.length<2||ranked[0].s>ranked[1].s)){
+drvId=ranked[0].c.id;if(!ch){setCh(drvId);auto.push("chofè "+ranked[0].c.nom);}}}
+if(!veh&&f0.plaque){
+const p=nrm(f0.plaque).replace(/[^A-Z0-9]/g,"");
+const v=(data.vehicules||[]).find(x=>{const vp=nrm(x.plaque).replace(/[^A-Z0-9]/g,"");
+return vp&&p&&(vp===p||vp.endsWith(p)||p.endsWith(vp));});
+if(v){setVeh(v.id);auto.push("camion "+v.nom);}}
+// Helpers are not written on the fiche — reuse the crew of the most recent day
+// this driver worked, which the user can still change.
+if(!hlp.length){
+const prev=[...(data.voyages||[])].filter(v=>(v.helpers||[]).length&&(!drvId||v.chofè===drvId)).sort((a,b)=>(b.date||"").localeCompare(a.date||""))[0];
+if(prev){setHlp(prev.helpers);auto.push("helper "+prev.helpers.map(h=>(data.chauffeurs||[]).find(c=>c.id===h)?.nom||"?").join(", ")+" (dènye jou a)");}}
 if(tareFor){
 setTrips(prev=>prev.map(t=>t.id===tareFor.id?{...t,tare:light}:t));
-setScanInfo(`📷 v7.5 — pesée a vid li → pwa vid ${light} kg ajoute sou voyage ${tareFor.dt||num(tareFor.poidsChaj)+" kg"}`);
+setScanInfo(`📷 v7.6 — pesée a vid li → pwa vid ${light} kg ajoute sou voyage ${tareFor.dt||num(tareFor.poidsChaj)+" kg"}`);
 ms(`✅ Pwa vid ${light} kg ranpli sou voyage a.`);}
 else{
-const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:num(t.poids)||"",tare:num(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
+// Write the rates onto each scanned trip rather than leaving them to the
+// placeholder defaults, so the day reads the same as a hand-entered one.
+const stg=data.settings||def.settings;
+const drv=(data.chauffeurs||[]).find(c=>c.id===(drvId||ch));
+const txC=parseFloat(drv?.tauxPersonnel)||stg.tauxChauffeur||80;
+const txH=stg.tauxHelper||65;
+const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:num(t.poids)||"",tare:num(t.tare)||"",dt:String(t.dt||""),tauxChofe:String(txC),tauxHelper:String(txH),bonuses:{}}));
 // Trips already on the day (saved earlier, or from a previous scan) would
 // otherwise pile up under the new ones and look like the scan failed.
 const kept=trips.filter(t=>t.poidsChaj||t.dt);
@@ -551,7 +594,7 @@ let replace=true;
 if(kept.length)replace=window.confirm(`Jou sa a gen deja ${kept.length} voyage.\n\nOK = RANPLASE yo ak ${newTrips.length} voyage scan an jwenn.\nAnnuler = kite yo epi AJOUTE ${newTrips.length} anba yo.`);
 setTrips(replace?newTrips:[...kept,...newTrips]);
 const nTare=newTrips.filter(t=>t.tare).length;
-setScanInfo(`📷 v7.5 — ${arr.length} dokiman li → ${newTrips.length} voyage${nTare?`, ${nTare} ak pwa vid ranpli`:", okenn pwa vid jwenn"}${kept.length&&!replace?` (+${kept.length} ansyen kenbe)`:""}`);
+setScanInfo(`📷 v7.6 — ${arr.length} dokiman li → ${newTrips.length} voyage${nTare?`, ${nTare} ak pwa vid ranpli`:", okenn pwa vid jwenn"}${kept.length&&!replace?` (+${kept.length} ansyen kenbe)`:""}${auto.length?" • "+auto.join(" • "):""}`);
 ms(`✅ ${newTrips.length} voyage — verifye done yo anvan ou anrejistre.`);}
 }catch(e){ms("Erè scan: "+(e.message||e),"error");}
 setScanBusy(false);};
@@ -2550,7 +2593,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.5</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.6</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
