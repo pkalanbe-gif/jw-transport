@@ -20,7 +20,16 @@ const PRELOAD_USERS={"admin":{username:"admin",displayName:"admin",hash:"kz4vem"
 const gMon=(d=new Date())=>{const dt=new Date(d);const dy=dt.getDay();dt.setDate(dt.getDate()-dy+(dy===0?-6:1));return toL(dt);};
 const gWk=m=>JRS.map((_,i)=>{const d=new Date(m+"T12:00:00");d.setDate(d.getDate()+i);return toL(d);});
 const getPayDate=(weekMon,settings)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const fri=new Date(weekMon+"T12:00:00");fri.setDate(fri.getDate()+4);const pd=new Date(fri);pd.setDate(pd.getDate()+ps.payDelay*7);const cur=pd.getDay();const tgt=ps.payDay===7?0:ps.payDay;pd.setDate(pd.getDate()+(tgt-cur));return toL(pd);};
-const getPayPeriods=(fromDate,count,settings,voyages)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const step=ps.frequency==="biweekly"?14:7;const periods=[];const c=new Date(gMon(new Date(fromDate+"T12:00:00"))+"T12:00:00");c.setDate(c.getDate()-10*7);for(let i=0;i<count;i++){const wm=toL(c);const wd=gWk(wm);const pd=getPayDate(wm,settings);const wv=(voyages||[]).filter(v=>v.date>=wd[0]&&v.date<=wd[4]);const tv=wv.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0);periods.push({weekMon:wm,weekFri:wd[4],payDate:pd,trips:tv,voyages:wv});c.setDate(c.getDate()+step);}return periods;};
+// Monday grid the pay periods land on. Periods are keyed by their LAST week, so
+// for a biweekly cycle the parity must be anchored on payrollSchedule.ancre (the
+// first Monday of a period) — anchoring on the current week makes the fortnight
+// drift by 7 days every week. Keep in sync with getCurrentPayPeriod in
+// netlify/functions/_shared/calc.js.
+const payGridMon=(ps,fromMon)=>{if(ps.frequency!=="biweekly")return fromMon;
+const last=new Date(gMon(new Date((ps.ancre||"1970-01-05")+"T12:00:00"))+"T12:00:00");last.setDate(last.getDate()+7);
+const k=Math.floor(Math.round((new Date(fromMon+"T12:00:00")-last)/86400000)/14);
+last.setDate(last.getDate()+k*14);return toL(last);};
+const getPayPeriods=(fromDate,count,settings,voyages)=>{const ps=settings?.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};const step=ps.frequency==="biweekly"?14:7;const periods=[];const c=new Date(payGridMon(ps,gMon(new Date(fromDate+"T12:00:00")))+"T12:00:00");c.setDate(c.getDate()-10*7);for(let i=0;i<count;i++){const wm=toL(c);const wd=gWk(wm);const pd=getPayDate(wm,settings);const wv=(voyages||[]).filter(v=>v.date>=wd[0]&&v.date<=wd[4]);const tv=wv.reduce((s,v)=>(v.trips||[]).reduce((s2,t)=>s2+(t.nbVoyages||0),s),0);periods.push({weekMon:wm,weekFri:wd[4],payDate:pd,trips:tv,voyages:wv});c.setDate(c.getDate()+step);}return periods;};
 const JRSK=["","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 const sumBonuses=t=>{if(t.bonuses&&typeof t.bonuses==="object")return Object.values(t.bonuses).reduce((s,v)=>s+(parseFloat(v)||0),0);return parseFloat(t.bonus)||0;};
 const empBonus=(t,empId)=>{if(t.bonuses&&typeof t.bonuses==="object")return parseFloat(t.bonuses[empId])||0;return parseFloat(t.bonus)||0;};
@@ -436,28 +445,44 @@ if(!key){ms("Ajoute kle API Claude ou nan chatbot la (💬 → ⚙️) avan!","e
 setScanBusy(true);
 try{
 const imgs=[];for(const f of files)imgs.push(await resizeImg(f));
-const prompt=`Tu analyses des photos de fiches de transport de camion (J&W Transport). Il y a deux types de documents:
+const prompt=`Tu analyses des photos de documents de transport de camion (J&W Transport) et tu dois en déduire les VOYAGES.
 
-1) FICHE TPOL / E360S (formulaire rempli à la main):
-   - "# DT-DIR-ORD" = le numéro DT (ex: 80088903)
-   - "RÉGION" = la zone: 06 (Montréal) ou 13 (Laval)
-   - "POIDS" = le poids CHARGÉ en kg
-   - "# PLAQUE", "NOM DU CHAUFFEUR", "DATE" = infos du camion
+DEUX TYPES DE DOCUMENTS — ils ne jouent PAS le même rôle:
 
-2) TICKET DE PESÉE DEMIX AGRÉGATS (imprimé, "Billet: 665xxxxx"):
-   - "Brut: N Kg" = une pesée du camion. Le camion est pesé DEUX fois par voyage:
-     une fois CHARGÉ (poids élevé, ex 8550 kg) et une fois VIDE (poids bas, ex 4700 kg).
-   - Le ticket avec le poids le PLUS ÉLEVÉ = poids chargé; le PLUS BAS = poids vide (tare).
+A) FICHE TPOL / E360S (formulaire bleu rempli à la main) = LE VOYAGE.
+   - "# DT-DIR-ORD" = le numéro DT du voyage (ex: 80088903)
+   - "RÉGION" = la zone de livraison: 06 (Montréal) ou 13 (Laval)
+   - "POIDS" = le poids chargé en kg
+   UN voyage = UNE fiche TPOL.
 
-REGROUPE les documents qui appartiennent au MÊME voyage (même DT, même plaque, même date/heure proche).
-Pour chaque VOYAGE trouvé, retourne un objet avec:
-- "dt": le numéro DT-DIR-ORD si visible, sinon le numéro de Billet Demix (chaîne)
-- "poids": le poids CHARGÉ en kg (nombre, sans unité)
-- "tare": le poids VIDE en kg si un deuxième ticket le montre, sinon null
-- "zone": "06" (Montréal) ou "13" (Laval) — depuis RÉGION; si absent, déduis de l'adresse/ville; si incertain "06"
+B) TICKET DE PESÉE DEMIX AGRÉGATS (imprimé, "Billet: 665xxxxx", "Brut: N Kg") = UNE PESÉE, PAS un voyage.
+   Le camion passe sur la balance DEUX fois pour le même voyage: une fois CHARGÉ
+   (Brut élevé, ex 8550 Kg) et une fois VIDE (Brut bas, ex 4700 Kg).
 
-Réponds UNIQUEMENT avec un tableau JSON valide, aucun autre texte:
-[{"dt":"80088903","poids":8550,"tare":4700,"zone":"06"}]`;
+RÈGLES ABSOLUES:
+1. Ne crée JAMAIS un voyage à partir d'un ticket Demix seul. Un ticket Demix
+   s'ATTACHE toujours au voyage de la fiche TPOL: le Brut le plus ÉLEVÉ devient
+   "poids", le Brut le plus BAS devient "tare". Un ticket dont le Brut est bas
+   (le camion vide) n'est jamais un voyage séparé.
+2. N'utilise JAMAIS l'adresse de Demix Agrégats (3100 Laval / 180 Rue Saulnier,
+   Laval) pour déterminer la zone — c'est la carrière où le camion charge, pas
+   la destination. La zone vient UNIQUEMENT du champ "RÉGION" de la fiche TPOL.
+3. Le "dt" doit être un numéro DT-DIR-ORD (8 chiffres, commence par 800...),
+   jamais un numéro de Billet Demix (665...), sauf si aucune fiche TPOL n'est
+   présente sur les photos.
+4. S'il n'y a QUE des tickets Demix et aucune fiche TPOL: regroupe-les en UN
+   SEUL voyage (Brut élevé = poids, Brut bas = tare), zone "06", dt = le Billet
+   du ticket chargé.
+
+EXEMPLE — photo 1: fiche TPOL "# DT-DIR-ORD 80088903, RÉGION 06, POIDS 8550";
+photo 2: ticket Demix "Billet 66580558, Brut: 8550 Kg"; photo 3: ticket Demix
+"Billet 66580632, Brut: 4700 Kg".
+Réponse correcte (UN seul voyage): [{"dt":"80088903","poids":8550,"tare":4700,"zone":"06"}]
+Réponse INCORRECTE: deux objets, ou un objet avec "poids":4700, ou "zone":"13".
+
+Pour chaque voyage: "dt" (chaîne), "poids" (nombre kg chargé), "tare" (nombre kg
+à vide, ou null si aucune pesée à vide), "zone" ("06" ou "13").
+Réponds UNIQUEMENT avec le tableau JSON, aucun autre texte.`;
 const content=[...imgs.map(d=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:d}})),{type:"text",text:prompt}];
 const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",max_tokens:2000,fallbacks:"default",messages:[{role:"user",content}]})});
 if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`Erreur ${res.status}`);}
@@ -467,7 +492,18 @@ const txt=(j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
 const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Pa jwenn done fiche nan foto a");
 const arr=JSON.parse(m[0]);
 if(!Array.isArray(arr)||!arr.length)throw new Error("Okenn fiche pa detekte nan foto a");
-const newTrips=arr.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:parseFloat(t.poids)||"",tare:parseFloat(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
+// Safety net: a Demix ticket (Billet 665…) is a weighing, not a trip. If the
+// model still returns the empty-weigh ticket as its own entry next to a real DT
+// fiche (80……), fold its weight into that trip as the tare instead.
+const isFiche=t=>/^80\d{6}$/.test(String(t.dt||"").trim());
+let rows=arr;
+if(arr.some(isFiche)&&arr.some(t=>!isFiche(t))){
+const fiches=arr.filter(isFiche);
+arr.filter(t=>!isFiche(t)).forEach(w=>{const wp=parseFloat(w.poids)||0;
+const tgt=fiches.filter(f=>!f.tare&&(parseFloat(f.poids)||0)>wp).sort((a,b)=>(parseFloat(a.poids)||0)-(parseFloat(b.poids)||0))[0];
+if(tgt)tgt.tare=wp;});
+rows=fiches;}
+const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:parseFloat(t.poids)||"",tare:parseFloat(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
 setTrips(prev=>[...prev.filter(t=>t.poidsChaj||t.dt),...newTrips]);
 const nTare=newTrips.filter(t=>t.tare).length;
 ms(`✅ ${newTrips.length} fiche li${nTare?` (${nTare} ak pwa vid)`:""}! Verifye done yo anvan ou anrejistre.`);
@@ -763,7 +799,7 @@ const payDates=useMemo(()=>{const s=new Set();periods.forEach(p=>s.add(p.payDate
 const workDates=useMemo(()=>{const s=new Set();(data.voyages||[]).forEach(v=>{if(v.date)s.add(v.date);});return s;},[data.voyages]);
 const payDateMap=useMemo(()=>{const m={};periods.forEach(p=>{m[p.payDate]=p;});return m;},[periods]);
 
-const saveCfg=()=>{const nd={...data,settings:{...st,payrollSchedule:{frequency:cfgFreq,payDelay:cfgDelay,payDay:cfgDay}}};sv(nd);ms("Paramètres de paie sauvegardés!");setShowCfg(false);};
+const saveCfg=()=>{const nd={...data,settings:{...st,payrollSchedule:{...ps,frequency:cfgFreq,payDelay:cfgDelay,payDay:cfgDay}}};sv(nd);ms("Paramètres de paie sauvegardés!");setShowCfg(false);};
 
 const[y,m]=month.split("-").map(Number);
 const mName=new Date(y,m-1,1).toLocaleDateString("fr-CA",{month:"long",year:"numeric"});
