@@ -471,30 +471,36 @@ La présence d'écriture manuscrite distingue les deux pesées:
      au stylo = la pesée du camion À VIDE. Son Brut est la TARE, jamais un voyage.
 Applique cette règle avant de comparer les chiffres.
 
-RÈGLES ABSOLUES:
-1. Ne crée JAMAIS un voyage à partir d'un ticket Demix seul. Un ticket Demix
-   s'ATTACHE toujours au voyage de la fiche TPOL: le Brut le plus ÉLEVÉ devient
-   "poids", le Brut le plus BAS devient "tare". Un ticket dont le Brut est bas
-   (le camion vide) n'est jamais un voyage séparé.
-2. N'utilise JAMAIS l'adresse de Demix Agrégats (3100 Laval / 180 Rue Saulnier,
-   Laval) pour déterminer la zone — c'est la carrière où le camion charge, pas
-   la destination. La zone vient UNIQUEMENT du champ "RÉGION" de la fiche TPOL.
-3. Le "dt" doit être un numéro DT-DIR-ORD (8 chiffres, commence par 800...),
-   jamais un numéro de Billet Demix (665...), sauf si aucune fiche TPOL n'est
-   présente sur les photos.
-4. S'il n'y a QUE des tickets Demix et aucune fiche TPOL: regroupe-les en UN
-   SEUL voyage (Brut élevé = poids, Brut bas = tare), zone "06", dt = le Billet
-   du ticket chargé.
+TA SEULE TÂCHE: DÉCRIRE CHAQUE DOCUMENT, UN PAR UN. Ne regroupe rien, ne calcule
+rien, ne décide pas ce qui est un voyage — le logiciel s'en charge ensuite.
+Retourne UN objet par document visible, dans l'ordre des photos.
 
-EXEMPLE RÉEL — photo 1: un ticket Demix "Billet 66580558, Brut: 8550 Kg" AVEC,
-sur la même photo, la fiche TPOL manuscrite "# DT-DIR-ORD 80088903, RÉGION 06,
-POIDS 8550" → camion chargé. Photo 2: deux tickets Demix imprimés "Billet
-66580632, Brut: 4700 Kg", aucune écriture au stylo → camion à vide (tare).
-Réponse correcte (UN seul voyage): [{"dt":"80088903","poids":8550,"tare":4700,"zone":"06"}]
-Réponse INCORRECTE: deux objets, ou un objet avec "poids":4700, ou "zone":"13".
+Fiche TPOL manuscrite:
+  {"type":"fiche","dt":"80088903","zone":"06","poids":8550}
+Ticket de pesée Demix:
+  {"type":"pesee","billet":"66580558","brut":8550,"manuscrit":true}
+  "manuscrit" = true s'il y a de l'écriture au stylo sur la MÊME photo,
+  false si la photo ne montre que des tickets imprimés.
 
-Pour chaque voyage: "dt" (chaîne), "poids" (nombre kg chargé), "tare" (nombre kg
-à vide, ou null si aucune pesée à vide), "zone" ("06" ou "13").
+RÈGLES:
+1. N'invente aucun champ "tare" et ne fusionne pas deux documents. Un ticket
+   Demix reste un objet "pesee", même quand son Brut est bas (camion vide).
+2. "zone" n'existe que sur une fiche TPOL et vaut ce qui est écrit au stylo dans
+   RÉGION ("06" ou "13"). N'utilise JAMAIS l'adresse de Demix Agrégats (3100
+   Laval / 180 Rue Saulnier, Laval) — c'est la carrière où le camion charge, pas
+   la destination.
+3. Si un même ticket apparaît deux fois sur une photo (copie carbone), ne le
+   retourne qu'une seule fois.
+
+EXEMPLE RÉEL — photo 1: ticket Demix "Billet 66580558, Brut: 8550 Kg" avec, sur
+la même photo, la fiche TPOL manuscrite "# DT-DIR-ORD 80088903, RÉGION 06,
+POIDS 8550". Photo 2: ticket Demix "Billet 66580632, Brut: 4700 Kg" imprimé,
+aucune écriture au stylo.
+Réponse correcte:
+[{"type":"fiche","dt":"80088903","zone":"06","poids":8550},
+ {"type":"pesee","billet":"66580558","brut":8550,"manuscrit":true},
+ {"type":"pesee","billet":"66580632","brut":4700,"manuscrit":false}]
+
 Réponds UNIQUEMENT avec le tableau JSON, aucun autre texte.`;
 const content=[...imgs.map(d=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:d}})),{type:"text",text:prompt}];
 const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",max_tokens:2000,fallbacks:"default",messages:[{role:"user",content}]})});
@@ -505,21 +511,31 @@ const txt=(j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
 const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Pa jwenn done fiche nan foto a");
 const arr=JSON.parse(m[0]);
 if(!Array.isArray(arr)||!arr.length)throw new Error("Okenn fiche pa detekte nan foto a");
-// Safety net: a Demix ticket (Billet 665…) is a weighing, not a trip. If the
-// model still returns the empty-weigh ticket as its own entry next to a real DT
-// fiche (80……), fold its weight into that trip as the tare instead.
-const isFiche=t=>/^80\d{6}$/.test(String(t.dt||"").trim());
-let rows=arr;
-if(arr.some(isFiche)&&arr.some(t=>!isFiche(t))){
+// The model only describes documents; the trips are assembled here so a Demix
+// weigh ticket can never become a trip of its own. A TPOL fiche is a trip; the
+// weighing whose Brut matches its handwritten POIDS is the loaded pass, and what
+// is left over are empty-truck passes, i.e. the tares.
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0;};
+const isFiche=d=>d.type==="fiche"||/^80\d{6}$/.test(String(d.dt||"").trim());
 const fiches=arr.filter(isFiche);
-arr.filter(t=>!isFiche(t)).forEach(w=>{const wp=parseFloat(w.poids)||0;
-const tgt=fiches.filter(f=>!f.tare&&(parseFloat(f.poids)||0)>wp).sort((a,b)=>(parseFloat(a.poids)||0)-(parseFloat(b.poids)||0))[0];
-if(tgt)tgt.tare=wp;});
+const pool=arr.filter(d=>!isFiche(d)).map(d=>num(d.brut!=null?d.brut:d.poids)).filter(b=>b>0).sort((a,b)=>b-a);
+let rows;
+if(fiches.length){
+fiches.forEach(f=>{const w=num(f.poids);
+if(!w)f.poids=pool.shift()||0;
+else{const i=pool.findIndex(b=>Math.abs(b-w)<1);if(i>=0)pool.splice(i,1);}});
+const tares=pool.sort((a,b)=>a-b);
+if(fiches.length===1){if(!num(fiches[0].tare)&&tares.length)fiches[0].tare=tares[0];}
+else if(tares.length===fiches.length)fiches.forEach((f,i)=>{if(!num(f.tare))f.tare=tares[i];});
 rows=fiches;}
-const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:parseFloat(t.poids)||"",tare:parseFloat(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
+else{
+// Only weigh tickets, no fiche: heaviest pass is the load, lightest the tare.
+if(!pool.length)throw new Error("Okenn pwa pa jwenn nan foto a");
+rows=[{dt:String(arr[0].billet||arr[0].dt||""),poids:pool[0],tare:pool.length>1?pool[pool.length-1]:null,zone:"06"}];}
+const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:num(t.poids)||"",tare:num(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
 setTrips(prev=>[...prev.filter(t=>t.poidsChaj||t.dt),...newTrips]);
 const nTare=newTrips.filter(t=>t.tare).length;
-ms(`✅ ${newTrips.length} fiche li${nTare?` (${nTare} ak pwa vid)`:""}! Verifye done yo anvan ou anrejistre.`);
+ms(`✅ v7.4 — ${newTrips.length} voyage li${nTare?` (${nTare} ak pwa vid)`:""} sou ${arr.length} dokiman. Verifye done yo anvan ou anrejistre.`);
 }catch(e){ms("Erè scan: "+(e.message||e),"error");}
 setScanBusy(false);};
 return<div>
@@ -2515,7 +2531,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.3</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.4</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
