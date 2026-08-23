@@ -231,7 +231,7 @@ async function processPayslipsForUser(username, data, opts = {}) {
     // Generate PDF for this employee.
     let pdfBuffer = null;
     try {
-      pdfBuffer = await generatePayslipPDF(emp, range.label, ent, payDateStr, { isBiweekly: range.isBiweekly });
+      pdfBuffer = await generatePayslipPDF(emp, range.label, ent, payDateStr, { isBiweekly: range.isBiweekly, mondayStr: range.mondayStr });
     } catch (e) {
       console.error('[processors] payslip PDF generation failed for', emp.nom, ':', e);
     }
