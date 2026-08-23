@@ -449,15 +449,27 @@ const prompt=`Tu analyses des photos de documents de transport de camion (J&W Tr
 
 DEUX TYPES DE DOCUMENTS — ils ne jouent PAS le même rôle:
 
-A) FICHE TPOL / E360S (formulaire bleu rempli à la main) = LE VOYAGE.
-   - "# DT-DIR-ORD" = le numéro DT du voyage (ex: 80088903)
-   - "RÉGION" = la zone de livraison: 06 (Montréal) ou 13 (Laval)
-   - "POIDS" = le poids chargé en kg
+A) FICHE TPOL / E360S (formulaire rempli À LA MAIN, AU STYLO BLEU) = LE VOYAGE.
+   - "# DT-DIR-ORD" = le numéro DT du voyage, écrit au stylo (ex: 80088903)
+   - "RÉGION" = la zone de livraison, écrite au stylo: lis les chiffres
+     manuscrits dans cette case — "06" = Montréal, "13" = Laval. C'est la SEULE
+     source de la zone.
+   - "POIDS" = le poids chargé en kg, écrit au stylo (il correspond au Brut du
+     ticket Demix chargé)
    UN voyage = UNE fiche TPOL.
 
 B) TICKET DE PESÉE DEMIX AGRÉGATS (imprimé, "Billet: 665xxxxx", "Brut: N Kg") = UNE PESÉE, PAS un voyage.
    Le camion passe sur la balance DEUX fois pour le même voyage: une fois CHARGÉ
    (Brut élevé, ex 8550 Kg) et une fois VIDE (Brut bas, ex 4700 Kg).
+
+INDICE DÉCISIF — L'ÉCRITURE AU STYLO:
+La présence d'écriture manuscrite distingue les deux pesées:
+   • Une photo qui contient une fiche remplie AU STYLO (TPOL) = le camion CHARGÉ.
+     Le Brut du ticket Demix visible sur cette photo est le POIDS CHARGÉ, et la
+     fiche donne le DT et la zone.
+   • Une photo qui ne montre QUE des tickets Demix imprimés, SANS aucune écriture
+     au stylo = la pesée du camion À VIDE. Son Brut est la TARE, jamais un voyage.
+Applique cette règle avant de comparer les chiffres.
 
 RÈGLES ABSOLUES:
 1. Ne crée JAMAIS un voyage à partir d'un ticket Demix seul. Un ticket Demix
@@ -474,9 +486,10 @@ RÈGLES ABSOLUES:
    SEUL voyage (Brut élevé = poids, Brut bas = tare), zone "06", dt = le Billet
    du ticket chargé.
 
-EXEMPLE — photo 1: fiche TPOL "# DT-DIR-ORD 80088903, RÉGION 06, POIDS 8550";
-photo 2: ticket Demix "Billet 66580558, Brut: 8550 Kg"; photo 3: ticket Demix
-"Billet 66580632, Brut: 4700 Kg".
+EXEMPLE RÉEL — photo 1: un ticket Demix "Billet 66580558, Brut: 8550 Kg" AVEC,
+sur la même photo, la fiche TPOL manuscrite "# DT-DIR-ORD 80088903, RÉGION 06,
+POIDS 8550" → camion chargé. Photo 2: deux tickets Demix imprimés "Billet
+66580632, Brut: 4700 Kg", aucune écriture au stylo → camion à vide (tare).
 Réponse correcte (UN seul voyage): [{"dt":"80088903","poids":8550,"tare":4700,"zone":"06"}]
 Réponse INCORRECTE: deux objets, ou un objet avec "poids":4700, ou "zone":"13".
 
