@@ -6,9 +6,10 @@
 // on is the one being paid out that Friday — the current weekly pay period —
 // so the reminder lands while the money is actually moving.
 //
-// The base is revenue AFTER sales tax: TPS/TVQ collected belongs to Revenu
-// Québec, not to the business, so it is removed before taking the percentage
-// (settings.tauxReserve, default 10%).
+// The base is what is left once the money that is not the owner's has gone out:
+// TPS/TVQ collected belongs to Revenu Québec, and the employees have to be paid,
+// so both are removed before taking the percentage (settings.tauxReserve,
+// default 10%).
 //
 // Required env vars: FIREBASE_KEY, EMAIL_USER, EMAIL_PASS
 
@@ -37,16 +38,19 @@ function buildReminder(data, today) {
   const tps = Math.round(ht * calc.TPS_R * 100) / 100;
   const tvq = Math.round(ht * calc.TVQ_R * 100) / 100;
   const ttc = Math.round((ht + tps + tvq) * 100) / 100;
-  const reserve = Math.round(ht * rate * 100) / 100;
 
-  // Context only — the percentage is taken on revenue after tax, not on profit.
   const pay = calc.calcEmployeePay(data.chauffeurs || [], data.voyages || [], range.mondayStr, range.fridayStr, settings);
   const salaires = Math.round(pay.reduce((s, e) => s + (e.brut || 0), 0) * 100) / 100;
+  // Nothing to set aside on a week that did not cover its own payroll.
+  const reste = Math.max(0, Math.round((ht - salaires) * 100) / 100);
+  const reserve = Math.round(reste * rate * 100) / 100;
+
+  // Context only — these are not taken off the base.
   const inRange = (d) => d && d >= range.mondayStr && d <= range.fridayStr;
   const depenses = Math.round((data.depenses || []).filter(x => inRange(x.date)).reduce((s, x) => s + (x.montant || 0), 0) * 100) / 100;
   const entretiens = Math.round((data.entretiens || []).filter(x => inRange(x.date)).reduce((s, x) => s + (x.cout || 0), 0) * 100) / 100;
 
-  return { range, ht, tps, tvq, ttc, reserve, rate, salaires, depenses, entretiens, nbVoyages: (wk.weekVoys || []).length };
+  return { range, ht, tps, tvq, ttc, reste, reserve, rate, salaires, depenses, entretiens, nbVoyages: (wk.weekVoys || []).length };
 }
 
 function renderHTML(r, ent) {
@@ -66,21 +70,22 @@ function renderHTML(r, ent) {
     <table style="width:100%;border-collapse:collapse">
       ${row('Revenu facturé TTC', money(r.ttc))}
       ${row(`− TPS (5%) + TVQ (9,975%)`, '− ' + money(r.tps + r.tvq), '#dc2626')}
+      ${row('− Salaires employés', '− ' + money(r.salaires), '#dc2626')}
       <tr><td colspan="2" style="border-top:1px solid #e2e8f0"></td></tr>
-      ${row('Revenu après taxes', money(r.ht))}
+      ${row('Reste après taxes et salaires', money(r.reste))}
       ${row(`× ${pct}% pour l'entreprise`, money(r.reserve), '#047857')}
     </table>
 
-    <p style="margin:18px 0 6px;font-size:12px;color:#64748b;font-weight:700">Pour information — sorties de la semaine</p>
+    <p style="margin:18px 0 6px;font-size:12px;color:#64748b;font-weight:700">Pour information — autres sorties de la semaine</p>
     <table style="width:100%;border-collapse:collapse">
-      ${row('Salaires employés', money(r.salaires))}
       ${row('Dépenses', money(r.depenses))}
       ${row('Entretiens', money(r.entretiens))}
     </table>
 
     <p style="margin-top:20px;font-size:12px;color:#94a3b8;line-height:1.6">
-      La TPS/TVQ n'appartient pas à l'entreprise — elle est due à Revenu Québec, c'est
-      pourquoi elle est retirée avant de calculer le ${pct}%.<br/>
+      Le ${pct}% est calculé sur ce qui reste une fois la TPS/TVQ (due à Revenu Québec)
+      et les salaires des employés sortis. Les dépenses et entretiens ci-dessus ne sont
+      pas retirés du calcul.<br/>
       ${ent.nom || 'J&W Transport'}
     </p>
   </div>`;
