@@ -33,6 +33,12 @@
 [functions."weekly-paystubs"]
   schedule = "0 21 * * 4"
 
+# Scheduled: Thursday reminder to set the business share aside, sent 30 min
+# after the pay-stubs so it lands under them in the inbox.
+# 21:30 UTC Thursday = 16:30 EST (winter) / 17:30 EDT (summer).
+[functions."weekly-reserve"]
+  schedule = "30 21 * * 4"
+
 # Scheduled: truck-rental (location) invoices to renters. Runs Sundays at
 # the SAME time as weekly-invoices (05:00 UTC = 00:00 EST / 01:00 EDT) but
 # only bills every second Sunday per biweekly contract (the off-week is
