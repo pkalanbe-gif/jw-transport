@@ -419,7 +419,7 @@ function Voy({data,sv,ms}){
 const[wk,setWk]=useState(gMon());const[modal,setModal]=useState(false);const[eDate,setEDate]=useState(null);
 const[trips,setTrips]=useState([]);const[ch,setCh]=useState("");const[hlp,setHlp]=useState([]);const[veh,setVeh]=useState("");
 const wd=useMemo(()=>gWk(wk),[wk]);const gV=d=>data.voyages.find(v=>v.date===d);const gN=id=>data.chauffeurs.find(c=>c.id===id)?.nom||"—";const gVN=id=>(data.vehicules||[]).find(v=>v.id===id)?.nom||"";
-const openDay=d=>{const ex=gV(d);if(ex){setCh(ex.chofè||"");setHlp(ex.helpers||[]);setVeh(ex.vehiculeId||"");setTrips(ex.trips?ex.trips.map(t=>({...t})):[]);}else{setCh("");setHlp([]);setVeh("");setTrips([{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:"",bonuses:{}}]);}setEDate(d);setModal(true);};
+const openDay=d=>{const ex=gV(d);if(ex){setCh(ex.chofè||"");setHlp(ex.helpers||[]);setVeh(ex.vehiculeId||"");setTrips(ex.trips?ex.trips.map(t=>({...t})):[]);}else{setCh("");setHlp([]);setVeh("");setTrips([{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:"",bonuses:{}}]);}setScanInfo("");setEDate(d);setModal(true);};
 const addT=()=>setTrips(p=>[...p,{id:gid(),zone:"06",nbVoyages:1,poidsChaj:"",dt:"",tauxChofe:"",tauxHelper:"",bonuses:{}}]);
 const upT=(id,f,v)=>setTrips(p=>p.map(t=>{if(t.id!==id)return t;if(f.startsWith("bonus_")){const empId=f.slice(6);const bonuses={...(t.bonuses||{})};if(v===""||v==null)delete bonuses[empId];else bonuses[empId]=v;return{...t,bonuses};}const strFlds=["zone","dt","tauxChofe","tauxHelper","bonus"];const val=strFlds.includes(f)?v:f==="tare"?(v===""?"":parseFloat(v)||0):(parseFloat(v)||0);return{...t,[f]:val};}));
 // Auto-fill default Laval bonus per employee — applies the configured rate
@@ -433,6 +433,7 @@ const allVoys=useMemo(()=>[...data.voyages].sort((a,b)=>b.date.localeCompare(a.d
 const openEdit=d=>{const mon=gMon(new Date(d+"T12:00:00"));setWk(mon);setTimeout(()=>openDay(d),50);};
 // ── Scan fiche photos with Claude vision: extract DT / poids / zone per fiche ──
 const[scanBusy,setScanBusy]=useState(false);
+const[scanInfo,setScanInfo]=useState("");
 const fileRef=useRef(null);
 const resizeImg=file=>new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(file);
 img.onload=()=>{const max=1568;let w=img.width,h=img.height;const sc=Math.min(1,max/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);
@@ -519,7 +520,7 @@ const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0;};
 const isFiche=d=>d.type==="fiche"||/^80\d{6}$/.test(String(d.dt||"").trim());
 const fiches=arr.filter(isFiche);
 const pool=arr.filter(d=>!isFiche(d)).map(d=>num(d.brut!=null?d.brut:d.poids)).filter(b=>b>0).sort((a,b)=>b-a);
-let rows;
+let rows=null,tareFor=null,light=0;
 if(fiches.length){
 fiches.forEach(f=>{const w=num(f.poids);
 if(!w)f.poids=pool.shift()||0;
@@ -529,13 +530,29 @@ if(fiches.length===1){if(!num(fiches[0].tare)&&tares.length)fiches[0].tare=tares
 else if(tares.length===fiches.length)fiches.forEach((f,i)=>{if(!num(f.tare))f.tare=tares[i];});
 rows=fiches;}
 else{
-// Only weigh tickets, no fiche: heaviest pass is the load, lightest the tare.
 if(!pool.length)throw new Error("Okenn pwa pa jwenn nan foto a");
-rows=[{dt:String(arr[0].billet||arr[0].dt||""),poids:pool[0],tare:pool.length>1?pool[pool.length-1]:null,zone:"06"}];}
+// Only weigh tickets in this batch — this is the empty pass photographed on
+// its own (the driver scans the loaded fiche first, the empty ticket later).
+// Fill the tare of a loaded trip already on the day instead of inventing one.
+light=pool[pool.length-1];
+tareFor=trips.filter(t=>!num(t.tare)&&num(t.poidsChaj)>light).sort((a,b)=>num(a.poidsChaj)-num(b.poidsChaj))[0]||null;
+// No loaded trip waiting: heaviest pass is the load, lightest the tare.
+if(!tareFor)rows=[{dt:String(arr[0].billet||arr[0].dt||""),poids:pool[0],tare:pool.length>1?light:null,zone:"06"}];}
+if(tareFor){
+setTrips(prev=>prev.map(t=>t.id===tareFor.id?{...t,tare:light}:t));
+setScanInfo(`📷 v7.5 — pesée a vid li → pwa vid ${light} kg ajoute sou voyage ${tareFor.dt||num(tareFor.poidsChaj)+" kg"}`);
+ms(`✅ Pwa vid ${light} kg ranpli sou voyage a.`);}
+else{
 const newTrips=rows.map(t=>({id:gid(),zone:t.zone==="13"?"13":"06",nbVoyages:1,poidsChaj:num(t.poids)||"",tare:num(t.tare)||"",dt:String(t.dt||""),tauxChofe:"",tauxHelper:"",bonuses:{}}));
-setTrips(prev=>[...prev.filter(t=>t.poidsChaj||t.dt),...newTrips]);
+// Trips already on the day (saved earlier, or from a previous scan) would
+// otherwise pile up under the new ones and look like the scan failed.
+const kept=trips.filter(t=>t.poidsChaj||t.dt);
+let replace=true;
+if(kept.length)replace=window.confirm(`Jou sa a gen deja ${kept.length} voyage.\n\nOK = RANPLASE yo ak ${newTrips.length} voyage scan an jwenn.\nAnnuler = kite yo epi AJOUTE ${newTrips.length} anba yo.`);
+setTrips(replace?newTrips:[...kept,...newTrips]);
 const nTare=newTrips.filter(t=>t.tare).length;
-ms(`✅ v7.4 — ${newTrips.length} voyage li${nTare?` (${nTare} ak pwa vid)`:""} sou ${arr.length} dokiman. Verifye done yo anvan ou anrejistre.`);
+setScanInfo(`📷 v7.5 — ${arr.length} dokiman li → ${newTrips.length} voyage${nTare?`, ${nTare} ak pwa vid ranpli`:", okenn pwa vid jwenn"}${kept.length&&!replace?` (+${kept.length} ansyen kenbe)`:""}`);
+ms(`✅ ${newTrips.length} voyage — verifye done yo anvan ou anrejistre.`);}
 }catch(e){ms("Erè scan: "+(e.message||e),"error");}
 setScanBusy(false);};
 return<div>
@@ -572,6 +589,7 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <In label="Chauffeur" value={ch} onChange={setCh} options={[{value:"",label:"— Choisir —"},...data.chauffeurs.filter(c=>c.aktif&&c.role==="Chauffeur").map(c=>({value:c.id,label:c.nom}))]}/>
 <In label="🚛 Camion" value={veh} onChange={setVeh} options={[{value:"",label:"— Choisir Camion —"},...(data.vehicules||[]).filter(v=>v.statut!=="Inactif").map(v=>({value:v.id,label:v.nom+(v.plaque?" — "+v.plaque:"")}))]}/>
 <div style={{flex:2}}><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Helpers</label><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{data.chauffeurs.filter(c=>c.aktif&&c.role==="Helper").map(h=><button key={h.id} onClick={()=>setHlp(p=>p.includes(h.id)?p.filter(x=>x!==h.id):[...p,h.id])} style={{padding:"4px 10px",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",border:`1.5px solid ${hlp.includes(h.id)?C.green:C.border}`,background:hlp.includes(h.id)?`${C.green}15`:"transparent",color:hlp.includes(h.id)?C.green:C.muted}}>{h.nom}</button>)}</div></div></div>
+{scanInfo&&<div style={{marginBottom:10,padding:"8px 12px",borderRadius:8,background:`${C.cyan}12`,border:`1px solid ${C.cyan}35`,fontSize:11,color:C.cyan,fontWeight:600}}>{scanInfo}</div>}
 {trips.map((t,idx)=>{const tc=cTrip(t);return<div key={t.id} style={{background:C.bg,borderRadius:10,padding:10,marginBottom:8,border:`1px solid ${C.border}`}}>
 <div style={{display:"flex",gap:8,alignItems:"center"}}><span style={{fontWeight:800,color:C.accent,width:20}}>{idx+1}</span><select value={t.zone} onChange={e=>upT(t.id,"zone",e.target.value)} style={{background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:5,padding:5,fontSize:12}}>{ZONES.map(z=><option key={z.v} value={z.v}>{z.l}</option>)}</select><In type="number" value={t.nbVoyages} onChange={v=>upT(t.id,"nbVoyages",v)} placeholder="Nb" style={{maxWidth:55}}/><In type="number" value={t.poidsChaj} onChange={v=>upT(t.id,"poidsChaj",v)} placeholder="Poids chargé" style={{maxWidth:110}}/><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>P.NET</div><div style={{fontSize:11,color:tc.pN>0?C.green:C.dim,fontWeight:700}}>{tc.pN>0?tc.pN.toLocaleString()+"kg":"—"}</div></div><div style={{minWidth:65,textAlign:"center"}}><div style={{fontSize:8,color:C.dim}}>REV</div><div style={{fontSize:11,color:tc.rv>0?C.cyan:C.dim,fontWeight:700}}>{tc.rv>0?fM(tc.rv):"—"}</div></div>{trips.length>1&&<button onClick={()=>setTrips(p=>p.filter(x=>x.id!==t.id))} style={{background:"none",border:"none",cursor:"pointer",color:C.red}}>X</button>}</div>
 <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:28,marginTop:4,flexWrap:"wrap"}}><In type="number" value={t.tauxChofe||""} onChange={v=>upT(t.id,"tauxChofe",v)} placeholder={`Taux Chofè (${(data.settings||def.settings).tauxChauffeur}$)`} style={{maxWidth:150}}/><In type="number" value={t.tauxHelper||""} onChange={v=>upT(t.id,"tauxHelper",v)} placeholder={`Taux Helper (${(data.settings||def.settings).tauxHelper}$)`} style={{maxWidth:150}}/><In type="number" value={t.tare||""} onChange={v=>upT(t.id,"tare",v)} placeholder={`Poids vide (${(data.settings||def.settings).tare||DEF_TARE}kg)`} style={{maxWidth:170}}/></div>
@@ -584,6 +602,7 @@ return<div key={d} style={{background:C.card,border:`1px solid ${td?C.accent+"40
 <div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}>
 <Bt variant="outline" color={C.accent} onClick={addT} size="sm">+ Trip</Bt>
 <Bt variant="outline" color={C.cyan} size="sm" disabled={scanBusy} onClick={()=>fileRef.current&&fileRef.current.click()}>{scanBusy?"🧠 Claude ap li foto a...":"📷 Foto Fiche (IA)"}</Bt>
+<span style={{fontSize:10,color:C.dim,alignSelf:"center"}}>💡 Chwazi tout foto yon voyage anmenmtan (fiche + ticket vid la)</span>
 </div>
 <div style={{display:"flex",justifyContent:"flex-end",gap:8}}><Bt variant="outline" color={C.muted} onClick={()=>setModal(false)}>Annuler</Bt><Bt onClick={saveDay} size="lg">Enregistrer</Bt></div>
 </Mo></div>;}
@@ -2531,7 +2550,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.4</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.5</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
