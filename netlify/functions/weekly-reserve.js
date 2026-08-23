@@ -91,6 +91,10 @@ function renderHTML(r, ent) {
   </div>`;
 }
 
+// Exported so the reminder can be built and previewed without sending mail.
+exports.buildReminder = buildReminder;
+exports.renderHTML = renderHTML;
+
 exports.handler = async () => {
   const startedAt = new Date().toISOString();
   const today = new Date();
