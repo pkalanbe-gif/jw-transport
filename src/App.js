@@ -2549,6 +2549,23 @@ setToken(res.token);setUser(res.user);
 const d=await api('/api/data');setData({...def,...d});
 setAErr("");}catch(e){setAErr(e.message||"Nom d'utilisateur ou mot de passe incorrect.");}};
 
+// Rotating the login password was impossible before — there was no endpoint
+// and no form, so a leaked password could not be changed.
+const[showPw,setShowPw]=useState(false);
+const[pwCur,setPwCur]=useState("");const[pwNew,setPwNew]=useState("");const[pwNew2,setPwNew2]=useState("");
+const[pwErr,setPwErr]=useState("");const[pwBusy,setPwBusy]=useState(false);
+const openPw=()=>{setPwCur("");setPwNew("");setPwNew2("");setPwErr("");setShowPw(true);setMenuOpen(false);};
+const doChangePw=async()=>{setPwErr("");
+if(!pwCur||!pwNew){setPwErr("Remplir tous les champs.");return;}
+if(pwNew.length<8){setPwErr("Nouveau mot de passe: 8 caractères min.");return;}
+if(pwNew!==pwNew2){setPwErr("Les mots de passe ne correspondent pas.");return;}
+setPwBusy(true);
+try{const r=await api('/api/auth/change-password',{method:'POST',body:JSON.stringify({currentPassword:pwCur,newPassword:pwNew})});
+if(r.token)setToken(r.token);
+setShowPw(false);ms("Mot de passe changé! 🔒");}
+catch(e){setPwErr(e.message||"Erreur");}
+setPwBusy(false);};
+
 const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser("");setAPass("");setAPass2("");setToken(null);};
 
 const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
@@ -2593,7 +2610,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.7</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.8</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -2601,6 +2618,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 <div style={{flex:1,minWidth:0}}><div style={{fontSize:11,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.displayName}</div></div>
 </div>
 {saveStatus&&<div style={{fontSize:9,padding:"4px 6px",borderRadius:5,marginBottom:6,background:saveStatus.ok?`${C.green||'#22c55e'}15`:`${C.red}15`,color:saveStatus.ok?(C.green||'#22c55e'):C.red,fontWeight:600,textAlign:"center"}}>{saveStatus.ok?`✓ Sovgade ${saveStatus.t}`:`✗ Erè sovgad ${saveStatus.t}`}</div>}
+<button onClick={openPw} style={{width:"100%",padding:"6px",borderRadius:6,border:`1px solid ${C.border}`,background:"transparent",cursor:"pointer",color:C.muted,fontSize:10,fontWeight:600,marginBottom:6}}>🔒 Changer mot de passe</button>
 <button onClick={doLogout} style={{width:"100%",padding:"6px",borderRadius:6,border:`1px solid ${C.red}30`,background:"transparent",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>Déconnexion</button>
 </div>
 </nav>
@@ -2638,6 +2656,24 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </main>
 </div>
 {user&&<ChatBot data={data} user={user}/>}
+<Mo open={showPw} onClose={()=>setShowPw(false)} title="🔒 Changer le mot de passe" width={420}>
+<div style={{display:"flex",flexDirection:"column",gap:12}}>
+<div style={{background:`${C.orange}12`,border:`1px solid ${C.orange}35`,borderRadius:8,padding:"8px 12px",fontSize:11,color:C.orange,lineHeight:1.6}}>
+Google siyale modpas sa a te parèt nan yon fwit done. Chwazi yon nouvo modpas ou pa janm sèvi lòt kote.
+</div>
+<div><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Mot de passe actuel</label>
+<input type="password" value={pwCur} onChange={e=>setPwCur(e.target.value)} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",width:"100%",minHeight:40}}/></div>
+<div><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Nouveau mot de passe (8 caractères min.)</label>
+<input type="password" value={pwNew} onChange={e=>setPwNew(e.target.value)} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",width:"100%",minHeight:40}}/></div>
+<div><label style={{fontSize:11,color:C.muted,fontWeight:600,display:"block",marginBottom:4}}>Confirmer le nouveau mot de passe</label>
+<input type="password" value={pwNew2} onChange={e=>setPwNew2(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")doChangePw();}} style={{background:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"8px 12px",fontSize:16,outline:"none",width:"100%",minHeight:40}}/></div>
+{pwErr&&<div style={{background:`${C.red}15`,border:`1px solid ${C.red}30`,borderRadius:8,padding:"8px 12px",fontSize:11,color:C.red,fontWeight:600}}>{pwErr}</div>}
+<div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+<Bt variant="outline" color={C.dim} onClick={()=>setShowPw(false)}>Annuler</Bt>
+<Bt color={C.green} disabled={pwBusy} onClick={doChangePw}>{pwBusy?"...":"Changer"}</Bt>
+</div>
+</div>
+</Mo>
 {toast&&<div style={{position:"fixed",bottom:20,right:20,zIndex:99999,background:toast.t==="ok"?C.green:toast.t==="error"?C.red:C.accent,color:"#fff",padding:"10px 22px",borderRadius:10,fontSize:13,fontWeight:700,boxShadow:"0 8px 24px rgba(0,0,0,.4)"}}>{toast.m}</div>}
 <style>{`
 *{box-sizing:border-box;margin:0}select option{background:${C.card};color:${C.text}}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:${C.border};border-radius:3px}

@@ -112,6 +112,39 @@ async function handleRegister(body) {
   }
 }
 
+// Google's Password Checkup flagged the admin login as exposed in a breach, and
+// the app had no way to change it — the password could not be rotated at all.
+async function handleChangePassword(decoded, body) {
+  try {
+    const { currentPassword, newPassword } = body || {};
+    if (!currentPassword || !newPassword) {
+      return res(400, { error: 'Remplir tous les champs.' });
+    }
+    if (newPassword.length < 8) {
+      return res(400, { error: 'Nouveau mot de passe: 8 caractères min.' });
+    }
+    if (newPassword === currentPassword) {
+      return res(400, { error: 'Le nouveau mot de passe doit être différent.' });
+    }
+    const uKey = decoded.username;
+    const user = await getUser(uKey);
+    if (!user) return res(404, { error: 'Utilisateur introuvable' });
+
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) return res(401, { error: 'Mot de passe actuel incorrect.' });
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    await setUser(uKey, { ...user, passwordHash: hash, passwordChangedAt: new Date().toISOString() });
+
+    // Re-issue the token so the session stays valid after the change.
+    const token = jwt.sign({ userId: uKey, username: uKey }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+    return res(200, { ok: true, token });
+  } catch (error) {
+    console.error('Change password error:', error);
+    return res(500, { error: 'Erreur serveur' });
+  }
+}
+
 async function handleLogin(body) {
   try {
     const { username, password } = body;
@@ -213,6 +246,9 @@ exports.handler = async (event, context) => {
 
   if (method === 'GET' && path === '/auth/me') {
     return handleMe(decoded);
+  }
+  if (method === 'POST' && path === '/auth/change-password') {
+    return handleChangePassword(decoded, body);
   }
   if (method === 'GET' && path === '/data') {
     return handleGetData(decoded);
