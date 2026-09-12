@@ -2298,7 +2298,7 @@ const[wsId,setWsId]=useState(()=>localStorage.getItem("jw-workspace-id")||"");
 const testKey=async()=>{const k=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
 if(!k){setMsgs(p=>[...p,{role:"assistant",content:"🔍 Pa gen kle API anrejistre. Kole kle a epi peze ✓ anvan."}]);return;}
 const wsNow=(localStorage.getItem("jw-workspace-id")||"").trim();
-setMsgs(p=>[...p,{role:"assistant",content:`🔍 Tès an kou... (v8.3, claude-opus-5, workspace: ${wsNow||"okenn"})`}]);
+setMsgs(p=>[...p,{role:"assistant",content:`🔍 Tès an kou... (v8.4, claude-opus-5, workspace: ${wsNow||"okenn"})`}]);
 try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:16,messages:[{role:"user",content:"Réponds: OK"}]})});
 const d=await r.json().catch(()=>({}));
 const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
@@ -2332,7 +2332,33 @@ ${(()=>{const ps=s.payrollSchedule||{frequency:"weekly",payDelay:2,payDay:5};con
 Si on demande des dates de paie, quand je vais toucher, prochaine paie, etc: utilise les infos ci-dessus. L'utilisateur touche avec ${(s.payrollSchedule||{payDelay:2}).payDelay} semaines de délai.
 Sois concis, utile, et utilise les données réelles ci-dessus.
 ${(()=>{try{const yr=new Date().getFullYear();const tx=calcTaxSummary(data,yr);const pa=calcProfitAnalysis(data,yr);return`COMPTABILITÉ ${yr}: Marge profit ${pa.margin}%, TPS/TVQ net à remettre: ${tx.totalNet.toFixed(0)}$ (TPS ${tx.tpsNet.toFixed(0)}$, TVQ ${tx.tvqNet.toFixed(0)}$). Top dépenses: ${pa.topCats.slice(0,3).map(([c,a])=>c+":"+a.toFixed(0)+"$").join(", ")}. Projection mensuelle: ${pa.projection.toFixed(0)}$.`;}catch(e){return"";}})()}
-Nouveau: Page "Agent Comptable" avec analyse TPS/TVQ, déductions, échéances fiscales et assistant IA spécialisé.`;};
+Nouveau: Page "Agent Comptable" avec analyse TPS/TVQ, déductions, échéances fiscales et assistant IA spécialisé.
+${(()=>{try{
+// Everything below is what the yearly summary could not answer: what the
+// client still owes, the truck rental, the bills due, the last weeks in
+// detail and who gets paid when. Kept compact — it rides on every question.
+const td=today();const money=n=>fN(n)+"$";
+const L=[];
+// Client invoices, unpaid first.
+const open=facs.filter(f=>f.statut!=="Payée"&&f.statut!=="Annulée");
+L.push(`FACTURES CLIENT NON PAYÉES (${open.length}): ${open.length?open.map(f=>`${f.numero} ${f.periode||f.date} = ${money(f.total)}${f.dateLimite?` (limite ${f.dateLimite})`:""}`).join("; "):"aucune"}. Total dû: ${money(open.reduce((a,f)=>a+(f.total||0),0))}.`);
+L.push(`5 dernières factures: ${facs.slice(-5).map(f=>`${f.numero} ${f.date} ${money(f.total)} ${f.statut}`).join("; ")||"aucune"}.`);
+// Truck rental.
+const locs=data.locations||[];const lfacs=data.locationFactures||[];
+if(locs.length){L.push(`LOCATION CAMION: ${locs.map(l=>{const veh=vehs.find(v=>v.id===l.vehiculeId)?.nom||"?";const js=(l.jours||[]);const last=js.map(j=>j.date).sort().slice(-1)[0];const recu=(l.paiementsRecus||[]).reduce((a,p)=>a+(parseFloat(p.montant)||0),0);return`${veh} loué à ${l.locataire} (${l.statut||"Actif"}, ${l.tarif==="parjour"?money(l.montant)+"/jour":money(l.montant)+"/"+(l.frequence||"mois")}, ${js.length} jours saisis, dernier jour saisi ${last||"aucun"}, total reçu ${money(recu)})`;}).join("; ")}. Factures location: ${lfacs.map(f=>`${f.numero} ${f.periode} ${money(f.total)} ${f.statut}`).join("; ")||"aucune"}.`);}
+// Bills to pay this month.
+const bills=data.paiements||[];const mKey=td.substring(0,7);
+if(bills.length){const rows=bills.map(b=>{if((b.type||"mensuel")==="unique")return b.date&&b.date.startsWith(mKey)?{n:b.nom,m:b.montant,d:b.date,p:!!b.paye}:null;const day=Math.min(parseInt(b.jour)||1,28);return{n:b.nom,m:b.montant,d:`${mKey}-${String(day).padStart(2,"0")}`,p:!!(b.payeM&&b.payeM[mKey])};}).filter(Boolean).sort((a,b)=>a.d.localeCompare(b.d));
+L.push(`BILLS À PAYER CE MOIS (${mKey}): ${rows.map(r=>`${r.n} ${money(r.m)} le ${r.d}${r.p?" ✓payé":" (à payer)"}`).join("; ")||"aucun"}. Reste à payer: ${money(rows.filter(r=>!r.p).reduce((a,r)=>a+(parseFloat(r.m)||0),0))}.`);}
+// Last 4 work weeks in detail.
+const wks=[];let d=new Date(gMon()+"T12:00:00");for(let i=0;i<4;i++){const wm=toL(d);const wd=gWk(wm);const wv=allVoys.filter(v=>v.date>=wd[0]&&v.date<=wd[4]);const a=agg(wv,tare);wks.push(`${fDs(wd[0])}→${fDs(wd[4])}: ${a.tv} voyages, ${a.tp.toLocaleString()}kg net, revenu HT ${money(a.rev)}${a.bonus?`, bonus ${money(a.bonus)}`:""}`);d.setDate(d.getDate()-7);}
+L.push(`4 DERNIÈRES SEMAINES: ${wks.join(" | ")}.`);
+// Who gets paid when, per employee.
+const ps=s.payrollSchedule||{};
+const pay=emps.filter(e=>e.aktif).map(e=>{const st={...s,payrollSchedule:{...ps,frequency:e.payFreq||ps.frequency||"weekly"}};const pds=getPayPeriods(td,30,st,allVoys);const nx=pds.find(p=>p.payDate>=td);return`${e.nom}: ${(e.payFreq||ps.frequency)==="biweekly"?"aux 2 semaines":"chaque semaine"}${nx?`, prochaine paie ${nx.payDate}`:""}`;});
+L.push(`PAIE PAR EMPLOYÉ: ${pay.join("; ")}.`);
+L.push(`AUTOMATISATIONS: facture client chaque dimanche 1h; facture location chaque 2e dimanche; talons de paie jeudi 16h; rappel "10% de côté" jeudi 16h30. Réserve entreprise = 10% de (revenu − TPS/TVQ − salaires).`);
+return L.join("\n");}catch(e){return"";}})()}`;};
 
 const analyze=(q)=>{
 const lo=q.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
@@ -2634,7 +2660,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.3</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.4</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -2648,7 +2674,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"20px 24px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"10px 0",marginBottom:10}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.3</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.4</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
 <div style={{display:"flex",gap:6,alignItems:"center"}}>
 <button onClick={doLogout} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>{"↪"}</button>
 <button onClick={()=>setMenuOpen(!menuOpen)} style={{background:"none",border:"none",cursor:"pointer",color:C.text,fontSize:22,padding:4}}>{"☰"}</button>
