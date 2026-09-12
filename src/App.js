@@ -2135,9 +2135,11 @@ setChatMsgs(p=>[...p,{role:"assistant",content:reply}]);return;}
 setChatLoading(true);
 try{const hist=[...chatMsgs.filter(m=>m.role!=="system"),userMsg].slice(-10);
 const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
-const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,system:buildFiscalCtx(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
-if(!res.ok)throw new Error(`API ${res.status}`);const d=await res.json();
-setChatMsgs(p=>[...p,{role:"assistant",content:d.content?.[0]?.text||"Pas de réponse."}]);
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:1200,system:buildFiscalCtx(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
+const d=await res.json();
+if(!res.ok||d.error)throw new Error(d.error?.message||`API ${res.status}`);
+// Newer models can return a thinking block first — read only the text blocks.
+setChatMsgs(p=>[...p,{role:"assistant",content:(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("")||"Pas de réponse."}]);
 }catch(e){setChatMsgs(p=>[...p,{role:"assistant",content:"❌ Erreur: "+e.message}]);}
 setChatLoading(false);};
 
@@ -2363,10 +2365,10 @@ setMsgs(prev=>[...prev,userMsg]);setInput("");setLoading(true);
 try{
 const hist=[...msgs.filter(m=>m.role!=="system"),userMsg].slice(-10);
 const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
-const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system:buildContext(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:800,system:buildContext(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
 const d=await res.json();
 if(d.error)throw new Error(d.error.message||"API error");
-const reply=d.content?.map(b=>b.text||"").join("")||"Excusez-moi, une erreur est survenue.";
+const reply=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("")||"Excusez-moi, une erreur est survenue.";
 setMsgs(prev=>[...prev,{role:"assistant",content:reply}]);
 }catch(e){
 setMsgs(prev=>[...prev,{role:"assistant",content:`⚠️ Erreur API: ${e.message}\n\nSolutions:\n• Vérifiez la clé API dans ⚙️\n• Vérifiez vos crédits sur console.anthropic.com\n\nRéponse locale:\n${analyze(input.trim())}`}]);
@@ -2610,7 +2612,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v7.9</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.0</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
