@@ -2297,7 +2297,8 @@ useEffect(()=>{if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scro
 const[wsId,setWsId]=useState(()=>localStorage.getItem("jw-workspace-id")||"");
 const testKey=async()=>{const k=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
 if(!k){setMsgs(p=>[...p,{role:"assistant",content:"🔍 Pa gen kle API anrejistre. Kole kle a epi peze ✓ anvan."}]);return;}
-setMsgs(p=>[...p,{role:"assistant",content:"🔍 Tès an kou... (v8.2, modèl claude-opus-5)"}]);
+const wsNow=(localStorage.getItem("jw-workspace-id")||"").trim();
+setMsgs(p=>[...p,{role:"assistant",content:`🔍 Tès an kou... (v8.3, claude-opus-5, workspace: ${wsNow||"okenn"})`}]);
 try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:16,messages:[{role:"user",content:"Réponds: OK"}]})});
 const d=await r.json().catch(()=>({}));
 const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
@@ -2633,7 +2634,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.2</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.3</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -2647,7 +2648,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"20px 24px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"10px 0",marginBottom:10}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.2</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.3</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
 <div style={{display:"flex",gap:6,alignItems:"center"}}>
 <button onClick={doLogout} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>{"↪"}</button>
 <button onClick={()=>setMenuOpen(!menuOpen)} style={{background:"none",border:"none",cursor:"pointer",color:C.text,fontSize:22,padding:4}}>{"☰"}</button>
