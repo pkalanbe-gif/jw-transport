@@ -2298,7 +2298,7 @@ const[wsId,setWsId]=useState(()=>localStorage.getItem("jw-workspace-id")||"");
 const testKey=async()=>{const k=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
 if(!k){setMsgs(p=>[...p,{role:"assistant",content:"🔍 Pa gen kle API anrejistre. Kole kle a epi peze ✓ anvan."}]);return;}
 const wsNow=(localStorage.getItem("jw-workspace-id")||"").trim();
-setMsgs(p=>[...p,{role:"assistant",content:`🔍 Tès an kou... (v8.5, claude-opus-5, workspace: ${wsNow||"okenn"})`}]);
+setMsgs(p=>[...p,{role:"assistant",content:`🔍 Tès an kou... (v8.6, claude-opus-5, workspace: ${wsNow||"okenn"})`}]);
 try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:16,messages:[{role:"user",content:"Réponds: OK"}]})});
 const d=await r.json().catch(()=>({}));
 const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
@@ -2627,12 +2627,23 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 
 const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
+// Browsers kept serving a stale bundle for hours after each deploy. Compare the
+// main bundle name the server currently references with the one this page
+// loaded; when they differ, offer a reload instead of relying on the user to
+// clear their cache.
+const[newVer,setNewVer]=useState(false);
+const checkVersion=async()=>{try{
+const cur=[...document.scripts].map(s=>s.src).find(s=>/static\/js\/main\./.test(s))||"";
+if(!cur)return;
+const html=await fetch("/?v="+Date.now(),{cache:"no-store"}).then(r=>r.text());
+const m=html.match(/static\/js\/main\.[a-z0-9]+\.js/);
+if(m&&!cur.includes(m[0]))setNewVer(true);}catch(e){}};
 // Refetch data when the tab regains focus (and every 5 min) so an app left
 // open overnight picks up invoices written by the scheduled functions instead
 // of overwriting them on the next local save. Skipped within 30s of a local
 // change to avoid racing an in-flight save.
 useEffect(()=>{
-const refresh=async()=>{if(!getToken())return;if(Date.now()-lastTouchRef.current<30000)return;
+const refresh=async()=>{checkVersion();if(!getToken())return;if(Date.now()-lastTouchRef.current<30000)return;
 try{const d=await api('/api/data');if(Date.now()-lastTouchRef.current<30000)return;setData({...def,...d});}catch(e){}};
 const onVis=()=>{if(document.visibilityState==="visible")refresh();};
 window.addEventListener("focus",refresh);
@@ -2667,7 +2678,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.5</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.6</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -2681,7 +2692,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"20px 24px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"10px 0",marginBottom:10}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.5</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.6</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
 <div style={{display:"flex",gap:6,alignItems:"center"}}>
 <button onClick={doLogout} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>{"↪"}</button>
 <button onClick={()=>setMenuOpen(!menuOpen)} style={{background:"none",border:"none",cursor:"pointer",color:C.text,fontSize:22,padding:4}}>{"☰"}</button>
@@ -2714,6 +2725,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </main>
 </div>
 {user&&<ChatBot data={data} user={user}/>}
+{newVer&&<div style={{position:"fixed",top:0,left:0,right:0,zIndex:99998,background:C.accent,color:"#fff",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"center",gap:14,fontSize:13,fontWeight:700,boxShadow:"0 4px 16px rgba(0,0,0,.4)"}}>🆕 Nouvelle version disponible<button onClick={()=>window.location.reload()} style={{padding:"6px 14px",borderRadius:6,border:"none",cursor:"pointer",background:"#fff",color:C.accent,fontSize:12,fontWeight:800}}>Recharger</button></div>}
 <Mo open={showPw} onClose={()=>setShowPw(false)} title="🔒 Changer le mot de passe" width={420}>
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
 <div style={{background:`${C.orange}12`,border:`1px solid ${C.orange}35`,borderRadius:8,padding:"8px 12px",fontSize:11,color:C.orange,lineHeight:1.6}}>
