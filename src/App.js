@@ -2578,6 +2578,7 @@ return<div>
 function App(){
 const[user,setUser]=useState(null);const[authMode,setAuthMode]=useState("login");
 const[aUser,setAUser]=useState("");const[aPass,setAPass]=useState("");const[aPass2,setAPass2]=useState("");const[aErr,setAErr]=useState("");
+const[sbMini,setSbMini]=useState(()=>{try{return localStorage.getItem("jw-sb-mini")==="1";}catch(e){return false;}});
 const[pg,setPg]=useState("dashboard");const[data,setData]=useState(def);const[ld,setLd]=useState(true);const[toast,setToast]=useState(null);const[menuOpen,setMenuOpen]=useState(false);const[saveStatus,setSaveStatus]=useState(null);
 const lastTouchRef=useRef(0);
 
@@ -2679,7 +2680,7 @@ const nav=[
 {id:"backup",icon:"💾",label:"Backup",g:"Outils"}];
 const navGroups=["Opérations","Finances","Outils"];
 const navTabs=nav.slice(0,4);
-const NavItem=({it,active,onClick,big})=><button onClick={onClick} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:big?"12px 12px":"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:active?`${C.accent}1a`:"transparent",color:active?C.text:C.muted,fontSize:13.5,fontWeight:active?700:500,textAlign:"left",position:"relative"}}>{active&&<span style={{position:"absolute",left:0,top:8,bottom:8,width:3,borderRadius:3,background:C.accent}}/>}<span style={{width:22,textAlign:"center",fontSize:15,filter:active?"none":"grayscale(.3)"}}>{it.icon}</span><span style={{flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.label}</span></button>;
+const NavItem=({it,active,onClick,big})=><button className="jw-navitem" title={it.label} onClick={onClick} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:big?"12px 12px":"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:active?`${C.accent}1a`:"transparent",color:active?C.text:C.muted,fontSize:13.5,fontWeight:active?700:500,textAlign:"left",position:"relative"}}>{active&&<span style={{position:"absolute",left:0,top:8,bottom:8,width:3,borderRadius:3,background:C.accent}}/>}<span className="jw-navico" style={{width:22,textAlign:"center",fontSize:15,filter:active?"none":"grayscale(.3)",flexShrink:0}}>{it.icon}</span><span className="jw-navlbl" style={{flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.label}</span></button>;
 const goPage=(id)=>{setPg(id);setMenuOpen(false);};
 
 if(ld)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:40,fontWeight:900,background:C.g1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>J&W Transport</div></div>;
@@ -2705,26 +2706,26 @@ if(!user)return<div style={{background:`radial-gradient(900px 500px at 20% -10%,
 
 return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
-<nav className="jw-sidebar" style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"18px 16px 14px"}}><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v8.7</div></div></div></div>
-<div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map(g=><div key={g} style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
+<nav className={"jw-sidebar"+(sbMini?" jw-mini":"")} style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
+<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v8.8</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
+<div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map(g=><div key={g} style={{marginBottom:10}}><div className="jw-navgrp" style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
 <div style={{padding:"12px 14px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
 <div style={{width:32,height:32,borderRadius:16,background:C.g4,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:12,color:"#fff"}}>{user.displayName.charAt(0).toUpperCase()}</div>
-<div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.displayName}</div>{saveStatus&&<div style={{fontSize:10,color:saveStatus.ok?C.green:C.red,fontWeight:600}}>{saveStatus.ok?`✓ Sovgade ${saveStatus.t}`:`✗ Erè sovgad ${saveStatus.t}`}</div>}</div>
+<div className="jw-usertxt" style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.displayName}</div>{saveStatus&&<div style={{fontSize:10,color:saveStatus.ok?C.green:C.red,fontWeight:600}}>{saveStatus.ok?`✓ Sovgade ${saveStatus.t}`:`✗ Erè sovgad ${saveStatus.t}`}</div>}</div>
 </div>
-<div style={{display:"flex",gap:6}}>
-<button onClick={openPw} title="Changer mot de passe" style={{flex:1,height:34,borderRadius:8,border:`1px solid ${C.border}`,background:"transparent",cursor:"pointer",color:C.muted,fontSize:12,fontWeight:600}}>🔒 Mot de passe</button>
+<div className="jw-userbtns" style={{display:"flex",gap:6}}>
+<button className="jw-pwbtn" onClick={openPw} title="Changer mot de passe" style={{flex:1,height:34,borderRadius:8,border:`1px solid ${C.border}`,background:"transparent",cursor:"pointer",color:C.muted,fontSize:12,fontWeight:600}}>🔒 Mot de passe</button>
 <button onClick={doLogout} title="Déconnexion" style={{height:34,padding:"0 12px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
 </div>
 </nav>
-<main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"24px 28px"}}>
+<main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"22px 26px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"8px 0 12px",marginBottom:6}}>
-<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v8.7</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v8.8</div></div></div>
 <button onClick={doLogout} title="Déconnexion" style={{height:32,padding:"0 10px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
-<div className="jw-content" style={{maxWidth:1240,margin:"0 auto"}}>
+<div className="jw-content" style={{maxWidth:1400,margin:"0 auto"}}>
 {pg==="dashboard"&&<Dash data={data} go={goPage}/>}
 {pg==="flot"&&<Flot data={data}/>}
 {pg==="voyages"&&<Voy data={data} sv={sv} ms={ms}/>}
@@ -2791,7 +2792,7 @@ select option{background:${C.card};color:${C.text}}
 .jw-row td{transition:background .1s}.jw-row:hover td{background:rgba(255,255,255,.028)}
 .jw-st{transition:transform .15s ease,border-color .15s ease}.jw-st:hover{transform:translateY(-1px);border-color:${C.accent}55}
 .jw-modal{animation:jwIn .18s ease}@keyframes jwIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
-@media(max-width:768px){
+@media(max-width:640px){
 input,select,textarea{font-size:16px!important}
 .jw-sidebar{display:none!important}
 .jw-desk{display:block!important}
@@ -2816,7 +2817,22 @@ th,td{padding:8px 8px!important}
 .jw-fab{bottom:calc(86px + env(safe-area-inset-bottom))!important;right:14px!important;width:50px!important;height:50px!important}
 .jw-toast{bottom:calc(90px + env(safe-area-inset-bottom))!important;left:12px;right:12px!important;text-align:center}
 }
-@media(min-width:769px){
+.jw-mini{width:74px!important}
+.jw-mini .jw-navlbl,.jw-mini .jw-navgrp,.jw-mini .jw-brandtxt,.jw-mini .jw-usertxt,.jw-mini .jw-pwbtn{display:none!important}
+.jw-mini .jw-brand{flex-direction:column;gap:8;padding:14px 10px 10px!important}
+.jw-mini .jw-navitem{justify-content:center;padding:11px 0!important}
+.jw-mini .jw-navico{width:auto!important;font-size:18px!important}
+.jw-mini .jw-userbtns{justify-content:center}
+@media(min-width:641px) and (max-width:1100px){
+.jw-sidebar:not(.jw-mini){width:74px!important}
+.jw-sidebar:not(.jw-mini){width:74px!important}
+.jw-sidebar:not(.jw-mini) .jw-navlbl,.jw-sidebar:not(.jw-mini) .jw-navgrp,.jw-sidebar:not(.jw-mini) .jw-brandtxt,.jw-sidebar:not(.jw-mini) .jw-usertxt,.jw-sidebar:not(.jw-mini) .jw-pwbtn{display:none!important}
+.jw-sidebar:not(.jw-mini) .jw-brand{flex-direction:column;gap:8;padding:14px 10px 10px!important}
+.jw-sidebar:not(.jw-mini) .jw-navitem{justify-content:center;padding:11px 0!important}
+.jw-sidebar:not(.jw-mini) .jw-navico{width:auto!important;font-size:18px!important}
+.jw-sidebar:not(.jw-mini) .jw-userbtns{justify-content:center}
+}
+@media(min-width:641px){
 .jw-mobile-header{display:none!important}
 .jw-tabbar{display:none!important}
 .jw-sheet{display:none!important}
