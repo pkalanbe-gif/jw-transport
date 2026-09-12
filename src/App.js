@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 const gid=()=>Math.random().toString(36).substr(2,9);
+// Anthropic now rejects organisation-level API keys unless the request names a
+// workspace. A workspace-scoped key needs nothing; an org key needs this header.
+const aiWsHeader=()=>{const w=(localStorage.getItem("jw-workspace-id")||"").trim();return w?{"anthropic-workspace-id":w}:{};};
 const toL=d=>{const dt=new Date(d);return`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(dt.getDate()).padStart(2,"0")}`;};
 const fD=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-CA",{day:"numeric",month:"short",year:"numeric"}):"";
 const fDs=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-CA",{day:"numeric",month:"short"}):"";
@@ -507,7 +510,7 @@ Réponse correcte:
 
 Réponds UNIQUEMENT avec le tableau JSON, aucun autre texte.`;
 const content=[...imgs.map(d=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:d}})),{type:"text",text:prompt}];
-const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",max_tokens:2000,fallbacks:"default",messages:[{role:"user",content}]})});
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:2000,fallbacks:"default",messages:[{role:"user",content}]})});
 if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`Erreur ${res.status}`);}
 const j=await res.json();
 if(j.stop_reason==="refusal")throw new Error("Claude pa t ka trete imaj sa a");
@@ -2135,7 +2138,7 @@ setChatMsgs(p=>[...p,{role:"assistant",content:reply}]);return;}
 setChatLoading(true);
 try{const hist=[...chatMsgs.filter(m=>m.role!=="system"),userMsg].slice(-10);
 const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
-const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:1200,system:buildFiscalCtx(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:1200,system:buildFiscalCtx(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
 const d=await res.json();
 if(!res.ok||d.error)throw new Error(d.error?.message||`API ${res.status}`);
 // Newer models can return a thinking block first — read only the text blocks.
@@ -2291,10 +2294,11 @@ useEffect(()=>{if(chatRef.current)chatRef.current.scrollTop=chatRef.current.scro
 // One tiny request that reports the raw API verdict — model, HTTP status and
 // the server's own message — so a failing key or model is diagnosed in place
 // instead of being hidden behind the generic "vérifiez la clé" hint.
+const[wsId,setWsId]=useState(()=>localStorage.getItem("jw-workspace-id")||"");
 const testKey=async()=>{const k=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
 if(!k){setMsgs(p=>[...p,{role:"assistant",content:"🔍 Pa gen kle API anrejistre. Kole kle a epi peze ✓ anvan."}]);return;}
-setMsgs(p=>[...p,{role:"assistant",content:"🔍 Tès an kou... (v8.1, modèl claude-opus-5)"}]);
-try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",max_tokens:16,messages:[{role:"user",content:"Réponds: OK"}]})});
+setMsgs(p=>[...p,{role:"assistant",content:"🔍 Tès an kou... (v8.2, modèl claude-opus-5)"}]);
+try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:16,messages:[{role:"user",content:"Réponds: OK"}]})});
 const d=await r.json().catch(()=>({}));
 const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
 setMsgs(p=>[...p,{role:"assistant",content:r.ok?`✅ HTTP ${r.status} — kle a mache. Repons: "${txt}"`:`❌ HTTP ${r.status} — ${d.error?.type||"erè"}: ${d.error?.message||JSON.stringify(d).slice(0,200)}`}]);}
@@ -2376,7 +2380,7 @@ setMsgs(prev=>[...prev,userMsg]);setInput("");setLoading(true);
 try{
 const hist=[...msgs.filter(m=>m.role!=="system"),userMsg].slice(-10);
 const cleanKey=apiKey.trim().replace(/[^\x20-\x7E]/g,"");
-const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:800,system:buildContext(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":cleanKey,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",fallbacks:"default",max_tokens:800,system:buildContext(),messages:hist.map(m=>({role:m.role,content:m.content}))})});
 const d=await res.json();
 if(d.error)throw new Error(d.error.message||"API error");
 const reply=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("")||"Excusez-moi, une erreur est survenue.";
@@ -2408,6 +2412,11 @@ return<>
 <input type="password" value={apiKey} onChange={e=>setApiKey(e.target.value)} placeholder="sk-ant-..." style={{flex:1,background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"6px 10px",fontSize:11,outline:"none"}}/>
 <button onClick={()=>saveKey(apiKey)} style={{padding:"6px 10px",borderRadius:6,border:"none",cursor:"pointer",background:C.green,color:"#fff",fontSize:10,fontWeight:700}}>✓</button>
 <button onClick={testKey} title="Tester la clé" style={{padding:"6px 10px",borderRadius:6,border:`1px solid ${C.cyan}`,cursor:"pointer",background:"transparent",color:C.cyan,fontSize:10,fontWeight:700}}>🔍 Tester</button>
+</div>
+<div style={{fontSize:10,color:C.muted,marginTop:8,marginBottom:4}}>🏢 Workspace ID (sèlman si kle a pa atache a yon workspace)</div>
+<div style={{display:"flex",gap:6}}>
+<input value={wsId} onChange={e=>setWsId(e.target.value)} placeholder="wrkspc_..." style={{flex:1,background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"6px 10px",fontSize:11,outline:"none"}}/>
+<button onClick={()=>{const w=wsId.trim();if(w)localStorage.setItem("jw-workspace-id",w);else localStorage.removeItem("jw-workspace-id");setMsgs(p=>[...p,{role:"assistant",content:w?"✅ Workspace ID anrejistre. Peze 🔍 Tester.":"Workspace ID retire."}]);}} style={{padding:"6px 10px",borderRadius:6,border:"none",cursor:"pointer",background:C.green,color:"#fff",fontSize:10,fontWeight:700}}>✓</button>
 </div>
 {aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Supprimer la clé / Retour local</button>}
 <div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 La clé reste uniquement dans votre navigateur</div>
@@ -2624,7 +2633,7 @@ if(!user)return<div style={{background:C.bg,minHeight:"100vh",display:"flex",ali
 return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-serif",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className="jw-sidebar" style={{width:230,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.1</div></div></div></div>
+<div style={{padding:"14px 12px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:32,height:32,borderRadius:8,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:12,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:13}}>J&W Transport</div><div style={{fontSize:8,color:C.dim}}>v8.2</div></div></div></div>
 <div style={{padding:"6px 5px",flex:1,overflowY:"auto"}}>{nav.map(it=>{const a=pg===it.id;return<button key={it.id} onClick={()=>goPage(it.id)} style={{width:"100%",display:"flex",alignItems:"center",gap:6,padding:"10px 12px",borderRadius:7,border:"none",cursor:"pointer",background:a?`${C.accent}15`:"transparent",color:a?C.accentL:C.muted,fontSize:14,fontWeight:a?700:500,marginBottom:2,textAlign:"left"}}>{it.label}</button>;})}</div>
 <div style={{padding:"10px 12px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -2638,7 +2647,7 @@ return<div style={{background:C.bg,minHeight:"100vh",fontFamily:"system-ui,sans-
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"20px 24px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"10px 0",marginBottom:10}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.1</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
+<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:6,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:10,color:"#fff"}}>JW</div><span style={{fontWeight:800,fontSize:14}}>J&W</span><span style={{fontSize:9,color:C.dim}}>v8.2</span><span style={{fontSize:10,color:C.dim}}>{user.displayName}</span></div>
 <div style={{display:"flex",gap:6,alignItems:"center"}}>
 <button onClick={doLogout} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10,fontWeight:600}}>{"↪"}</button>
 <button onClick={()=>setMenuOpen(!menuOpen)} style={{background:"none",border:"none",cursor:"pointer",color:C.text,fontSize:22,padding:4}}>{"☰"}</button>
