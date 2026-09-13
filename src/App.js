@@ -1408,6 +1408,142 @@ return<Mo open={true} onClose={()=>setShowG(null)} title={`📄 Générer factur
 </Mo>;})()}
 </div>;}
 
+// ───────────────────────── Scan reçus (dépenses par photo) ─────────────────────────
+// Shared vision helpers (module scope so other pages can reuse them).
+const imgToB64=file=>new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(file);
+img.onload=()=>{const max=1568;let w=img.width,h=img.height;const sc=Math.min(1,max/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);
+const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);
+URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",0.85).split(",")[1]);};
+img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("Imaj la pa ka li"));};img.src=url;});
+const claudeVision=async(imgs,prompt,maxTokens=2500)=>{
+const key=(localStorage.getItem("jw-api-key")||"").trim().replace(/[^\x20-\x7E]/g,"");
+if(!key)throw new Error("Ajoute kle API Claude ou nan chatbot la (💬 → ⚙️) avan.");
+const content=[...imgs.map(d=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:d}})),{type:"text",text:prompt}];
+const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-beta":"server-side-fallback-2026-07-01","anthropic-dangerous-direct-browser-access":"true",...aiWsHeader()},body:JSON.stringify({model:"claude-opus-5",max_tokens:maxTokens,fallbacks:"default",messages:[{role:"user",content}]})});
+const j=await res.json().catch(()=>({}));
+if(!res.ok||j.error)throw new Error(j.error?.message||`Erreur ${res.status}`);
+if(j.stop_reason==="refusal")throw new Error("Claude pa t ka trete imaj sa a");
+return (j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");};
+
+// A receipt already in the books: same date and amount, same invoice number,
+// or the same amount within three days (flagged as "possible").
+const findDupDep=(r,deps,batch)=>{const m=parseFloat(r.montant)||0;if(!m)return null;
+const same=d=>Math.abs((parseFloat(d.montant)||0)-m)<0.01;
+const ref=String(r.ref||"").trim().toLowerCase();
+const h1=deps.find(d=>same(d)&&d.date===r.date);
+if(h1)return{level:"doub",msg:`Deja anrejistre ${fD(h1.date)} — ${h1.description||h1.categorie} ${fM(h1.montant)}`};
+if(ref){const h2=deps.find(d=>d.ref&&String(d.ref).trim().toLowerCase()===ref);if(h2)return{level:"doub",msg:`Menm nimewo fakti (${r.ref}) deja anrejistre ${fD(h2.date)} — ${fM(h2.montant)}`};}
+const h3=deps.find(d=>same(d)&&d.date&&r.date&&Math.abs(new Date(d.date+"T12:00:00")-new Date(r.date+"T12:00:00"))<=3*86400000);
+if(h3)return{level:"posib",msg:`Menm montan ${fM(m)} anrejistre ${fD(h3.date)} (${h3.description||h3.categorie}) — verifye si se menm resi a`};
+const b=batch.filter(x=>x!==r&&x.date===r.date&&Math.abs((parseFloat(x.montant)||0)-m)<0.01);
+if(b.length)return{level:"doub",msg:"Menm resi a parèt 2 fwa nan foto yo"};
+return null;};
+
+function ScanRecu({data,sv,ms}){
+const deps=data.depenses||[];
+const[busy,setBusy]=useState(false);
+const[rows,setRows]=useState([]);   // extracted receipts, editable
+const[thumbs,setThumbs]=useState([]);
+const fileRef=useRef(null);
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0;};
+const withDup=list=>list.map(r=>({...r,dup:findDupDep(r,deps,list),keep:r.keep!==undefined?r.keep:true}));
+const scan=async files=>{setBusy(true);
+try{const imgs=[];for(const f of files)imgs.push(await imgToB64(f));
+setThumbs(imgs.map(d=>"data:image/jpeg;base64,"+d));
+const prompt=`Tu lis des reçus et factures de DÉPENSES d'une petite entreprise de transport au Québec (camions). Pour CHAQUE reçu visible sur les photos, extrais:
+- "fournisseur": nom du commerce/fournisseur
+- "date": date du reçu au format AAAA-MM-JJ (si absente, null)
+- "montant": le TOTAL payé taxes incluses, nombre (ex: 108.63)
+- "tps": montant de TPS si indiqué, sinon null
+- "tvq": montant de TVQ si indiqué, sinon null
+- "ref": numéro de facture/reçu/transaction si visible, sinon null
+- "description": 3-6 mots (ex: "Diesel 120L", "Changement d'huile", "Pneus avant")
+- "categorie": UNE valeur exacte parmi: ${DCATS.join(" | ")}
+  Guide: carburant diesel → "Diesel"; essence ordinaire → "Essence"; garage/mécanique → "Réparation" ou "Entretien"; pièces/outils → "Fournitures" ou "Outil"; restaurant/épicerie → "Nourriture/Repas"; péage/pont → "Péage"; SAAQ → "Permis/SAAQ"; lavage → "Lavage camion"; cellulaire → "Téléphone"; si vraiment incertain → "Autre"
+- "confiance": "haute" | "moyenne" | "basse"
+
+Réponds UNIQUEMENT avec un tableau JSON valide, un objet par reçu, sans aucun autre texte.`;
+const txt=await claudeVision(imgs,prompt);
+const m=txt.match(/\[[\s\S]*\]/);if(!m)throw new Error("Pa jwenn okenn resi nan foto a");
+const arr=JSON.parse(m[0]);if(!Array.isArray(arr)||!arr.length)throw new Error("Okenn resi pa detekte");
+const list=arr.map((r,i)=>({id:gid(),img:i<imgs.length?i:0,fournisseur:String(r.fournisseur||""),date:r.date&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)?r.date:today(),montant:num(r.montant),tps:num(r.tps),tvq:num(r.tvq),ref:r.ref?String(r.ref):"",description:String(r.description||r.fournisseur||""),categorie:DCATS.includes(r.categorie)?r.categorie:"Autre",confiance:r.confiance||"moyenne"}));
+setRows(withDup(list));
+const nd=list.filter(r=>findDupDep(r,deps,list)).length;
+ms(`✅ ${list.length} resi li${nd?` — ⚠️ ${nd} an doub`:""}. Verifye anvan ou anrejistre.`);}
+catch(e){ms("Erè scan: "+(e.message||e),"error");}
+setBusy(false);};
+const upd=(id,k,v)=>setRows(p=>withDup(p.map(r=>r.id===id?{...r,[k]:v}:r)));
+const remove=id=>setRows(p=>p.filter(r=>r.id!==id));
+const toSave=rows.filter(r=>r.keep&&num(r.montant)>0&&(!r.dup||r.dup.level!=="doub"||r.force));
+const save=()=>{if(!toSave.length){ms("Pa gen anyen pou anrejistre","error");return;}
+const nw=toSave.map(r=>({id:gid(),date:r.date,categorie:r.categorie,description:r.description||r.fournisseur,montant:Math.round(num(r.montant)*100)/100,fournisseur:r.fournisseur||undefined,ref:r.ref||undefined,tps:r.tps||undefined,tvq:r.tvq||undefined,source:"scan"}));
+sv({...data,depenses:[...nw,...deps]});
+ms(`💾 ${nw.length} dépense${nw.length>1?"s":""} anrejistre`);
+setRows([]);setThumbs([]);};
+const tot=toSave.reduce((s,r)=>s+num(r.montant),0);
+const recent=[...deps].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,8);
+return<div>
+<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12,marginBottom:18}}>
+<div><h1>Scan reçus</h1><div style={{fontSize:12,color:C.muted,marginTop:4}}>Pran foto resi/fakti depans yo — AI a li yo, klase yo, epi tcheke si yo deja nan sistèm nan.</div></div>
+<input ref={fileRef} type="file" accept="image/*" capture="environment" multiple style={{display:"none"}} onChange={e=>{const fs=[...e.target.files];e.target.value="";if(fs.length)scan(fs);}}/>
+<Bt size="lg" disabled={busy} onClick={()=>fileRef.current&&fileRef.current.click()}>{busy?"🧠 Claude ap li resi yo...":"📷 Foto reçus"}</Bt>
+</div>
+{!rows.length&&!busy&&<div style={{background:C.card,border:`1px dashed ${C.border}`,borderRadius:16,padding:"34px 20px",textAlign:"center",color:C.dim,fontSize:13,marginBottom:20}}>
+<div style={{fontSize:40,marginBottom:8}}>🧾</div>
+Klike <b style={{color:C.text}}>📷 Foto reçus</b> — ou ka chwazi plizyè foto anmenmtan (diesel, garage, restoran, péage...).<br/>
+<span style={{fontSize:11}}>Chak resi ap klase nan yon kategori depans, epi si li deja anrejistre app la ap avèti w.</span>
+</div>}
+{rows.length>0&&<div style={{marginBottom:20}}>
+<div style={{display:"flex",gap:10,marginBottom:12,flexWrap:"wrap"}}>
+<St title="Resi li" value={rows.length} color={C.accent}/>
+<St title="An doub" value={rows.filter(r=>r.dup&&r.dup.level==="doub").length} color={C.red}/>
+<St title="Pou anrejistre" value={toSave.length} color={C.green}/>
+<St title="Total" value={fM(tot)} grad={C.g2}/>
+</div>
+{rows.map(r=>{const isDoub=r.dup&&r.dup.level==="doub";const isPosib=r.dup&&r.dup.level==="posib";
+return<div key={r.id} style={{background:C.card,border:`1px solid ${isDoub&&!r.force?C.red+"55":isPosib?C.orange+"55":C.border}`,borderRadius:14,padding:14,marginBottom:10,opacity:r.keep?1:.5}}>
+<div style={{display:"flex",gap:14,flexWrap:"wrap"}}>
+{thumbs[r.img]&&<img src={thumbs[r.img]} alt="" style={{width:72,height:72,objectFit:"cover",borderRadius:10,border:`1px solid ${C.border}`,flexShrink:0}}/>}
+<div style={{flex:1,minWidth:260}}>
+<div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:8}}>
+<Ck label="" checked={r.keep} onChange={v=>upd(r.id,"keep",v)}/>
+<span style={{fontWeight:800,fontSize:14}}>{r.fournisseur||"(fournisseur?)"}</span>
+<Bg text={r.categorie} color={DCOLORS[r.categorie]||C.muted}/>
+{r.confiance==="basse"&&<Bg text="konfyans ba — verifye" color={C.orange}/>}
+{isDoub&&<Bg text="EN DOUB" color={C.red}/>}
+{isPosib&&<Bg text="posib doub" color={C.orange}/>}
+{!r.dup&&<Bg text="nouvo" color={C.green}/>}
+</div>
+{r.dup&&<div style={{fontSize:12,color:isDoub?C.red:C.orange,fontWeight:600,marginBottom:8,display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>⚠️ {r.dup.msg}{isDoub&&<Ck label="Anrejistre kanmenm" checked={!!r.force} onChange={v=>upd(r.id,"force",v)}/>}</div>}
+<div className="jw-grid3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+<In label="Date" type="date" value={r.date} onChange={v=>upd(r.id,"date",v)}/>
+<In label="Montant TTC ($)" type="number" value={r.montant} onChange={v=>upd(r.id,"montant",v)}/>
+<In label="Catégorie" value={r.categorie} onChange={v=>upd(r.id,"categorie",v)} options={DCATS}/>
+<In label="Description" value={r.description} onChange={v=>upd(r.id,"description",v)} style={{gridColumn:"span 2"}}/>
+<In label="No facture / réf." value={r.ref} onChange={v=>upd(r.id,"ref",v)} placeholder="—"/>
+</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:8,flexWrap:"wrap",gap:8}}>
+<span style={{fontSize:11,color:C.dim}}>{r.tps||r.tvq?`TPS ${fM(r.tps)} • TVQ ${fM(r.tvq)} • `:""}{TAX_INFO[r.categorie]||""}</span>
+<button onClick={()=>remove(r.id)} style={{background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>Retire</button>
+</div>
+</div></div></div>;})}
+<div style={{display:"flex",justifyContent:"flex-end",gap:10,marginTop:6}}>
+<Bt variant="outline" color={C.dim} onClick={()=>{setRows([]);setThumbs([]);}}>Annuler</Bt>
+<Bt size="lg" color={C.green} onClick={save} disabled={!toSave.length}>💾 Enregistrer {toSave.length} dépense{toSave.length>1?"s":""} — {fM(tot)}</Bt>
+</div>
+</div>}
+<div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:"16px 18px"}}>
+<div style={{fontSize:13,fontWeight:800,marginBottom:10}}>Dernières dépenses enregistrées</div>
+<Tb columns={[
+{key:"date",label:"Date",render:x=>fDs(x.date)},
+{key:"description",label:"Description",render:x=><span>{x.description}{x.fournisseur&&x.fournisseur!==x.description?<span style={{color:C.dim}}> · {x.fournisseur}</span>:null}</span>},
+{key:"categorie",label:"Catégorie",render:x=><Bg text={x.categorie} color={DCOLORS[x.categorie]||C.muted}/>},
+{key:"source",label:"",render:x=>x.source==="scan"?<span title="Ajoute pa foto" style={{fontSize:12}}>📷</span>:null},
+{key:"montant",label:"Montant",align:"right",render:x=><b style={{color:C.red}}>{fM(x.montant)}</b>}
+]} data={recent}/>
+</div>
+</div>;}
+
 function LivreComptable({data,sv,ms}){
 const[tab,setTab]=useState("journal");
 const[periodM,setPeriodM]=useState(today().substring(0,7));
@@ -2670,6 +2806,7 @@ const nav=[
 {id:"paie",icon:"💵",label:"Paie",g:"Finances"},
 {id:"kalandriye",icon:"📅",label:"Calendrier de paie",g:"Finances"},
 {id:"kalpeyman",icon:"💳",label:"Bills à payer",g:"Finances"},
+{id:"scanrecu",icon:"🧾",label:"Scan reçus",g:"Finances"},
 {id:"comptabilite",icon:"📊",label:"Comptabilité",g:"Finances"},
 {id:"livrecomptable",icon:"📒",label:"Livre compta",g:"Finances"},
 {id:"revenus",icon:"📈",label:"Rapport annuel",g:"Finances"},
@@ -2707,7 +2844,7 @@ if(!user)return<div style={{background:`radial-gradient(900px 500px at 20% -10%,
 return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className={"jw-sidebar"+(sbMini?" jw-mini":"")} style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v8.9</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
+<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.0</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
 <div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map(g=><div key={g} style={{marginBottom:10}}><div className="jw-navgrp" style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
 <div style={{padding:"12px 14px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -2722,7 +2859,7 @@ return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"22px 26px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"8px 0 12px",marginBottom:6}}>
-<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v8.9</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.0</div></div></div>
 <button onClick={doLogout} title="Déconnexion" style={{height:32,padding:"0 10px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
 <div className="jw-content" style={{maxWidth:1400,margin:"0 auto"}}>
@@ -2736,6 +2873,7 @@ return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 {pg==="paie"&&<Paie data={data}/>}
 {pg==="kalandriye"&&<KalandryePaie data={data} sv={sv} ms={ms}/>}
 {pg==="kalpeyman"&&<KalPeyman data={data} sv={sv} ms={ms}/>}
+{pg==="scanrecu"&&<ScanRecu data={data} sv={sv} ms={ms}/>}
 {pg==="factures"&&<Fact data={data} sv={sv} ms={ms}/>}
 {pg==="comptabilite"&&<Compta data={data} sv={sv} ms={ms}/>}
 {pg==="livrecomptable"&&<LivreComptable data={data} sv={sv} ms={ms}/>}
