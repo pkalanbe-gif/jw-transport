@@ -2420,7 +2420,7 @@ return<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10
 </div>}
 </div>;}
 
-function ChatBot({data,user}){
+function ChatBot({data,user,sv}){
 const[open,setOpen]=useState(false);
 const[msgs,setMsgs]=useState([{role:"assistant",content:"Bonjour! Je suis l'assistant J&W Transport. 😊\n\nJe peux vous aider avec:\n• 📊 Statistiques de vos données\n• 📋 Comment utiliser l'application\n• 💰 Calcul de revenus, dépenses, profit\n• 🧾 Factures et paie\n• 🚛 Informations sur les véhicules\n• 📅 Dates de paiement\n\nPosez-moi une question!"}]);
 const[input,setInput]=useState("");
@@ -2592,8 +2592,11 @@ return<>
 <input value={wsId} onChange={e=>setWsId(e.target.value)} placeholder="wrkspc_..." style={{flex:1,background:C.card,color:C.text,border:`1px solid ${C.border}`,borderRadius:6,padding:"6px 10px",fontSize:11,outline:"none"}}/>
 <button onClick={()=>{const w=wsId.trim();if(w)localStorage.setItem("jw-workspace-id",w);else localStorage.removeItem("jw-workspace-id");setMsgs(p=>[...p,{role:"assistant",content:w?"✅ Workspace ID anrejistre. Peze 🔍 Tester.":"Workspace ID retire."}]);}} style={{padding:"6px 10px",borderRadius:6,border:"none",cursor:"pointer",background:C.green,color:"#fff",fontSize:10,fontWeight:700}}>✓</button>
 </div>
+<button onClick={()=>{const k=(localStorage.getItem("jw-api-key")||"").trim();const w=(localStorage.getItem("jw-workspace-id")||"").trim();if(!k){setMsgs(p=>[...p,{role:"assistant",content:"Pa gen kle sou aparèy sa a — kole kle a epi peze ✓ anvan."}]);return;}if(!sv)return;sv({...data,settings:{...(data.settings||{}),aiKey:k,aiWs:w||undefined}});setMsgs(p=>[...p,{role:"assistant",content:"☁️ Kle a"+(w?" ak Workspace ID a":"")+" sove nan kont ou. Lòt aparèy ou yo (telefòn, PC) ap pran yo otomatikman lè ou konekte."}]);}} style={{width:"100%",marginTop:8,padding:"8px 10px",borderRadius:8,border:`1px solid ${C.accent}55`,cursor:"pointer",background:`${C.accent}14`,color:C.accentL,fontSize:11,fontWeight:700}}>☁️ Sove pou tout aparèy mwen yo{(data.settings||{}).aiKey?" (deja sove)":""}</button>
+<div style={{display:"none"}}>
+</div>
 {aiMode&&<button onClick={removeKey} style={{marginTop:6,background:"none",border:"none",cursor:"pointer",color:C.red,fontSize:10}}>✕ Supprimer la clé / Retour local</button>}
-<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 La clé reste uniquement dans votre navigateur</div>
+<div style={{fontSize:9,color:C.dim,marginTop:6}}>🔒 Kle a rete nan navigatè sa a — peze "☁️ Sove pou tout aparèy" pou lòt telefòn/PC ou yo pran l tou</div>
 </div>}
 <div ref={chatRef} style={{flex:1,overflowY:"auto",padding:"12px 14px",display:"flex",flexDirection:"column",gap:10}}>
 {msgs.map((m,i)=><div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"85%"}}>
@@ -2731,7 +2734,7 @@ if(token){
   const r=await api('/api/auth/me');
   setUser(r.user);
   const d=await api('/api/data');
-  setData({...def,...d});
+  seedAi(d);setData({...def,...d});
 }
 }catch(e){setToken(null);}setLd(false);})();},[]);
 
@@ -2744,7 +2747,7 @@ setToken(res.token);setUser(res.user);setData(def);setAErr("");}catch(e){setAErr
 const doLogin=async()=>{setAErr("");if(!aUser.trim()||!aPass){setAErr("Remplir tous les champs.");return;}
 try{const res=await api('/api/auth/login',{method:'POST',body:JSON.stringify({username:aUser,password:aPass})});
 setToken(res.token);setUser(res.user);
-const d=await api('/api/data');setData({...def,...d});
+const d=await api('/api/data');seedAi(d);setData({...def,...d});
 setAErr("");}catch(e){setAErr(e.message||"Nom d'utilisateur ou mot de passe incorrect.");}};
 
 // Rotating the login password was impossible before — there was no endpoint
@@ -2766,6 +2769,9 @@ setPwBusy(false);};
 
 const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser("");setAPass("");setAPass2("");setToken(null);};
 
+// Copy the account-level AI key/workspace into this browser once, unless the
+// user already configured this device by hand.
+const seedAi=d=>{try{const st=d&&d.settings||{};if(st.aiKey&&!localStorage.getItem("jw-api-key"))localStorage.setItem("jw-api-key",st.aiKey);if(st.aiWs&&!localStorage.getItem("jw-workspace-id"))localStorage.setItem("jw-workspace-id",st.aiWs);}catch(e){}};
 const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
 // Browsers kept serving a stale bundle for hours after each deploy. Compare the
@@ -2844,7 +2850,7 @@ if(!user)return<div style={{background:`radial-gradient(900px 500px at 20% -10%,
 return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className={"jw-sidebar"+(sbMini?" jw-mini":"")} style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.0</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
+<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.1</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
 <div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map(g=><div key={g} style={{marginBottom:10}}><div className="jw-navgrp" style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
 <div style={{padding:"12px 14px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -2859,7 +2865,7 @@ return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"22px 26px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"8px 0 12px",marginBottom:6}}>
-<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.0</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.1</div></div></div>
 <button onClick={doLogout} title="Déconnexion" style={{height:32,padding:"0 10px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
 <div className="jw-content" style={{maxWidth:1400,margin:"0 auto"}}>
@@ -2896,7 +2902,7 @@ return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 {navGroups.map(g=><div key={g} style={{marginBottom:8}}><div style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"6px 12px 4px"}}>{g}</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)} big/>)}</div></div>)}
 <button onClick={openPw} style={{width:"100%",marginTop:6,height:44,borderRadius:10,border:`1px solid ${C.border}`,cursor:"pointer",background:"transparent",color:C.muted,fontSize:13,fontWeight:700}}>🔒 Changer mot de passe</button>
 </div></div>}
-{user&&<ChatBot data={data} user={user}/>}
+{user&&<ChatBot data={data} user={user} sv={sv}/>}
 {newVer&&<div style={{position:"fixed",top:0,left:0,right:0,zIndex:99998,background:C.accent,color:"#fff",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"center",gap:14,fontSize:13,fontWeight:700,boxShadow:"0 4px 16px rgba(0,0,0,.4)"}}>🆕 Nouvelle version disponible<button onClick={()=>window.location.reload()} style={{padding:"6px 14px",borderRadius:6,border:"none",cursor:"pointer",background:"#fff",color:C.accent,fontSize:12,fontWeight:800}}>Recharger</button></div>}
 <Mo open={showPw} onClose={()=>setShowPw(false)} title="🔒 Changer le mot de passe" width={420}>
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
