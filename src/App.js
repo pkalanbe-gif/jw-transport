@@ -2772,7 +2772,22 @@ const doLogout=async()=>{setUser(null);setData(def);setPg("dashboard");setAUser(
 // Copy the account-level AI key/workspace into this browser once, unless the
 // user already configured this device by hand.
 const seedAi=d=>{try{const st=d&&d.settings||{};if(st.aiKey&&!localStorage.getItem("jw-api-key"))localStorage.setItem("jw-api-key",st.aiKey);if(st.aiWs&&!localStorage.getItem("jw-workspace-id"))localStorage.setItem("jw-workspace-id",st.aiWs);}catch(e){}};
-const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{await api('/api/data',{method:'PUT',body:JSON.stringify(nd)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
+// The scheduled functions write invoices and pay records straight to the
+// account. A browser holding older data used to PUT the whole document and
+// wipe them (FAC-029 and FAC-036 were both lost this way). Before saving, pull
+// the current server copy and re-attach any record it has that this tab does
+// not — matched on id, then on invoice number.
+const mergeServerAdds=async nd=>{let cur;try{cur=await api('/api/data');}catch(e){return nd;}
+const out={...nd};
+[["factures","numero"],["locationFactures","numero"],["depenses",null],["voyages",null]].forEach(([k,alt])=>{
+const mine=nd[k];const theirs=cur&&cur[k];
+if(!Array.isArray(mine)||!Array.isArray(theirs))return;
+const ids=new Set(mine.map(x=>x&&x.id).filter(Boolean));
+const alts=alt?new Set(mine.map(x=>x&&x[alt]).filter(Boolean)):null;
+const missing=theirs.filter(x=>x&&!(x.id&&ids.has(x.id))&&!(alts&&x[alt]&&alts.has(x[alt])));
+if(missing.length){out[k]=[...mine,...missing];console.warn("Rekipere "+missing.length+" "+k+" ki te sou sèvè a");}});
+return out;};
+const sv=useCallback(nd=>{lastTouchRef.current=Date.now();setData(nd);(async()=>{let ok=false;for(let i=0;i<3;i++){try{const merged=await mergeServerAdds(nd);if(merged!==nd)setData(merged);await api('/api/data',{method:'PUT',body:JSON.stringify(merged)});ok=true;setSaveStatus({ok:true,t:new Date().toLocaleTimeString()});break;}catch(e){console.error(`Save attempt ${i+1} failed:`,e);if(i<2)await new Promise(r=>setTimeout(r,2000));}}if(!ok){setSaveStatus({ok:false,t:new Date().toLocaleTimeString()});setToast({m:"Erè sovgad! Done yo pa ka sovgade.",t:"error"});setTimeout(()=>setToast(null),5000);}})();},[]);
 const ms=(m,t="ok")=>{setToast({m,t});setTimeout(()=>setToast(null),3000);};
 // Browsers kept serving a stale bundle for hours after each deploy. Compare the
 // main bundle name the server currently references with the one this page
@@ -2850,7 +2865,7 @@ if(!user)return<div style={{background:`radial-gradient(900px 500px at 20% -10%,
 return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className={"jw-sidebar"+(sbMini?" jw-mini":"")} style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.1</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
+<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.2</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
 <div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map(g=><div key={g} style={{marginBottom:10}}><div className="jw-navgrp" style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
 <div style={{padding:"12px 14px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -2865,7 +2880,7 @@ return<div style={{background:C.bg,minHeight:"100vh",color:C.text}}>
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"22px 26px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"8px 0 12px",marginBottom:6}}>
-<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.1</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.2</div></div></div>
 <button onClick={doLogout} title="Déconnexion" style={{height:32,padding:"0 10px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
 <div className="jw-content" style={{maxWidth:1400,margin:"0 auto"}}>
