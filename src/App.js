@@ -49,12 +49,14 @@ const facs=(data.factures||[]).filter(f=>f.date&&f.date.startsWith(String(year))
 const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
 const ents=(data.entretiens||[]).filter(e=>e.date&&e.date.startsWith(String(year)));
 let tpsC=0,tvqC=0;facs.forEach(f=>{tpsC+=(f.tps||0);tvqC+=(f.tvq||0);});
+const locFacs=(data.locationFactures||[]).filter(f=>(f.date||"").startsWith(String(year))&&f.statut!=="Annulée");
+locFacs.forEach(f=>{tpsC+=(f.tps||0);tvqC+=(f.tvq||0);});
 const HALF_CATS=["Nourriture/Repas"];const NO_ITC=["Salaires","CNESST","Amortissement"];
 let tpsITC=0,tvqITC=0;
 deps.forEach(d=>{const m=d.montant||0;if(NO_ITC.includes(d.categorie))return;const mult=HALF_CATS.includes(d.categorie)?0.5:1;tpsITC+=m*TPS_R/(1+TPS_R)*mult;tvqITC+=m*TVQ_R/(1+TVQ_R)*mult;});
 ents.forEach(e=>{const c=e.cout||0;tpsITC+=c*TPS_R/(1+TPS_R);tvqITC+=c*TVQ_R/(1+TVQ_R);});
 tpsITC=Math.round(tpsITC*100)/100;tvqITC=Math.round(tvqITC*100)/100;
-return{tpsCollected:Math.round(tpsC*100)/100,tvqCollected:Math.round(tvqC*100)/100,tpsITC,tvqITC,tpsNet:Math.round((tpsC-tpsITC)*100)/100,tvqNet:Math.round((tvqC-tvqITC)*100)/100,totalNet:Math.round((tpsC-tpsITC+tvqC-tvqITC)*100)/100,facCount:facs.length,depCount:deps.length};}
+return{tpsCollected:Math.round(tpsC*100)/100,tvqCollected:Math.round(tvqC*100)/100,tpsITC,tvqITC,tpsNet:Math.round((tpsC-tpsITC)*100)/100,tvqNet:Math.round((tvqC-tvqITC)*100)/100,totalNet:Math.round((tpsC-tpsITC+tvqC-tvqITC)*100)/100,facCount:facs.length+locFacs.length,depCount:deps.length};}
 function calcFiscalHealth(data){
 const alerts=[];const yr=String(new Date().getFullYear());const td=toL(new Date());
 const emps=(data.chauffeurs||[]).filter(c=>c.aktif);
@@ -79,13 +81,16 @@ function calcProfitAnalysis(data,year){
 const st=data.settings||def.settings;const tare=st.tare||DEF_TARE;
 const voys=(data.voyages||[]).filter(v=>v.date&&v.date.startsWith(String(year)));
 const a=agg(voys,tare);
+const locFacs=(data.locationFactures||[]).filter(f=>(f.date||"").startsWith(String(year))&&f.statut!=="Annulée");
+const revLoc=Math.round(locFacs.reduce((s,f)=>s+(f.sousTotal||0),0)*100)/100;
 const deps=(data.depenses||[]).filter(d=>d.date&&d.date.startsWith(String(year)));
 const ents=(data.entretiens||[]).filter(e=>e.date&&e.date.startsWith(String(year)));
 const totalDeps=deps.reduce((s,d)=>s+(d.montant||0),0);
 const totalEnts=ents.reduce((s,e)=>s+(e.cout||0),0);
 const emps=calcFiscal(data,year);const totalEmp=emps.reduce((s,e)=>s+e.brut,0);
 const totalCost=totalDeps+totalEnts+totalEmp;
-const margin=a.rev>0?Math.round((a.rev-totalCost)/a.rev*1000)/10:0;
+const rev=Math.round((a.rev+revLoc)*100)/100;
+const margin=rev>0?Math.round((rev-totalCost)/rev*1000)/10:0;
 const avgRevPerTrip=a.tv>0?Math.round(a.rev/a.tv*100)/100:0;
 const avgCostPerTrip=a.tv>0?Math.round(totalCost/a.tv*100)/100:0;
 const now=new Date();const w4ago=new Date(now);w4ago.setDate(w4ago.getDate()-28);const w4s=toL(w4ago);
@@ -93,7 +98,7 @@ const recent=voys.filter(v=>v.date>=w4s);const recentA=agg(recent,tare);
 const projection=Math.round(recentA.rev/4*4.33*100)/100;
 const topDeps={};deps.forEach(d=>{topDeps[d.categorie]=(topDeps[d.categorie]||0)+(d.montant||0);});
 const topCats=Object.entries(topDeps).sort((a,b)=>b[1]-a[1]).slice(0,5);
-return{rev:a.rev,revM:a.rM,revL:a.rL,ttc:a.ttc,tv:a.tv,totalDeps,totalEnts,totalEmp,totalCost,margin,avgRevPerTrip,avgCostPerTrip,projection,topCats};}
+return{rev,revTransport:a.rev,revLoc,revM:a.rM,revL:a.rL,ttc:Math.round((a.ttc+revLoc*(1+TPS_R+TVQ_R))*100)/100,tv:a.tv,totalDeps,totalEnts,totalEmp,totalCost,margin,avgRevPerTrip,avgCostPerTrip,projection,topCats};}
 const openPrint=(title,html)=>{const w=window.open('','_blank');if(!w)return;w.document.write(`<!DOCTYPE html><html><head><meta charset=utf-8><title>${title}</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{background:#fff;color:#1a1a1a}.inv{max-width:780px;margin:0 auto;padding:30px}.hdr{display:flex;gap:16px;margin-bottom:20px}.av{width:80px;height:80px;border-radius:8px;background:#334155;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900}.ci{font-size:12px;color:#475569;line-height:1.6}.ci strong{font-size:14px;color:#1a1a1a}.per{font-size:14px;font-weight:600;margin-bottom:12px}.mr{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px}.mr .l{color:#64748b}.mr .v{font-weight:600}.bg{background:#dbeafe;color:#2563eb;font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;display:inline-block}.cb{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px;font-size:12px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:16px 0}th{background:#f1f5f9;padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;color:#64748b;border:1px solid #e2e8f0}td{padding:10px 14px;font-size:12px;border:1px solid #e2e8f0;vertical-align:top}.r{text-align:right}.b{font-weight:700}.ts{margin-left:auto;width:320px}.tr{display:flex;justify-content:space-between;padding:6px 14px;font-size:12px;border-bottom:1px solid #e2e8f0}.tr.t{background:#1e293b;color:#fff;font-weight:700;font-size:14px;border-radius:0 0 6px 6px}.ft{text-align:center;font-size:9px;color:#94a3b8;margin-top:24px;padding-top:10px;border-top:1px solid #e2e8f0}@media print{.inv{padding:20px}}</style></head><body><div class=inv>${html}</div><script>window.onload=function(){window.print()}<\/script></body></html>`);w.document.close();};
 const Bt=({children,onClick,color=C.accent,variant="solid",size="md",disabled,style:sx})=><button className="jw-btn" onClick={onClick} disabled={disabled} style={{padding:size==="sm"?"0 12px":size==="lg"?"0 22px":"0 16px",height:size==="sm"?34:size==="lg"?46:40,fontSize:size==="sm"?12:size==="lg"?14:13,fontWeight:700,border:variant==="solid"?"none":`1px solid ${color}55`,borderRadius:10,cursor:disabled?"not-allowed":"pointer",display:"inline-flex",alignItems:"center",justifyContent:"center",gap:6,background:variant==="solid"?color:`${color}14`,color:variant==="solid"?"#fff":color,opacity:disabled?0.5:1,boxShadow:variant==="solid"?`0 6px 16px -8px ${color}`:"none",whiteSpace:"nowrap",...sx}}>{children}</button>;
 const inSt=(dis)=>({background:dis?C.card2:C.bg,color:C.text,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 12px",fontSize:15,outline:"none",width:"100%",minHeight:44});
@@ -2332,8 +2337,9 @@ return<div style={{padding:"clamp(8px,2vw,20px)",maxWidth:1100,margin:"0 auto"}}
 <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:12,padding:16}}>
 <div style={{fontSize:11,color:C.muted,fontWeight:600,marginBottom:8,textTransform:"uppercase"}}>Répartition des Revenus</div>
 <div style={{display:"flex",gap:16,flexWrap:"wrap",fontSize:12,color:C.text}}>
-<div>🏙️ Montréal (06): <strong style={{color:C.cyan}}>{fN(profit.revM)} $</strong> ({profit.rev>0?Math.round(profit.revM/profit.rev*100):0}%)</div>
-<div>🏘️ Laval (13): <strong style={{color:C.purple}}>{fN(profit.revL)} $</strong> ({profit.rev>0?Math.round(profit.revL/profit.rev*100):0}%)</div>
+{profit.revLoc>0&&<div>🔑 Location camion: <strong style={{color:C.purple}}>{fN(profit.revLoc)} $</strong></div>}
+<div>🏙️ Montréal (06): <strong style={{color:C.cyan}}>{fN(profit.revM)} $</strong> ({profit.revTransport>0?Math.round(profit.revM/profit.revTransport*100):0}%)</div>
+<div>🏘️ Laval (13): <strong style={{color:C.purple}}>{fN(profit.revL)} $</strong> ({profit.revTransport>0?Math.round(profit.revL/profit.revTransport*100):0}%)</div>
 <div>📦 Moy/voyage: <strong>{fN(profit.avgRevPerTrip)} $</strong></div>
 <div>📈 Projection/mois: <strong style={{color:C.green}}>{fN(profit.projection)} $</strong></div>
 </div></div>
@@ -2867,7 +2873,7 @@ if(!user)return<div style={{background:`radial-gradient(900px 500px at 20% -10%,
 return<div style={{background:`radial-gradient(1200px 680px at 10% -10%, #6366f155, transparent 60%), radial-gradient(1000px 560px at 100% 2%, #22d3ee33, transparent 58%), radial-gradient(900px 640px at 55% 112%, #a78bfa3a, transparent 58%), ${C.bg}`,minHeight:"100vh",color:C.text}}>
 <div className="jw-desk" style={{display:"flex",minHeight:"100vh"}}>
 <nav className={"jw-sidebar"+(sbMini?" jw-mini":"")} style={{width:248,background:C.card,borderRight:`1px solid ${C.border}`,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",flexShrink:0}}>
-<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.7</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
+<div className="jw-brand" style={{padding:"18px 14px 14px",display:"flex",alignItems:"center",gap:10}}><div style={{width:38,height:38,borderRadius:11,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",boxShadow:"0 8px 20px -8px #6366f1",flexShrink:0}}>JW</div><div className="jw-brandtxt" style={{flex:1,minWidth:0}}><div style={{fontWeight:800,fontSize:14,letterSpacing:-.2,whiteSpace:"nowrap"}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:1}}>Gestion • v9.8</div></div><button className="jw-sbtoggle" onClick={()=>{const v=!sbMini;setSbMini(v);try{localStorage.setItem("jw-sb-mini",v?"1":"0");}catch(e){}}} title={sbMini?"Déplier le menu":"Réduire le menu"} style={{width:26,height:26,borderRadius:7,border:`1px solid ${C.border}`,background:C.card2,color:C.muted,cursor:"pointer",fontSize:12,flexShrink:0,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{sbMini?"›":"‹"}</button></div>
 <div style={{padding:"4px 10px 10px",flex:1,overflowY:"auto"}}>{navGroups.map((g,gi)=><div key={g} style={{marginBottom:10,paddingTop:gi?10:0,borderTop:gi?`1px solid ${C.border}`:"none"}}><div className="jw-navgrp" style={{fontSize:10,fontWeight:700,color:C.dim,textTransform:"uppercase",letterSpacing:1,padding:"8px 12px 4px"}}>{g}</div>{nav.filter(it=>it.g===g).map(it=><NavItem key={it.id} it={it} active={pg===it.id} onClick={()=>goPage(it.id)}/>)}</div>)}</div>
 <div style={{padding:"12px 14px",borderTop:`1px solid ${C.border}`}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -2882,7 +2888,7 @@ return<div style={{background:`radial-gradient(1200px 680px at 10% -10%, #6366f1
 </nav>
 <main className="jw-main" style={{flex:1,overflowY:"auto",height:"100vh",padding:"22px 26px"}}>
 <div className="jw-mobile-header" style={{display:"none",alignItems:"center",justifyContent:"space-between",padding:"8px 0 12px",marginBottom:6}}>
-<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.7</div></div></div>
+<div style={{display:"flex",alignItems:"center",gap:9}}><div style={{width:32,height:32,borderRadius:9,background:C.g1,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:11,color:"#fff"}}>JW</div><div><div style={{fontWeight:800,fontSize:14,lineHeight:1}}>J&W Transport</div><div style={{fontSize:10,color:C.dim,marginTop:2}}>{user.displayName} • v9.8</div></div></div>
 <button onClick={doLogout} title="Déconnexion" style={{height:32,padding:"0 10px",borderRadius:8,border:`1px solid ${C.red}30`,background:`${C.red}10`,cursor:"pointer",color:C.red,fontSize:12,fontWeight:700}}>↪</button>
 </div>
 <div className="jw-content" style={{maxWidth:1400,margin:"0 auto"}}>
