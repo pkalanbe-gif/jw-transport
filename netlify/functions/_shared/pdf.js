@@ -146,7 +146,7 @@ async function generateInvoicePDF(invoice, client, ent, settings) {
 
       doc.fillColor('#1a1a1a').font('Helvetica').fontSize(9)
          .text(safe(d.description || '—'), 46, y + 7, { width: 268 });
-      doc.text(`${fN(q)} kg`, 326, y + 7, { width: 68, align: 'right' });
+      doc.text(`${fN(q)}${d.unite ? ' ' + d.unite : ''}`, 326, y + 7, { width: 68, align: 'right' });
       doc.text(fN(p),         406, y + 7, { width: 68, align: 'right' });
       doc.font('Helvetica-Bold').text(fM(total), 486, y + 7, { width: 80, align: 'right' });
       doc.font('Helvetica');
